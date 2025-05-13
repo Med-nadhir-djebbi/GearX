@@ -1,0 +1,25 @@
+{# templates/pageTemplate.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My E-Commerce{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body>
+    <header style="display:flex;justify-content:space-between;align-items:center;padding:1rem;background:#f8f8f8;">
+        <div>
+            <a href="{{ path('home') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height:40px;">
+            </a>
+        </div>
+        <div>
+            <a href="{{ path('home') }}" style="text-decoration:none;color:#333;font-weight:bold;">Login</a>
+        </div>
+    </header>
+
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+</body>
+</html>
