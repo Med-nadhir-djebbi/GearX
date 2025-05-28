@@ -21,10 +21,10 @@ final class Version20250528142220 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            CREATE TABLE "admin" (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, PRIMARY KEY(id))
+            CREATE TABLE if not exists admin (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, PRIMARY KEY(id))
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE cart (id SERIAL NOT NULL, products TEXT NOT NULL, PRIMARY KEY(id))
+            CREATE TABLE if not exists cart (id SERIAL NOT NULL, products TEXT NOT NULL, PRIMARY KEY(id))
         SQL);
         $this->addSql(<<<'SQL'
             COMMENT ON COLUMN cart.products IS '(DC2Type:array)'
@@ -36,7 +36,7 @@ final class Version20250528142220 extends AbstractMigration
             CREATE INDEX IDX_64C19C1727ACA70 ON category (parent_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE product (id SERIAL NOT NULL, category TEXT NOT NULL, ratings TEXT NOT NULL, price INT NOT NULL, PRIMARY KEY(id))
+            CREATE TABLE if not exists product (id SERIAL NOT NULL, category TEXT NOT NULL, ratings TEXT NOT NULL, price INT NOT NULL, PRIMARY KEY(id))
         SQL);
         $this->addSql(<<<'SQL'
             COMMENT ON COLUMN product.category IS '(DC2Type:object)'
@@ -45,7 +45,7 @@ final class Version20250528142220 extends AbstractMigration
             COMMENT ON COLUMN product.ratings IS '(DC2Type:array)'
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE "user" (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(id))
+            CREATE TABLE if not exists "user" (id SERIAL NOT NULL, name VARCHAR(50) NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(id))
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE category ADD CONSTRAINT FK_64C19C1727ACA70 FOREIGN KEY (parent_id) REFERENCES category (id) NOT DEFERRABLE INITIALLY IMMEDIATE

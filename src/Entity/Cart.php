@@ -14,7 +14,7 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::JSON, nullable: true)]
     private array $products = [];
 
     public function getId(): ?int

@@ -1,86 +1,119 @@
-
-<div class="container-fluid bg-white sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-2">
-            <a href="{{ path('tempp') }}" class="navbar-brand">
-                <h1 class="fw-bold m-0">GearX</h1>
-            </a>
+        <!-- Brand -->
+        <a href="{{ path('home') }}" class="navbar-brand d-flex align-items-center">
+            <i class="fas fa-bolt text-primary me-2"></i>
+            <h1 class="h4 mb-0 fw-bold">GearX</h1>
+        </a>
 
-            {# Main Navigation Items #}
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- Navbar Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav me-auto">
-                    {# Tous nos Rayons Menu #}
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Categories Dropdown -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-list me-2"></i>Categories
+                    </a>
+                    <ul class="dropdown-menu border-0 shadow">
+                        {% for category in categories %}
+                            <li>
+                                <a class="dropdown-item" href="#">{{ category.name }}</a>
+                                {% if category.children|length > 0 %}
+                                    <ul class="submenu dropdown-menu border-0 shadow">
+                                        {% for subcategory in category.children %}
+                                            <li><a class="dropdown-item" href="#">{{ subcategory.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Search Form -->
+            <form class="d-flex mx-auto" style="width: 40%;">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="Search products..." aria-label="Search">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Right Navigation -->
+            <ul class="navbar-nav ms-auto">
+                <!-- Cart -->
+                <li class="nav-item me-3">
+                    <a href="{{ path('app_cart_index') }}" class="nav-link position-relative">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            0
+                        </span>
+                    </a>
+                </li>
+
+                <!-- Authentication -->
+                {% if app.user %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Tous nos Rayons
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            {{ app.user.firstName }}
                         </a>
-                        <ul class="dropdown-menu">
-                            {% for category in categories %}
-                                <li class="dropdown-item-wrapper">
-                                    <a class="dropdown-item" href="{{ path('tempp', {'id': category.id}) }}">
-                                        {{ category.name }}
-                                        {% if category.subcategories|length > 0 %}
-                                            <i class="fas fa-chevron-right float-end"></i>
-                                        {% endif %}
-                                    </a>
-                                    {% if category.subcategories|length > 0 %}
-                                        <div class="submenu">
-                                            <ul class="list-unstyled">
-                                                {% for subcategory in category.subcategories %}
-                                                    <li>
-                                                        <a href="{{ path('tempp', {'id': subcategory.id}) }}">
-                                                            {{ subcategory.name }}
-                                                        </a>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-box me-2"></i>Orders</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
                         </ul>
                     </li>
-                </ul>
-
-                {# Search Bar #}
-                <div class="col-lg-5 mx-auto">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Rechercher un produit, une marque...">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-
-                {# User Actions #}
-                <div class="d-flex align-items-center ms-auto">
-                    {# Account #}
-                    <div class="nav-item dropdown me-3">
-                        <a href="#" class="nav-link" data-bs-toggle="dropdown">
-                            <i class="fas fa-user fa-lg"></i>
-                            <span class="d-none d-md-inline ms-2">Mon compte</span>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{{ path('app_login') }}" class="nav-link">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
                         </a>
-                        <div class="dropdown-menu rounded-0 border-0 shadow">
-                            <a href="{{ path('app_login') }}" class="dropdown-item">Connexion</a>
-                            <a href="{{ path('app_register') }}" class="dropdown-item">Inscription</a>
-                        </div>
-                    </div>
-
-                    {# Cart #}
-                    <div class="position-relative me-3">
-                        <a href="{{ path('app_cart_index') }}" class="nav-link">
-                            <i class="fas fa-shopping-cart fa-lg"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                0
-                            </span>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('app_register') }}" class="btn btn-primary ms-2">
+                            <i class="fas fa-user-plus me-1"></i>Register
                         </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-</div>
+</nav>
+
+<style>
+/* Dropdown submenu */
+.dropdown-menu li {
+    position: relative;
+}
+.dropdown-menu .submenu { 
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -7px;
+}
+.dropdown-menu > li:hover > .submenu {
+    display: block;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Prevent closing dropdown on click inside
+    document.querySelectorAll('.dropdown-menu').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+});
+</script>

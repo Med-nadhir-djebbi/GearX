@@ -1,53 +1,117 @@
-<div class="container-fluid bg-dark py-5 wow fadeIn" data-wow-delay="0.1s">
+<footer class="bg-dark text-light py-5">
     <div class="container">
-        <div class="md:flex max-md:flex-col items-center justify-center gap-4">
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-uppercase text-light mb-4 text-xl">Our Office</h5>
-                <p class="mb-2 text-zinc-200"><i class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2 text-zinc-200"><i class="fa fa-phone-alt text-primary me-3"></i>+012 345 67890</p>
-                <p class="mb-2 text-zinc-200"><i class="fa fa-envelope text-primary me-3"></i>info@example.com</p>
-                <div class="d-flex pt-3">
-                    <a class="btn btn-square btn-light me-2" href=""><i
-                                class="fab fa-twitter"></i></a>
-                    <a class="btn btn-square btn-light me-2" href=""><i
-                                class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-square btn-light me-2" href=""><i
-                                class="fab fa-youtube"></i></a>
-                    <a class="btn btn-square btn-light me-2" href=""><i
-                                class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 text-uppercase">
-                <h5 class=" text-light mb-4 text-xl">Quick Links</h5>
-                <div class="mb-2 flex flex-col gap-2 text-zinc-200 ">
-                    <a class="hover:text-red-500 transition-all duration-300" href="">About Us</a>
-                    <a class="hover:text-red-500 transition-all duration-300" href="">Contact Us</a>
-                    <a class="hover:text-red-500 transition-all duration-300" href="">Our Services</a>
-                    <a class="hover:text-red-500 transition-all duration-300" href="">Terms & Condition</a>
-                    <a class="hover:text-red-500 transition-all duration-300" href="">Support</a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 text-zinc-200">
-            <div class="my-2">
-                <h5 class="text-uppercase text-light mb-4 text-xl">Business Hours</h5>
-                <p class="text-uppercase  mb-0">Monday - Friday</p>
-          
-                <p>09:00 am - 07:00 pm</p>
-                </div>
-                <hr>
-            <div class="my-2">
-
-                <p class="text-uppercase mb-0">Saturday</p>
-                <p>09:00 am - 12:00 pm</p>
-                                </div>
-                <hr>
-            <div class="my-2">
-
-                <p class="text-uppercase mb-0">Sunday</p>
-                <p>Closed</p>
+        <div class="row g-4">
+            <!-- About Section -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-section">
+                    <a href="{{ path('home') }}" class="d-flex align-items-center mb-3 text-decoration-none">
+                        <i class="fas fa-bolt text-primary me-2 fa-2x"></i>
+                        <h2 class="h4 mb-0 text-white">GearX</h2>
+                    </a>
+                    <p class="text-muted mb-4">Your one-stop shop for all electronics and tech gear. Find the latest technology at competitive prices.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
             </div>
 
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-section">
+                    <h5 class="text-white mb-4">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Products</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-section">
+                    <h5 class="text-white mb-4">Categories</h5>
+                    <ul class="list-unstyled footer-links">
+                        {% for category in categories|slice(0, 4) %}
+                            <li class="mb-2">
+                                <a href="#" class="text-muted text-decoration-none">{{ category.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-section">
+                    <h5 class="text-white mb-4">Newsletter</h5>
+                    <p class="text-muted mb-4">Subscribe to our newsletter for the latest updates and exclusive offers.</p>
+                    <form class="mb-4">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your email address">
+                            <button class="btn btn-primary" type="submit">Subscribe</button>
+                        </div>
+                    </form>
+                    <div class="payment-methods">
+                        <i class="fab fa-cc-visa fa-2x text-muted me-2"></i>
+                        <i class="fab fa-cc-mastercard fa-2x text-muted me-2"></i>
+                        <i class="fab fa-cc-paypal fa-2x text-muted me-2"></i>
+                        <i class="fab fa-cc-apple-pay fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Footer -->
+        <div class="border-top border-secondary pt-4 mt-4">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-md-0 text-muted">&copy; {{ "now"|date("Y") }} GearX. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#" class="text-muted text-decoration-none">Terms</a></li>
+                        <li class="list-inline-item"><span class="text-muted mx-2">·</span></li>
+                        <li class="list-inline-item"><a href="#" class="text-muted text-decoration-none">Privacy</a></li>
+                        <li class="list-inline-item"><span class="text-muted mx-2">·</span></li>
+                        <li class="list-inline-item"><a href="#" class="text-muted text-decoration-none">Support</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</footer>
+
+<style>
+.footer-links a:hover {
+    color: #fff !important;
+    transition: color 0.3s ease;
+}
+
+.social-links a {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: var(--bs-primary);
+}
+
+.payment-methods i {
+    transition: opacity 0.3s ease;
+}
+
+.payment-methods i:hover {
+    opacity: 0.8;
+}
+</style>
