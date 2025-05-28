@@ -21,7 +21,7 @@ class Category
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subcategories')]
     private ?self $parent = null;
 
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private Collection $subcategories;
 
     public function __construct()
