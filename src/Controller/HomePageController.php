@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,10 +12,19 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomePageController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
+        // Get categories from the database
+        $categories = $entityManager->getRepository(Category::class)->findAll();
+        
+        // Get featured products
+        $featuredProducts = $entityManager->getRepository(Product::class)
+            ->findBy([], ['id' => 'DESC'], 8);
+        
         return $this->render('home_page/index.html.twig', [
             'controller_name' => 'HomePageController',
+            'categories' => $categories,
+            'featuredProducts' => $featuredProducts,
         ]);
     }
     #[Route('/template', name: 'tempp')]

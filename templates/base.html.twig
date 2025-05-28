@@ -2,7 +2,11 @@
 <html>
 {% include 'repeatable/head.html.twig' %}
     <body>
-        {% include 'repeatable/navbar.html.twig' %}
+        {% include 'repeatable/navbar.html.twig' with {'categories': categories|default([])} %}
+        <div class="content-wrapper">
+            {% block body %}{% endblock %}
+        </div>
+        {% include 'repeatable/footer.html.twig' %}
     </body>
     {% include 'repeatable/scripts.html.twig' %}
 </html>
