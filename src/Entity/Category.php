@@ -1,5 +1,5 @@
 <?php
-// src/Entity/Category.php
+// src/Entity/CategoryFixtures.php
 
 namespace App\Entity;
 

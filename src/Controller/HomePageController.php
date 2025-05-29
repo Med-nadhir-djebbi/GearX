@@ -30,7 +30,7 @@ final class HomePageController extends AbstractController
     #[Route('/template', name: 'tempp')]
     public function about(EntityManagerInterface $entityManager): Response
     {
-        // Sample categories data
+
         $categories = [
             'Informatique' => [
                 'Ordinateurs portables',
