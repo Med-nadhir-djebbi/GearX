@@ -1,0 +1,76 @@
+/* Custom Bootstrap Theme */
+
+:root {
+  --bs-primary: #c2ff00 !important;
+  --bs-primary-rgb: 194, 255, 0 !important;
+  --bs-primary-bg-subtle: rgba(194, 255, 0, 0.1) !important;
+  --bs-primary-border-subtle: rgba(194, 255, 0, 0.3) !important;
+  --bs-primary-text-emphasis: #748c00 !important;
+
+  /* Override other Bootstrap colors to match your theme */
+  --bs-body-bg: #111410 !important;
+  --bs-body-color: #f0f0f0ba !important;
+  --bs-dark: #222222 !important;
+  --bs-dark-rgb: 34, 34, 34 !important;
+
+  /* Add your custom variables for Bootstrap components */
+  --bs-dropdown-bg: #222222 !important;
+  --bs-dropdown-border-color: #c2ff00 !important;
+  --bs-dropdown-link-color: #f0f0f0ba !important;
+  --bs-dropdown-link-hover-color: #c2ff00 !important;
+  --bs-dropdown-link-hover-bg: #111410 !important;
+}
+
+/* Override Bootstrap primary button */
+.btn-primary {
+  background-color: #c2ff00 !important;
+  border-color: #c2ff00 !important;
+  color: #111410 !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #d4ff33 !important;
+  border-color: #d4ff33 !important;
+  color: #111410 !important;
+  box-shadow: 0 0 15px #c2ff00 !important;
+}
+
+/* Override dropdown */
+.dropdown-menu {
+  background-color: #222222 !important;
+  border-color: #c2ff00 !important;
+}
+
+.dropdown-item {
+  color: #f0f0f0ba !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  color: #c2ff00 !important;
+  background-color: #111410 !important;
+}
+
+/* Make sure links use your primary color */
+a {
+  color: #c2ff00;
+}
+
+a:hover {
+  color: #d4ff33;
+}
+
+/* Other potential overrides */
+.bg-primary {
+  background-color: #c2ff00 !important;
+}
+
+.text-primary {
+  color: #c2ff00 !important;
+}
+
+.border-primary {
+  border-color: #c2ff00 !important;
+}

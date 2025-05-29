@@ -1,35 +1,105 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cart index{% endblock %}
+{% block title %}My Cart - GearX{% endblock %}
 
 {% block body %}
-    <h1>Cart index</h1>
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="chakra-petch-bold text-primary">MY CART</h1>
+                {% if totalQuantity > 0 %}
+                    <a href="{{ path('remove_cart') }}" title="Reset Cart" class="gaming-button gaming-button-danger">
+                        <i class="bi bi-x"></i> 
+                        RESET CART
+                    </a>
+                {% endif %}
+            </div>
+            <div class="separator-line my-3"></div>
+            <p class="chakra-petch-light text-lighter">Here are the items you've added to your cart</p>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Products</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for cart in carts %}
-            <tr>
-                <td>{{ cart.id }}</td>
-                <td>{{ cart.products ? cart.products|join(', ') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_cart_show', {'id': cart.id}) }}">show</a>
-                    <a href="{{ path('app_cart_edit', {'id': cart.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="bg-dark-gray rounded-lg p-4 shadow-lg">
+        <table class="table table-dark table-hover border-separate mt-3">
+            <thead class="chakra-petch-medium text-primary border-b border-primary">
+                <tr>
+                    <th scope="col">PRODUCT</th>
+                    <th scope="col">UNIT PRICE</th>
+                    <th class="text-center" scope="col">QUANTITY</th>
+                    <th scope="col">TOTAL</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>            <tbody>
+            {% for item in cart %}
+                <tr class="border-b border-zinc-700">
+                    <td class="align-middle py-3">
+                        <div class="d-flex align-items-center">
+                            <div class="product-image mr-3 bg-darker rounded p-2" style="width: 80px; height: 80px;">
+                                <img class="w-100 h-100 object-contain" src="{{ asset('assets/img/products/' ~ (item.product.image ?? 'placeholder.jpg')) }}" 
+                                     alt="{{ item.product.name }}"
+                                     onerror="this.src='{{ asset('assets/img/placeholder.webp') }}'">
+                            </div>
+                            <div>
+                                <h5 class="chakra-petch-medium text-lighter mb-1">{{ item.product.name }}</h5>
+                                <span class="badge bg-primary">{{ item.product.category.name }}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-lighter">{{ (item.product.price)|number_format(2, '.', ',') }} €</td>
+                    <td class="text-center align-middle">
+                        <div class="quantity-controls d-flex align-items-center justify-content-center">
+                            <a title="Remove 1 item" href="{{ path('decrease_item', {id:item.product.id}) }}" 
+                               class="btn btn-sm btn-dark border border-zinc-700">
+                                <i class="bi bi-dash"></i>
+                            </a>
+                            <span class="mx-3 text-lighter chakra-petch-bold">{{ item.quantity }}</span>
+                            <a title="Add 1 item" href="{{ path('add_to_cart', {id:item.product.id}) }}" 
+                               class="btn btn-sm btn-dark border border-zinc-700">
+                                <i class="bi bi-plus"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td class="align-middle text-primary font-weight-bold">{{ (item.quantity * item.product.price)|number_format(2, '.', ',') }} €</td>
+                    <td class="align-middle">
+                        <a title="Remove all items of this product" href="{{ path('remove_cart_item', {id: item.product.id}) }}" 
+                           class="btn btn-sm btn-dark text-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>            <tfoot>
+                <tr class="border-t border-primary">
+                    <th class="chakra-petch-bold text-primary">TOTAL</th>
+                    <td></td>
+                    <td class="text-center chakra-petch-medium">
+                        <span class="badge bg-primary">{{ totalQuantity }} ITEMS</span>
+                    </td>
+                    <th class="text-primary chakra-petch-bold">{{ (totalPrice)|number_format(2, '.', ',') }} €</th>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
 
-    <a href="{{ path('app_cart_new') }}">Create new</a>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <a href="{{ path('product') }}" class="btn btn-outline-primary btn-block">
+                    <i class="bi bi-arrow-left me-2"></i> CONTINUE SHOPPING
+                </a>
+            </div>
+            <div class="col-md-6">
+                {% if totalQuantity > 0 %}
+                    <a href="{{ path('order') }}" class="gaming-button btn-block w-100">
+                        CHECKOUT <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                {% else %}
+                    <div class="alert alert-dark border border-primary">
+                        Your cart is empty. Browse our <a href="{{ path('product') }}" class="text-primary">products</a> to get started.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

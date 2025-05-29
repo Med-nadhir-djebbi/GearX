@@ -70,4 +70,16 @@ class Category
         }
         return $this;
     }
+
+    public function removeSubcategory(Category $subcategory): static
+    {
+        if ($this->subcategories->removeElement($subcategory)) {
+            // set the owning side to null (unless already changed)
+            if ($subcategory->getParent() === $this) {
+                $subcategory->setParent(null);
+            }
+        }
+
+        return $this;
+    }
 }

@@ -1,0 +1,78 @@
+{# templates/home/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}GearX - Your Electronics Superstore{% endblock %}
+
+{% block full_width_hero %}
+    <!-- Hero Section -->
+    <div class="hero-section bby">
+        <img src="{{ asset('assets/img/banner.png') }}" alt="Banner">
+
+        <div class="diagonal-line" style="width: 200px; left: 5%; top: 30%;"></div>
+        <div class="diagonal-line" style="width: 350px; right: 0; top: 20%; transform: rotate(45deg); transform-origin: right;"></div>
+        
+        <div class="tech-line" style="width: 200px; left: 5%; bottom: 30%;"></div>
+        <div class="tech-line" style="width: 150px; right: 10%; bottom: 40%;"></div>
+        
+        
+        <div class="container h-100 position-relative px-[6vw]" style="z-index: 3;">
+            <div class="h-100 flex items-center justify-content-center">
+                <div class="col-lg-6 h-100 w-100">
+                    <div class="text-white flex flex-col items-center justify-content-center h-100">
+                    <div class="h-50 w-50"></div>
+                        <h1 class="display-3 fw-bold mb-4 chakra-petch-bold text-white text-center">LEVEL UP YOUR<br>GAMING EXPERIENCE</h1>
+                        <p class="lead fs-4 mb-5 chakra-petch-light text-center">Your one-stop shop for all gaming gear and electronics. Find the latest technology at the best prices!</p>
+                        
+                        <div class="d-flex gap-3">
+                            <a href="#featured-products" class="gaming-button">VIEW MORE</a>
+                            <a href="{{ path('cart') }}" class="gaming-button">SHOP NOW</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+<div id="intro" class="bby py-5 sec">
+<div class="text-center">
+            <h2 class="display-5 mb-3 chakra-petch-bold text-primary font-bold">WHO ARE WE</h2>
+            <p class="lead chakra-petch-regular text-light text-2xl">Were are a bunch of software engineers at INSAT that share a passion for gaming.<br>
+            We decided to cultivate the best gaiming hardware and gear just for you!</p>
+        </div>
+</div>
+<div id="goof" class="bby py-2 sec">
+    <div class="text-center">
+        <div class="scrolling-container">
+            <div class="scrolling-text">
+                UNLOCK YOUR POTENTIAL <img src="{{ asset('assets/img/biohazard.png') }}" alt="Biohazard" class="separator-img"> 
+                LEVEL UP YOUR SETUP <img src="{{ asset('assets/img/biohazard.png') }}" alt="Biohazard" class="separator-img"> 
+                UNLIMITED.. STUFF <img src="{{ asset('assets/img/biohazard.png') }}" alt="Biohazard" class="separator-img"> 
+                VERY COOL AND POG <img src="{{ asset('assets/img/biohazard.png') }}" alt="Biohazard" class="separator-img">
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="featured-products" class="container py-5 bby">
+        <div class="text-center mb-5">
+            <h2 class="display-5 mb-3 chakra-petch-bold text-primary font-bold">FEATURED GEAR</h2>
+            <p class="lead chakra-petch-regular text-light">Check out our latest and most powerful gaming hardware</p>
+        </div>
+        
+        <div class="row g-4 px-[1vw]">
+            {% for product in featuredProducts %}
+                {% include 'repeatable/product.html.twig' with {'product': product} %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info">No products available at the moment.</div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+                                    <a href="#featured-products" class="gaming-button">ALL PRODUCTS</a>
+                                    </div>
+
+    </div>
+    
+{% endblock %}

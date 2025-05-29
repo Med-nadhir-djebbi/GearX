@@ -1,0 +1,32 @@
+{% if products|length > 0 %}
+    <div class="py-2">
+        {% for product in products %}
+            <a href="{{ path('tempp', {'id': product.id}) }}" class="block px-4 py-2 text-lighter hover:bg-backer hover:text-primary transition-colors">
+                <div class="flex items-center">
+                    {% if product.images is defined and product.images|length > 0 %}
+                        <img src="{{ asset('uploads/products/' ~ product.images[0]) }}" alt="{{ product.name }}" class="w-10 h-10 object-cover rounded mr-3">
+                    {% else %}
+                        <div class="w-10 h-10 bg-dark-gray rounded mr-3 flex items-center justify-center">
+                            <i class="fas fa-cube text-primary"></i>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <div class="font-medium">{{ product.name }}</div>
+                        <div class="text-sm text-gray-400">{{ product.price|number_format(2, ',', ' ') }} €</div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+        {% if products|length >= 5 %}
+            <div class="px-4 py-2 border-t border-lighterer">
+                <a href="{{ path('app_search', {'q': query}) }}" class="block text-center text-primary hover:text-highlight transition-colors">
+                    Voir tous les résultats
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% else %}
+    <div class="px-4 py-3 text-center text-gray-400">
+        Aucun résultat trouvé
+    </div>
+{% endif %}

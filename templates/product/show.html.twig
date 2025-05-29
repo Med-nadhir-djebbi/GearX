@@ -1,34 +1,97 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
 
 {% block body %}
-    <h1>Product</h1>
+    <div class="container mt-5 p-5 bby">
+        <div class="flex gap-4">
+            <div class="col-md-6 flex-1 gap-x-8">
+                <img src="{{ asset('assets/img/products/' ~ (product.image ?? 'placeholder.jpg')) }}" 
+                     class="img-fluid" 
+                     alt="{{ product.name }}"
+                     onerror="this.src='{{ asset('assets/img/placeholder.webp') }}'">
+            </div>
+            <div class="col-md-6 text-light flex-1">
+                <h1 class="chakra-petch font-bold text-white mb-4 text-5xl">{{ product.name }}</h1>
+                
+                {% if product.rating %}
+                    <div class="text-warning mb-3">
+                        {% for i in 1..5 %}
+                            {% if i <= product.rating %}
+                                <i class="fas fa-star"></i>
+                            {% elseif i <= product.rating + 0.5 %}
+                                <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span class="text-light ms-2">({{ product.rating }})</span>
+                    </div>
+                {% endif %}
+                <div class="mb-4">
+                    <h3 class="text-white sora-medium text-2xl">${{ product.price }}</h3>
+                </div>
+                 <h5 class="chakra-petch font-semibold text-primary my-1 text-xl">Description:</h5>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Category</th>
-                <td>{{ product.category }}</td>
-            </tr>
-            <tr>
-                <th>Ratings</th>
-                <td>{{ product.ratings ? product.ratings|join(', ') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ product.price }}</td>
-            </tr>
-        </tbody>
-    </table>
+                <p class="chakra-petch-light mb-4">{{ product.description }}</p>
+                
+                
 
-    <a href="{{ path('app_product_index') }}">back to list</a>
+                <div class="mb-2">
+                    <h5 class="chakra-petch font-semibold text-primary my-1 text-xl">Stock Status:</h5>
+                    {% if product.stock > 12 %}
+                        <p class="badge bg-success text-md">In Stock ({{ product.stock }} available)</p>
+                    {% elseif product.stock > 0 %}
+                        <p class="badge bg-warning text-md">Low Stock ({{ product.stock }} available)</p>
+                    {% else %}
+                        <p class="badge bg-danger text-md">Out of Stock</p>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-4">
+                    <h5 class="chakra-petch font-semibold text-primary my-1 text-xl">Category:</h5>
+                    <p class="text-md">{{ product.category.name }}</p>
+                </div>
 
-    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                <div class="mb-4">
+                    <h5 class="chakra-petch font-semibold text-primary my-1 text-xl">Quantity:</h5>
+                    <div class="flex items-center space-x-2">
+                        <button type="button" class="cyberpunk-quantity-btn minus" id="decreaseQuantity">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" 
+                               id="quantity" 
+                               name="quantity" 
+                               value="1" 
+                               min="1" 
+                               max="{{ product.stock }}" 
+                               class="cyberpunk-quantity-input">
+                        <button type="button" class="cyberpunk-quantity-btn plus" id="increaseQuantity">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
 
-    {{ include('product/_delete_form.html.twig') }}
-{% endblock %}
+                <div class="d-flex gap-3 mb-4">
+                    <a href="{{ path('add_to_cart', {'id': product.id}) }}" 
+                       class="gaming-button flex-1 w-full text-center" 
+                       onclick="event.preventDefault(); addToCart({{ product.id }})">
+                        ADD TO CART
+                    </a>
+                    <a href="#" class="gaming-button flex-1 w-full text-center">ADD TO WISHLIST</a>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="d-flex justify-content-between mt-5">
+            
+            {% if is_granted('ROLE_ADMIN') %}
+                <div>
+                    <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="gaming-button btn-sm">EDIT</a>
+                    {{ include('product/_delete_form.html.twig') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock body %}

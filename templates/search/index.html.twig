@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche - {{ query }}{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-[6vw] py-8">
+    <h1 class="text-2xl font-bold text-primary mb-6">Résultats de recherche pour "{{ query }}"</h1>
+    
+    {% if products|length > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for product in products %}
+                {% include 'repeatable/product.html.twig' with {'product': product} %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-12">
+            <p class="text-lighter text-lg">Aucun résultat trouvé pour "{{ query }}"</p>
+            <p class="text-primary mt-4">Essayez avec des termes différents ou parcourez nos catégories.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

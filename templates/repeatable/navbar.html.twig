@@ -1,86 +1,263 @@
-
-<div class="container-fluid bg-white sticky-top">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-2">
-            <a href="{{ path('tempp') }}" class="navbar-brand">
-                <h1 class="fw-bold m-0">GearX</h1>
-            </a>
-
-            {# Main Navigation Items #}
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav me-auto">
-                    {# Tous nos Rayons Menu #}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Tous nos Rayons
-                        </a>
-                        <ul class="dropdown-menu">
+<div class="backdrop-blur-md bg-zinc-900/15 fixed top-0 inset-x-0 z-30 bby">
+    <div class="container max-w-7xl mx-auto px-[3vw]">
+        {# Navbar Container #}
+        <nav class="flex items-center w-full justify-between py-4">
+            {# Categories, Search, Build PC #}
+            <div class="flex items-center space-x-6">
+                {# Categories Dropdown #}
+                <div class="relative">
+                    <button class="flex items-center space-x-1 text-lighter hover:text-primary transition-colors dropdown-toggle">
+                        <span class="font-medium chakra-medium">Catégories</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    {# Categories Dropdown Menu #}
+                    <div class="absolute top-full left-0 mt-2 w-64 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible dropdown-menu transition-opacity duration-200" style="z-index: 100;">
+                        <div class="dropdown-header py-2 px-4 border-b border-lighterer">
+                            <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider" data-text="Explorez nos catégories">Explorez nos catégories</span>
+                        </div>
+                        <div class="py-2">
                             {% for category in categories %}
-                                <li class="dropdown-item-wrapper">
-                                    <a class="dropdown-item" href="{{ path('tempp', {'id': category.id}) }}">
-                                        {{ category.name }}
+                                {% if category.parent is null %}
+                                    <div class="relative group/category hover:bg-backer">
+                                        <a href="{{ path('home', {'id': category.id}) }}" class="flex items-center justify-between px-4 py-2 text-lighter hover:text-primary transition-colors{% if category.subcategories|length > 0 %} has-submenu{% endif %}">
+                                            <div class="flex items-center">
+                                                <span class="category-icon mr-3 text-primary">
+                                                    <i class="fas fa-{{ category.icon|default('cube') }}"></i>
+                                                </span>
+                                                <span>{{ category.name }}</span>
+                                            </div>
+                                            {% if category.subcategories|length > 0 %}
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
+                                            {% endif %}
+                                        </a>
+                                        
+                                        {# Subcategories Dropdown #}
                                         {% if category.subcategories|length > 0 %}
-                                            <i class="fas fa-chevron-right float-end"></i>
+                                            <div class="absolute top-0 left-full w-56 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible group-hover/category:opacity-100 group-hover/category:visible transition-opacity duration-200" style="z-index: 101;">
+                                                <div class="dropdown-header py-2 px-4 border-b border-lighterer">
+                                                    <span class="text-primary font-semibold chakra-semibold text-xs uppercase tracking-wider" data-text="{{ category.name }}">{{ category.name }}</span>
+                                                </div>
+                                                <div class="py-2">
+                                                    {% for subcategory in category.subcategories %}
+                                                        <div class="relative group/sub">
+                                                            <a href="{{ path('home', {'id': subcategory.id}) }}" class="block px-4 py-2 text-lighter hover:bg-backer hover:text-primary transition-colors{% if subcategory.subcategories|length > 0 %} has-submenu{% endif %}">
+                                                                <span class="flex items-center justify-between">
+                                                                    <span class="flex items-center">
+                                                                        <span class="h-1 w-1 bg-primary mr-2 inline-block"></span>
+                                                                        {{ subcategory.name }}
+                                                                    </span>
+                                                                    {% if subcategory.subcategories|length > 0 %}
+                                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                                        </svg>
+                                                                    {% endif %}
+                                                                </span>
+                                                            </a>                                            {% if subcategory.subcategories|length > 0 %}                                                                <div class="absolute top-0 left-full ml-1 w-56 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200" style="z-index: 102;">
+                                                                    <div class="dropdown-header py-2 px-4 border-b border-lighterer">
+                                                                        <span class="text-primary font-semibold chakra-semibold text-xs uppercase tracking-wider" data-text="{{ subcategory.name }}">{{ subcategory.name }}</span>
+                                                                    </div>
+                                                                    <div class="py-2">
+                                                                        {% for subsubcategory in subcategory.subcategories %}
+                                                                            <a href="{{ path('home', {'id': subsubcategory.id}) }}" class="block px-4 py-2 text-lighter hover:bg-backer hover:text-primary transition-colors">
+                                                                                <span class="flex items-center">
+                                                                                    <span class="h-1 w-1 bg-primary mr-2 inline-block"></span>
+                                                                                    {{ subsubcategory.name }}
+                                                                                </span>
+                                                                            </a>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
                                         {% endif %}
-                                    </a>
-                                    {% if category.subcategories|length > 0 %}
-                                        <div class="submenu">
-                                            <ul class="list-unstyled">
-                                                {% for subcategory in category.subcategories %}
-                                                    <li>
-                                                        <a href="{{ path('tempp', {'id': subcategory.id}) }}">
-                                                            {{ subcategory.name }}
-                                                        </a>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    {% endif %}
-                                </li>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
-                        </ul>
-                    </li>
-                </ul>
-
-                {# Search Bar #}
-                <div class="col-lg-5 mx-auto">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Rechercher un produit, une marque...">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-
-                {# User Actions #}
-                <div class="d-flex align-items-center ms-auto">
-                    {# Account #}
-                    <div class="nav-item dropdown me-3">
-                        <a href="#" class="nav-link" data-bs-toggle="dropdown">
-                            <i class="fas fa-user fa-lg"></i>
-                            <span class="d-none d-md-inline ms-2">Mon compte</span>
-                        </a>
-                        <div class="dropdown-menu rounded-0 border-0 shadow">
-                            <a href="{{ path('app_login') }}" class="dropdown-item">Connexion</a>
-                            <a href="{{ path('app_register') }}" class="dropdown-item">Inscription</a>
                         </div>
                     </div>
+                </div>
 
-                    {# Cart #}
-                    <div class="position-relative me-3">
-                        <a href="{{ path('app_cart_index') }}" class="nav-link">
-                            <i class="fas fa-shopping-cart fa-lg"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                0
-                            </span>
-                        </a>
+                {# Search Bar #}
+                <div class="flex">
+                    <div class="relative group cyberpunk-search">
+                        <form action="{{ path('app_search') }}" method="GET" class="flex relative" id="searchForm">
+                            <input type="text" 
+                                   name="q"
+                                   class="cyberpunk-input" 
+                                   placeholder="Rechercher un produit, une marque..."
+                                   autocomplete="off"
+                                   id="searchInput">
+                            <button type="submit" class="cyberpunk-button">
+                                <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                        
+                        {# Search Results Dropdown #}
+                        <div id="searchResults" class="cyberpunk-results">
+                            <div class="dropdown-header py-2 px-4 border-b border-lighterer">
+                                <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider">Résultats</span>
+                            </div>
+                            <div id="searchLoading" class="p-4 text-center hidden">
+                                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-highlight"></div>
+                            </div>
+                            <div id="searchResultsContent" class="max-h-96 overflow-y-auto custom-scrollbar">
+                                {# Results will be loaded here via AJAX #}
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+            </div>
+
+            {# Center Section: Logo #}
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <a href="{{ path('home') }}" class="logo-link">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="GearX" class="h-8 w-auto transition-all duration-300 hover:brightness-125">
+                </a>
+            </div>
+
+            {# Right Section: Login/Profile, Wishlist, Cart #}
+            <div class="flex items-center space-x-4">
+                {# Account Dropdown #}
+                <div class="relative">
+                    <button class="flex items-center space-x-2 text-lighter hover:text-primary transition-colors dropdown-toggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <span class="hidden md:inline font-medium chakra-medium">Mon compte</span>
+                        <svg class="w-4 h-4 hidden md:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    
+                    {# Account Dropdown Menu #}
+                    <div class="absolute top-full right-0 mt-2 w-48 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible transition-all duration-200 dropdown-menu" style="z-index: 100;">
+                        <div class="dropdown-header py-2 px-4 border-b border-lighterer">
+                            <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider" data-text="Mon compte">Mon compte</span>
+                        </div>
+                        <div class="py-2">
+                            <a href="{{ path('app_login') }}" class="flex items-center px-4 py-2 text-lighter transition-colors">
+                                <i class="fas fa-sign-in-alt mr-3 text-primary"></i>
+                                <span>Connexion</span>
+                            </a>
+                            <a href="{{ path('register') }}" class="flex items-center px-4 py-2 text-lighter transition-colors">
+                                <i class="fas fa-user-plus mr-3 text-primary"></i>
+                                <span>Inscription</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {# Wishlist #}
+                <a href="#" class="relative text-lighter hover:text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                    <span class="absolute -top-2 -right-2 bg-primary text-blacker text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        0
+                    </span>
+                </a>
+
+                {# Cart #}
+                <a href="{{ path('cart') }}" class="relative text-lighter hover:text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5M17 13v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6"></path>
+                    </svg>
+                    <span class="absolute -top-2 -right-2 bg-primary text-blacker text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        0
+                    </span>
+                </a>
             </div>
         </nav>
+
+        {# Mobile Menu Toggle (for responsive design) #}
+        <div class="md:hidden">
+            <button class="mobile-menu-toggle flex items-center px-3 py-2 border border-primary rounded text-lighter hover:text-primary hover:border-primary">
+                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20">
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    {# Mobile Menu (Hidden by default) #}
+    <div class="mobile-menu hidden md:hidden px-4 py-2">
+        <a href="{{ path('home') }}" class="block py-2 text-lighter hover:text-primary">Home</a>
+        
+        <div class="py-2">
+            <button class="mobile-dropdown-toggle flex items-center justify-between w-full py-2 text-lighter hover:text-primary">
+                <span>Catégories</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            
+            <div class="mobile-dropdown hidden pl-4">
+                {% for category in categories %}
+                    {% if category.parent is null %}
+                        <div class="py-1">
+                            <a href="{{ path('home', {'id': category.id}) }}" class="block py-2 text-lighter hover:text-primary">
+                                <span class="flex items-center justify-between">
+                                    <span class="flex items-center">
+                                        <i class="fas fa-{{ category.icon|default('cube') }} mr-2 text-primary"></i>
+                                        {{ category.name }}
+                                    </span>
+                                    {% if category.subcategories|length > 0 %}
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    {% endif %}
+                                </span>
+                            </a>
+                            {% if category.subcategories|length > 0 %}
+                                <div class="pl-4">
+                                    {% for subcategory in category.subcategories %}
+                                        <div class="py-1">
+                                            <a href="{{ path('home', {'id': subcategory.id}) }}" class="block py-1 text-lighter hover:text-primary">
+                                                <span class="flex items-center justify-between">
+                                                    <span class="flex items-center">
+                                                        <span class="h-1 w-1 bg-primary mr-2 inline-block"></span>
+                                                        {{ subcategory.name }}
+                                                    </span>
+                                                    {% if subcategory.subcategories|length > 0 %}
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                        </svg>
+                                                    {% endif %}
+                                                </span>
+                                            </a>
+                                            {% if subcategory.subcategories|length > 0 %}
+                                                <div class="pl-4">
+                                                    {% for subsubcategory in subcategory.subcategories %}
+                                                        <a href="{{ path('home', {'id': subsubcategory.id}) }}" class="block py-1 text-lighter hover:text-primary">
+                                                            <span class="flex items-center">
+                                                                <span class="h-1 w-1 bg-primary mr-2 inline-block"></span>
+                                                                {{ subsubcategory.name }}
+                                                            </span>
+                                                        </a>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <a href="{{ path('app_login') }}" class="block py-2 text-lighter hover:text-primary">Connexion</a>
+        <a href="{{ path('register') }}" class="block py-2 text-lighter hover:text-primary">Inscription</a>
     </div>
 </div>

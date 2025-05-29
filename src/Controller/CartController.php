@@ -2,80 +2,75 @@
 
 namespace App\Controller;
 
-use App\Entity\Cart;
-use App\Form\CartForm;
-use App\Repository\CartRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Model\Cart;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/cart')]
-final class CartController extends AbstractController
+class CartController extends AbstractController
 {
-    #[Route(name: 'app_cart_index', methods: ['GET'])]
-    public function index(CartRepository $cartRepository): Response
+    /**
+     * 
+     * @param Cart $cart
+     * @return Response
+     */
+    #[Route('/mycart', name: 'cart')]
+    public function index(Cart $cart): Response
     {
+        $cartProducts = $cart->getDetails();
+
         return $this->render('cart/index.html.twig', [
-            'carts' => $cartRepository->findAll(),
+            'cart' => $cartProducts['products'],
+            'totalQuantity' => $cartProducts['totals']['quantity'],
+            'totalPrice' =>$cartProducts['totals']['price']
         ]);
     }
 
-    #[Route('/new', name: 'app_cart_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    /**
+     * @param Cart $cart
+     * @param int $id
+     * @return Repsonse
+     */
+    #[Route('/cart/add/{id}', name: 'add_to_cart')]
+    public function add(Cart $cart, int $id): Response
     {
-        $cart = new Cart();
-        $form = $this->createForm(CartForm::class, $cart);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($cart);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_cart_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('cart/new.html.twig', [
-            'cart' => $cart,
-            'form' => $form,
-        ]);
+        $cart->add($id);
+        return $this->redirectToRoute('cart');
     }
 
-    #[Route('/{id}', name: 'app_cart_show', methods: ['GET'])]
-    public function show(Cart $cart): Response
+    /**
+     * @param Cart $cart
+     * @param int $id
+     * @return Repsonse
+     */
+    #[Route('/cart/decrease/{id}', name: 'decrease_item')]
+    public function decrease(Cart $cart, int $id): Response
     {
-        return $this->render('cart/show.html.twig', [
-            'cart' => $cart,
-        ]);
+        $cart->decreaseItem($id);
+        return $this->redirectToRoute('cart');
+    }
+    
+    /**
+     *
+     * @param Cart $cart
+     * @return Response
+     */
+    #[Route('/cart/remove/{id}', name: 'remove_cart_item')]
+    public function removeItem(Cart $cart, int $id): Response
+    {
+        $cart->removeItem($id);
+        return $this->redirectToRoute('cart');
     }
 
-    #[Route('/{id}/edit', name: 'app_cart_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Cart $cart, EntityManagerInterface $entityManager): Response
+    /**
+     *
+     * @param Cart $cart
+     * @return Response
+     */
+    #[Route('/cart/remove/', name: 'remove_cart')]
+    public function remove(Cart $cart): Response
     {
-        $form = $this->createForm(CartForm::class, $cart);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_cart_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('cart/edit.html.twig', [
-            'cart' => $cart,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_cart_delete', methods: ['POST'])]
-    public function delete(Request $request, Cart $cart, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$cart->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($cart);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_cart_index', [], Response::HTTP_SEE_OTHER);
+        $cart->remove();
+        return $this->redirectToRoute('product');
     }
 }

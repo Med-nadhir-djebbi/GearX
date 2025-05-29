@@ -3,7 +3,10 @@
 {% include 'repeatable/head.html.twig' %}
     <body>
         {% include 'repeatable/navbar.html.twig' with {'categories': categories|default([])} %}
-        <div class="content-wrapper">
+        
+        {% block full_width_hero %}{% endblock %}
+        
+        <div class="content-wrapper pt-[80px]">
             {% block body %}{% endblock %}
         </div>
         {% include 'repeatable/footer.html.twig' %}
