@@ -1,8 +1,7 @@
-// Custom dropdown handling for Tailwind/Bootstrap integration
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Dropdown.js loaded");
 
-  // Initialize Tailwind dropdowns for mobile
+  // Mobile menu toggle (keep existing functionality)
   const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
   const mobileMenu = document.querySelector(".mobile-menu");
 
@@ -12,10 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Mobile dropdown toggles within mobile menu
-  const mobileDropdownToggles = document.querySelectorAll(
-    ".mobile-dropdown-toggle"
-  );
+  // Mobile dropdown toggles within mobile menu (keep existing functionality)
+  const mobileDropdownToggles = document.querySelectorAll(".mobile-dropdown-toggle");
   mobileDropdownToggles.forEach((toggle) => {
     toggle.addEventListener("click", function () {
       const dropdown = this.nextElementSibling;
@@ -23,159 +20,97 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Handle click events for main dropdown buttons
-  const mainDropdownContainers = document.querySelectorAll(
-    ".relative > .dropdown-toggle"
-  );
-  console.log("Found main dropdown buttons:", mainDropdownContainers.length);
+  // Main dropdown toggle (categories button)
+  const mainDropdownToggle = document.querySelector(".dropdown-toggle");
+  const mainDropdownMenu = document.querySelector(".dropdown-menu");
 
-  mainDropdownContainers.forEach((button) => {
-    const container = button.closest(".relative");
-    const menu = container.querySelector(".dropdown-menu");
+  if (mainDropdownToggle && mainDropdownMenu) {
+    mainDropdownToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      mainDropdownMenu.classList.toggle("invisible");
+      mainDropdownMenu.classList.toggle("opacity-0");
+      mainDropdownMenu.classList.toggle("pointer-events-auto");
+    });
+  }
 
-    if (!menu) return;
+  // Handle submenu dropdown toggles
+  const dropdownToggles = document.querySelectorAll(".dropdown-toggle:not(.mobile-dropdown-toggle)");
+  
+  dropdownToggles.forEach((toggle) => {
+    // Skip if this is the main categories toggle (already handled above)
+    if (toggle === mainDropdownToggle) return;
 
-    // Show dropdown
-    function showDropdown() {
-      menu.classList.remove("invisible", "opacity-0");
-      menu.classList.add("pointer-events-auto");
-    }
-
-    // Hide dropdown
-    function hideDropdown() {
-      menu.classList.add("invisible", "opacity-0");
-      menu.classList.remove("pointer-events-auto");
-    }
-
-    // Handle click events only for main dropdowns
-    button.addEventListener("click", function (e) {
+    toggle.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
+      
+      // Find the closest dropdown menu relative to this toggle
+      const dropdownMenu = this.closest(".relative").querySelector(".dropdown-menu, .submenu");
+      
+      if (!dropdownMenu) return;
 
-      const isVisible = !menu.classList.contains("invisible");
-
-      // Close all main dropdowns first
-      document.querySelectorAll(".dropdown-menu").forEach((d) => {
-        if (d !== menu) {
-          d.classList.add("invisible", "opacity-0");
-          d.classList.remove("pointer-events-auto");
-        }
-      });
-
-      // Toggle this dropdown
-      if (isVisible) {
-        hideDropdown();
-      } else {
-        showDropdown();
-      }
-    });
-  });
-
-  // Handle hover for items with submenus (including main categories)
-  const submenuContainers = document.querySelectorAll(".relative");
-  console.log("Found submenu containers:", submenuContainers.length);
-
-  submenuContainers.forEach((container) => {
-    const item = container.querySelector(".has-submenu");
-    const submenu = container.querySelector(".submenu");
-    const isMainCategory = container.parentElement.classList.contains("py-2"); // Check if it's a main category container
-
-    if (!submenu || !item) return;
-
-    let hoverTimeout;
-
-    // Show submenu
-    function showSubmenu(e) {
-      if (e) e.preventDefault(); // Prevent navigation when hovering items with submenus
-      clearTimeout(hoverTimeout);
-
-      // Only show submenu if main dropdown is visible (for main categories)
-      if (
-        isMainCategory &&
-        container.closest(".dropdown-menu").classList.contains("invisible")
-      ) {
-        return;
-      }
-
-      submenu.classList.remove("invisible", "opacity-0");
-      submenu.classList.add("pointer-events-auto");
-    }
-
-    // Hide submenu
-    function hideSubmenu() {
-      hoverTimeout = setTimeout(() => {
-        submenu.classList.add("invisible", "opacity-0");
-        submenu.classList.remove("pointer-events-auto");
-      }, 100); // Small delay to prevent flickering
-    }
-
-    // Handle mouse events for desktop
-    container.addEventListener("mouseenter", showSubmenu);
-    container.addEventListener("mouseleave", hideSubmenu);
-
-    // For touch devices, handle taps on the parent item
-    item.addEventListener("click", function (e) {
-      if (window.matchMedia("(hover: none)").matches) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const isVisible = !submenu.classList.contains("invisible");
-
-        // Close all other submenus at this level
-        const siblings = container.parentElement.querySelectorAll(".submenu");
-        siblings.forEach((s) => {
-          if (s !== submenu) {
-            s.classList.add("invisible", "opacity-0");
-            s.classList.remove("pointer-events-auto");
+      // Close all other dropdowns at the same level
+      const parentContainer = this.closest(".relative");
+      if (parentContainer && parentContainer.parentElement) {
+        parentContainer.parentElement.querySelectorAll(".dropdown-menu, .submenu").forEach((menu) => {
+          if (menu !== dropdownMenu) {
+            menu.classList.add("invisible", "opacity-0");
+            menu.classList.remove("pointer-events-auto");
           }
         });
-
-        // Toggle this submenu
-        if (isVisible) {
-          hideSubmenu();
-          console.log("Submenu is now hidden");
-        } else {
-          showSubmenu(e);
-          console.log("Submenu is now visible");
-        }
       }
+
+      // Toggle this dropdown
+      dropdownMenu.classList.toggle("invisible");
+      dropdownMenu.classList.toggle("opacity-0");
+      dropdownMenu.classList.toggle("pointer-events-auto");
     });
   });
 
-  // Add hover protection for clicked menus
-  const mainDropdownMenus = document.querySelectorAll(".dropdown-menu");
-  mainDropdownMenus.forEach((menu) => {
+  // Hover functionality for desktop
+  const hoverableMenus = document.querySelectorAll(".group/category, .group/sub");
+  
+  hoverableMenus.forEach((menu) => {
     menu.addEventListener("mouseenter", function () {
-      console.log("Mouse entered main dropdown");
-      const button = menu
-        .closest(".relative")
-        .querySelector(".dropdown-toggle");
-      if (button && !menu.classList.contains("invisible")) {
-        menu.dataset.hovering = "true";
+      if (window.matchMedia("(hover: hover)").matches) { // Only for devices that support hover
+        const submenu = this.querySelector(".submenu, .dropdown-menu");
+        if (submenu) {
+          submenu.classList.remove("invisible", "opacity-0");
+          submenu.classList.add("pointer-events-auto");
+        }
       }
     });
 
     menu.addEventListener("mouseleave", function () {
-      console.log("Mouse left main dropdown");
-      menu.dataset.hovering = "false";
+      if (window.matchMedia("(hover: hover)").matches) {
+        const submenu = this.querySelector(".submenu, .dropdown-menu");
+        if (submenu) {
+          submenu.classList.add("invisible", "opacity-0");
+          submenu.classList.remove("pointer-events-auto");
+        }
+      }
     });
   });
 
-  // Close dropdowns when clicking outside - single event listener
+  // Close all dropdowns when clicking outside
   document.addEventListener("click", function (e) {
-    if (
-      !e.target.closest(".dropdown-toggle") &&
-      !e.target.closest(".dropdown-menu") &&
-      !e.target.closest(".has-submenu") &&
-      !e.target.closest(".submenu")
-    ) {
-      const openDropdowns = document.querySelectorAll(
-        ".dropdown-menu:not(.invisible), .submenu:not(.invisible)"
-      );
-      openDropdowns.forEach((dropdown) => {
-        dropdown.classList.add("invisible");
-        dropdown.classList.add("opacity-0");
+    if (!e.target.closest(".dropdown-menu") && 
+        !e.target.closest(".dropdown-toggle") && 
+        !e.target.closest(".submenu")) {
+      document.querySelectorAll(".dropdown-menu, .submenu").forEach((menu) => {
+        menu.classList.add("invisible", "opacity-0");
+        menu.classList.remove("pointer-events-auto");
       });
     }
   });
-});
+
+  // Close dropdowns when pressing Escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      document.querySelectorAll(".dropdown-menu, .submenu").forEach((menu) => {
+        menu.classList.add("invisible", "opacity-0");
+        menu.classList.remove("pointer-events-auto");
+      });
+    }
+  });
+}); 
