@@ -56,11 +56,8 @@ class ProductRepository extends ServiceEntityRepository
 
         if (!empty($filter->getCategories())) {
             $allCategoryIds = [];
-            foreach ($filter->getCategories() as $categoryId) {
-                $category = $this->getEntityManager()->getRepository(Category::class)->find($categoryId);
-                if ($category) {
-                    $allCategoryIds = array_merge($allCategoryIds, $this->getAllSubcategoryIds($category));
-                }
+            foreach ($filter->getCategories() as $category) {
+                $allCategoryIds = array_merge($allCategoryIds, $this->getAllSubcategoryIds($category));
             }
             if (!empty($allCategoryIds)) {
                 $qb->andWhere('p.category IN (:categories)')
