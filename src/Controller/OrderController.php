@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\OrderDetails;
 use App\Model\Cart;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,8 +36,12 @@ class OrderController extends AbstractController
     }
 
     #[Route('/order/create', name: 'order_create', methods: ['POST'])]
-    public function create(Cart $cart, EntityManagerInterface $entityManager, SessionInterface $session): Response
-    {
+    public function create(
+        Cart $cart, 
+        EntityManagerInterface $entityManager, 
+        SessionInterface $session,
+        EmailService $emailService
+    ): Response {
         // Check if user is logged in
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -70,6 +75,15 @@ class OrderController extends AbstractController
 
         $entityManager->persist($order);
         $entityManager->flush();
+
+        // Send order confirmation email
+        $emailService->send(
+            $user->getEmail(),
+            $user->getUsername(),
+            'Order Confirmation - GearX',
+            'emails/order_confirmation.html.twig',
+            ['order' => $order]
+        );
 
         // Clear the cart
         $cart->remove();

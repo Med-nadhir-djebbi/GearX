@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterType;
 use App\Security\LoginAuthenticator;
-use App\Service\Mail;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +18,17 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class RegisterController extends AbstractController
 {
     #[Route('/inscription', name: 'register')]
-    public function index(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginAuthenticator $authenticator, EntityManagerInterface $em): Response
-    {
+    public function index(
+        Request $request, 
+        UserPasswordHasherInterface $userPasswordHasher, 
+        UserAuthenticatorInterface $userAuthenticator, 
+        LoginAuthenticator $authenticator, 
+        EntityManagerInterface $em,
+        EmailService $emailService
+    ): Response {
         $user = new User();
 
-        $form = $this->createForm(RegisterType::class,$user);
+        $form = $this->createForm(RegisterType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -38,29 +44,26 @@ class RegisterController extends AbstractController
             $em->flush();
 
             // Send welcome email
-            $content = "Hello {$user->getUsername()}, thank you for joining GearX! Your gaming gear journey starts now.";
-            (new Mail)->send($user->getEmail(), $user->getUsername(), "Welcome to GearX - Your Gaming Gear Destination", $content);
+            $emailService->send(
+                $user->getEmail(),
+                $user->getUsername(),
+                'Welcome to GearX - Your Gaming Gear Destination',
+                'emails/welcome.html.twig'
+            );
 
             // Add a flash message
             $this->addFlash('success', 'Registration successful! Welcome to GearX.');
 
-            // Authenticate and redirect
-            $response = $userAuthenticator->authenticateUser(
+            // Authenticate the user
+            return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
             );
-
-            if ($response) {
-                return $response;
-            }
-
-            // Fallback redirect if authentication response is null
-            return $this->redirectToRoute('account');
         }
 
         return $this->render('security/register.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 }

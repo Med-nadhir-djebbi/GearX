@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Order;
 use App\Repository\OrderRepository;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +18,16 @@ class OrderController extends AbstractController
 {
     private $entityManager;
     private $orderRepository;
+    private $emailService;
 
-    public function __construct(EntityManagerInterface $entityManager, OrderRepository $orderRepository)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager, 
+        OrderRepository $orderRepository,
+        EmailService $emailService
+    ) {
         $this->entityManager = $entityManager;
         $this->orderRepository = $orderRepository;
+        $this->emailService = $emailService;
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
@@ -37,8 +43,29 @@ class OrderController extends AbstractController
     {
         $status = $request->request->get('status');
         if (in_array($status, [0, 1, 2])) { // 0: Pending, 1: Paid, 2: Cancelled
+            $oldStatus = $order->getState();
             $order->setState($status);
             $this->entityManager->flush();
+
+            // Send email notification based on status change
+            $statusLabels = [
+                0 => 'Pending',
+                1 => 'Paid',
+                2 => 'Cancelled'
+            ];
+
+            $this->emailService->send(
+                $order->getUser()->getEmail(),
+                $order->getUser()->getUsername(),
+                'Order Status Updated - GearX',
+                'emails/order_status_update.html.twig',
+                [
+                    'order' => $order,
+                    'oldStatus' => $statusLabels[$oldStatus],
+                    'newStatus' => $statusLabels[$status]
+                ]
+            );
+
             $this->addFlash('success', 'Order status updated successfully.');
         }
 

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Welcome to GearX</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .header {
+                text-align: center;
+                padding: 20px 0;
+                border-bottom: 2px solid #6366f1;
+            }
+            .content {
+                padding: 20px 0;
+            }
+            .footer {
+                text-align: center;
+                padding: 20px 0;
+                color: #666;
+                font-size: 0.9em;
+                border-top: 1px solid #eee;
+            }
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #6366f1;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                margin: 20px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Welcome to GearX!</h1>
+        </div>
+        
+        <div class="content">
+            <p>Hello {{ recipientName }},</p>
+            
+            <p>Welcome to GearX - your ultimate destination for premium gaming gear! We're thrilled to have you join our community of passionate gamers.</p>
+            
+            <p>With your new account, you can:</p>
+            <ul>
+                <li>Browse our extensive collection of gaming peripherals</li>
+                <li>Save your favorite items to your wishlist</li>
+                <li>Track your orders easily</li>
+                <li>Get exclusive access to special deals and promotions</li>
+            </ul>
+            
+            <p>Start exploring our collection today:</p>
+            <p style="text-align: center;">
+                <a href="{{ url('home') }}" class="button">Visit GearX</a>
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>This email was sent by GearX. Please do not reply to this email.</p>
+            <p>&copy; {{ "now"|date("Y") }} GearX. All rights reserved.</p>
+        </div>
+    </body>
+</html> 

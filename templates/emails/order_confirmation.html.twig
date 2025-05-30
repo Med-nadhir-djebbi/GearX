@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Order Confirmation - GearX</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .header {
+                text-align: center;
+                padding: 20px 0;
+                border-bottom: 2px solid #6366f1;
+            }
+            .content {
+                padding: 20px 0;
+            }
+            .footer {
+                text-align: center;
+                padding: 20px 0;
+                color: #666;
+                font-size: 0.9em;
+                border-top: 1px solid #eee;
+            }
+            .order-details {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 5px;
+                margin: 20px 0;
+            }
+            .order-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+            .order-table th,
+            .order-table td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+                text-align: left;
+            }
+            .order-table th {
+                background-color: #f1f1f1;
+            }
+            .total {
+                font-weight: bold;
+                text-align: right;
+                padding: 10px 0;
+            }
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #6366f1;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                margin: 20px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Order Confirmation</h1>
+        </div>
+        
+        <div class="content">
+            <p>Hello {{ recipientName }},</p>
+            
+            <p>Thank you for your order! We're excited to confirm that your order has been received and is being processed.</p>
+            
+            <div class="order-details">
+                <h2>Order Details</h2>
+                <p><strong>Order Number:</strong> {{ order.reference }}</p>
+                <p><strong>Order Date:</strong> {{ order.createdAt|date('Y-m-d H:i') }}</p>
+                
+                {% if order.shippingAddress %}
+                <p><strong>Shipping Address:</strong><br>
+                {{ order.shippingAddress }}</p>
+                {% endif %}
+                
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.orderDetails %}
+                        <tr>
+                            <td>{{ item.product }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>€{{ item.price|number_format(2, '.', ',') }}</td>
+                            <td>€{{ (item.price * item.quantity)|number_format(2, '.', ',') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="total">
+                    <p>Total: €{{ order.total|number_format(2, '.', ',') }}</p>
+                </div>
+            </div>
+            
+            <p>You can track your order status here:</p>
+            <p style="text-align: center;">
+                <a href="{{ url('account_orders') }}" class="button">Track Order</a>
+            </p>
+            
+            <p>If you have any questions about your order, please don't hesitate to contact our customer service team.</p>
+        </div>
+        
+        <div class="footer">
+            <p>This email was sent by GearX. Please do not reply to this email.</p>
+            <p>&copy; {{ "now"|date("Y") }} GearX. All rights reserved.</p>
+        </div>
+    </body>
+</html> 
