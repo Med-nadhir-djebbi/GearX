@@ -34,7 +34,7 @@
                     <td class="align-middle py-3">
                         <div class="d-flex align-items-center">
                             <div class="product-image mr-3 bg-darker rounded p-2" style="width: 80px; height: 80px;">
-                                <img class="w-100 h-100 object-contain" src="{{ asset('assets/img/products/' ~ (item.product.image ?? 'placeholder.jpg')) }}" 
+                                <img class="w-100 h-100 object-contain" src="{{ asset(item.product.image ?? 'assets/img/placeholder.webp') }}" 
                                      alt="{{ item.product.name }}"
                                      onerror="this.src='{{ asset('assets/img/placeholder.webp') }}'">
                             </div>

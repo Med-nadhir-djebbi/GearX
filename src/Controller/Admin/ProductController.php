@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/admin/products', name: 'admin_products_')]
 #[IsGranted('ROLE_ADMIN')]
@@ -39,7 +40,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, SluggerInterface $slugger): Response
     {
         if ($request->isMethod('POST')) {
             $product = new Product();
@@ -59,12 +60,20 @@ class ProductController extends AbstractController
             // Handle image upload
             $imageFile = $request->files->get('image');
             if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                $imageFile->move(
-                    $this->getParameter('products_directory'),
-                    $newFilename
-                );
-                $product->setImage('uploads/products/'.$newFilename);
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('products_directory'),
+                        $newFilename
+                    );
+                    $product->setImage('uploads/products/'.$newFilename);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Error uploading image');
+                    return $this->redirectToRoute('admin_products_new');
+                }
             }
 
             $this->entityManager->persist($product);
@@ -80,7 +89,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Product $product): Response
+    public function edit(Request $request, Product $product, SluggerInterface $slugger): Response
     {
         if ($request->isMethod('POST')) {
             $product->setName($request->request->get('name'));
@@ -99,12 +108,28 @@ class ProductController extends AbstractController
             // Handle image upload
             $imageFile = $request->files->get('image');
             if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                $imageFile->move(
-                    $this->getParameter('products_directory'),
-                    $newFilename
-                );
-                $product->setImage('uploads/products/'.$newFilename);
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    // Delete old image if it exists
+                    if ($product->getImage()) {
+                        $oldImagePath = $this->getParameter('kernel.project_dir').'/public/'.$product->getImage();
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
+                        }
+                    }
+
+                    $imageFile->move(
+                        $this->getParameter('products_directory'),
+                        $newFilename
+                    );
+                    $product->setImage('uploads/products/'.$newFilename);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Error uploading image');
+                    return $this->redirectToRoute('admin_products_edit', ['id' => $product->getId()]);
+                }
             }
 
             $this->entityManager->flush();
