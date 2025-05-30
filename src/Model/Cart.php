@@ -21,18 +21,25 @@ class Cart
      * @param int $id
      * @return void
      */
-    public function add(int $id):void
+    public function add(int $id, int $quantity = 1): void
     {
         $cart = $this->session->get('cart', []);
+        $product = $this->repository->find($id);
 
-        if (empty($cart[$id])) {
-            $cart[$id] = 1;
-        } else {
-            $cart[$id]++;
+        if (!$product) {
+            return;
         }
 
-        $this->session->set('cart', $cart);
+        // Make sure quantity doesn't exceed stock
+        $currentQuantity = $cart[$id] ?? 0;
+        $newQuantity = $currentQuantity + $quantity;
+        
+        if ($newQuantity > $product->getStock()) {
+            $newQuantity = $product->getStock();
+        }
 
+        $cart[$id] = $newQuantity;
+        $this->session->set('cart', $cart);
     }
 
     /**

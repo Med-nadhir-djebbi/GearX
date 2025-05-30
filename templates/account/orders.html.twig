@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Orders - GearX{% endblock %}
+
+{% block body %}
+<div class="container pb-[35vh] pt-32 bby">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="bg-dark-gray p-5 shadow-lg surround">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="chakra-petch-bold text-6xl font-bold">MY ORDERS</h1>
+                        <div class="separator-line my-3"></div>
+                        <p class="chakra-petch-light text-lighter">View and track your order history</p>
+                    </div>
+                    <a href="{{ path('account') }}" class="gaming-button">
+                        <i class="bi bi-arrow-left me-2"></i> Back to Account
+                    </a>
+                </div>
+                
+                {% if orders %}
+                <div class="table-responsive mt-4">
+                    <table class="table table-dark table-hover border-separate">
+                        <thead class="chakra-petch-medium text-primary border-b border-primary">
+                            <tr>
+                                <th scope="col">ITEMS</th>
+                                <th scope="col">STATUS</th>
+                                <th scope="col">TOTAL</th>
+                                <th scope="col">ORDER DATE</th>
+                                <th scope="col">REFERENCE</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr class="border-b border-zinc-700">
+                                    <td class="align-middle">
+                                        <span class="badge bg-primary text-blacker">{{order.totalQuantity}}</span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <span class="badge {% if order.state == 1 %}bg-success{% elseif order.state == 2 %}bg-warning{% else %}bg-info{% endif %}">
+                                            {{
+                                                order.state == 1 ? 'Payment Accepted' :
+                                                order.state == 2 ? 'Processing' : 'Shipped'
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td class="align-middle text-primary font-weight-bold">$ {{ order.total|number_format(2,',','.') }}</td>
+                                    <td class="align-middle">{{order.createdAt|date('M d, Y')}}</td>
+                                    <td class="align-middle"><span class="badge bg-secondary">{{order.reference}}</span></td>
+                                    <td class="flex items-center justify-center">
+                                        <a href="{{ path('account_order', {'reference' : order.reference}) }}" class="">
+                                            View Details <i class="bi bi-arrow-right ms-1"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-dark border border-primary bg-blacker p-4 mt-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill me-3 text-primary fs-4"></i>
+                        <p class="mb-0 chakra-petch-medium text-lighter">You haven't placed any orders yet. <a href="{{ path('product') }}" class="text-primary">Browse our products</a> to get started.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

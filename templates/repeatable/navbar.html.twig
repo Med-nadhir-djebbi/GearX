@@ -1,9 +1,10 @@
-<div class="backdrop-blur-md bg-zinc-900/15 fixed top-0 inset-x-0 z-30 bby">
+<div id="mainNavbar" class="backdrop-blur-md bg-zinc-900/15 fixed top-0 inset-x-0 z-30 bby opacity-0 transition-opacity duration-500">
     <div class="container max-w-7xl mx-auto px-[3vw]">
         {# Navbar Container #}
         <nav class="flex items-center w-full justify-between py-4">
-            {# Categories, Search, Build PC #}
+            {# Categories, Collections, Search, Build PC #}
             <div class="flex items-center space-x-6">
+                <a href="{{ path('app_collections') }}" class="text-lighter hover:text-primary transition-colors chakra-medium">Collections</a>
                 {# Categories Dropdown #}
                 <div class="relative">
                     <button class="flex items-center space-x-1 text-lighter hover:text-primary transition-colors dropdown-toggle">
@@ -133,7 +134,11 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
-                        <span class="hidden md:inline font-medium chakra-medium">Mon compte</span>
+                        {% if app.user %}
+                            <span class="hidden md:inline font-medium chakra-medium">{{ app.user.username }}</span>
+                        {% else %}
+                            <span class="hidden md:inline font-medium chakra-medium">Connexion</span>
+                        {% endif %}
                         <svg class="w-4 h-4 hidden md:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -145,6 +150,26 @@
                             <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider" data-text="Mon compte">Mon compte</span>
                         </div>
                         <div class="py-2">
+                            {% if app.user %}
+                                <a href="{{ path('account_orders') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
+                                    <i class="fas fa-box mr-3 text-primary"></i>
+                                    <span>Mes commandes</span>
+                                </a>
+                                <a href="{{ path('account_password') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
+                                    <i class="fas fa-lock mr-3 text-primary"></i>
+                                    <span>Changer le mot de passe</span>
+                                </a>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('admin') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
+                                        <i class="fas fa-cog mr-3 text-primary"></i>
+                                        <span>Panneau d'administration</span>
+                                    </a>
+                                {% endif %}
+                                <a href="{{ path('app_logout') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
+                                    <i class="fas fa-sign-out-alt mr-3 text-primary"></i>
+                                    <span>Déconnexion</span>
+                                </a>
+                            {% else %}
                             <a href="{{ path('app_login') }}" class="flex items-center px-4 py-2 text-lighter transition-colors">
                                 <i class="fas fa-sign-in-alt mr-3 text-primary"></i>
                                 <span>Connexion</span>
@@ -153,18 +178,21 @@
                                 <i class="fas fa-user-plus mr-3 text-primary"></i>
                                 <span>Inscription</span>
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
 
                 {# Wishlist #}
-                <a href="#" class="relative text-lighter hover:text-primary transition-colors">
+                <a href="{{ path('wishlist') }}" class="relative text-lighter hover:text-primary transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
+                    {% if app.session.get('wishlist')|default([])|length > 0 %}
                     <span class="absolute -top-2 -right-2 bg-primary text-blacker text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                        0
+                        {{ app.session.get('wishlist')|default([])|length }}
                     </span>
+                    {% endif %}
                 </a>
 
                 {# Cart #}
@@ -172,9 +200,11 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5M17 13v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6"></path>
                     </svg>
+                    {% if app.session.get('cart')|default([])|length > 0 %}
                     <span class="absolute -top-2 -right-2 bg-primary text-blacker text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                        0
+                        {{ app.session.get('cart')|default([])|length }}
                     </span>
+                    {% endif %}
                 </a>
             </div>
         </nav>
@@ -259,5 +289,7 @@
         
         <a href="{{ path('app_login') }}" class="block py-2 text-lighter hover:text-primary">Connexion</a>
         <a href="{{ path('register') }}" class="block py-2 text-lighter hover:text-primary">Inscription</a>
+        <a href="{{ path('wishlist') }}" class="block py-2 text-lighter hover:text-primary">Wishlist</a>
+        <a href="{{ path('cart') }}" class="block py-2 text-lighter hover:text-primary">Cart</a>
     </div>
 </div>

@@ -7,6 +7,21 @@
         {% block full_width_hero %}{% endblock %}
         
         <div class="content-wrapper pt-[80px]">
+            {% if app.flashes|length > 0 %}
+                <div class="container mt-3">
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }} border border-{{ label == 'success' ? 'primary' : label }} bg-darker">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-{{ label == 'success' ? 'check-circle' : 'exclamation-triangle' }}-fill me-3 text-{{ label == 'success' ? 'primary' : label }} fs-4"></i>
+                                    <p class="mb-0 chakra-petch-medium">{{ message }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
             {% block body %}{% endblock %}
         </div>
         {% include 'repeatable/footer.html.twig' %}

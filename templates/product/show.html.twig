@@ -3,7 +3,7 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block body %}
-    <div class="container mt-5 p-5 bby">
+    <div class="container mt-5 px-5 py-16 bby">
         <div class="flex gap-4">
             <div class="col-md-6 flex-1 gap-x-8">
                 <img src="{{ asset('assets/img/products/' ~ (product.image ?? 'placeholder.jpg')) }}" 
@@ -56,30 +56,77 @@
                 <div class="mb-4">
                     <h5 class="chakra-petch font-semibold text-primary my-1 text-xl">Quantity:</h5>
                     <div class="flex items-center space-x-2">
-                        <button type="button" class="cyberpunk-quantity-btn minus" id="decreaseQuantity">
+                        <button type="button" 
+                                class="cyberpunk-quantity-btn minus" 
+                                onclick="updateQuantity('decrease')"
+                                id="decreaseBtn">
                             <i class="fas fa-minus"></i>
                         </button>
+                        
                         <input type="number" 
-                               id="quantity" 
-                               name="quantity" 
-                               value="1" 
+                               id="quantity-input"
+                               value="1"
                                min="1" 
                                max="{{ product.stock }}" 
-                               class="cyberpunk-quantity-input">
-                        <button type="button" class="cyberpunk-quantity-btn plus" id="increaseQuantity">
+                               class="cyberpunk-quantity-input"
+                               onchange="updateQuantity('set', this.value)">
+                        
+                        <button type="button" 
+                                class="cyberpunk-quantity-btn plus" 
+                                onclick="updateQuantity('increase')"
+                                id="increaseBtn">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
                 </div>
 
+                <script>
+                    function updateQuantity(action, value = null) {
+                        const input = document.getElementById('quantity-input');
+                        const currentValue = parseInt(input.value);
+                        const minValue = 1;
+                        const maxValue = {{ product.stock }};
+                        let newValue = currentValue;
+
+                        if (action === 'increase' && currentValue < maxValue) {
+                            newValue = currentValue + 1;
+                        } else if (action === 'decrease' && currentValue > minValue) {
+                            newValue = currentValue - 1;
+                        } else if (action === 'set') {
+                            newValue = Math.max(minValue, Math.min(maxValue, parseInt(value) || 1));
+                        }
+
+                        if (newValue !== currentValue) {
+                            input.value = newValue;
+                            
+                            // Update buttons state
+                            document.getElementById('decreaseBtn').disabled = newValue <= minValue;
+                            document.getElementById('increaseBtn').disabled = newValue >= maxValue;
+                        }
+                    }
+
+                    // Initialize button states
+                    updateQuantity('set', 1);
+                </script>
+
                 <div class="d-flex gap-3 mb-4">
-                    <a href="{{ path('add_to_cart', {'id': product.id}) }}" 
-                       class="gaming-button flex-1 w-full text-center" 
-                       onclick="event.preventDefault(); addToCart({{ product.id }})">
-                        ADD TO CART
-                    </a>
-                    <a href="#" class="gaming-button flex-1 w-full text-center">ADD TO WISHLIST</a>
+                    <form action="{{ path('add_to_cart', {'id': product.id}) }}" method="post" class="flex-1" onsubmit="return addToCart(this);">
+                        <input type="hidden" name="quantity" id="cart-quantity">
+                        <button type="submit" class="gaming-button w-100">ADD TO CART</button>
+                    </form>
+                    <form action="{{ path('add_to_wishlist', {'id': product.id}) }}" method="post" class="flex-1">
+                        <button type="submit" class="gaming-button w-100">ADD TO WISHLIST</button>
+                    </form>
                 </div>
+
+                <script>
+                    function addToCart(form) {
+                        const quantityInput = document.getElementById('quantity-input');
+                        const cartQuantityInput = document.getElementById('cart-quantity');
+                        cartQuantityInput.value = quantityInput.value;
+                        return true;
+                    }
+                </script>
                 
             </div>
         </div>

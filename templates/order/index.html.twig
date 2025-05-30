@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Checkout - GearX{% endblock %}
+
+{% block body %}
+<div class="container pb-64 pt-32 bby">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="bg-dark-gray p-5 shadow-lg surround">
+                <h1 class="chakra-petch-bold text-6xl font-bold text-center mb-4">CHECKOUT</h1>
+                <div class="separator-line my-3"></div>
+
+                <div class="mt-4">
+                    <h2 class="chakra-petch text-2xl text-primary mb-3">Order Summary</h2>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart %}
+                                    <tr>
+                                        <td>{{ item.product.name }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td>${{ item.product.price }}</td>
+                                        <td>${{ item.product.price * item.quantity }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                    <td><strong>${{ total }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="mt-4">
+                        <h2 class="chakra-petch text-2xl text-primary mb-3">Shipping Information</h2>
+                        <div class="alert alert-info border border-primary">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Shipping to: {{ app.user.email }}
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{{ path('order_create') }}" class="mt-4">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="gaming-button btn-block">
+                                <i class="bi bi-credit-card me-2"></i> 
+                                PLACE ORDER
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-3 text-center">
+                        <a href="{{ path('cart') }}" class="text-primary">
+                            <i class="bi bi-arrow-left me-2"></i>Return to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

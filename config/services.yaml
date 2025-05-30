@@ -27,3 +27,8 @@ services:
     arguments:
       $requestStack: "@request_stack"
       $repository: '@App\Repository\ProductRepository'
+
+  App\Model\Wishlist:
+    arguments:
+      $requestStack: "@request_stack"
+      $repository: '@App\Repository\ProductRepository'

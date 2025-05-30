@@ -990,3 +990,43 @@ body {
 .surround {
   border: 1px solid var(--lighterer);
 }
+
+.oops {
+  border: 1px solid #3b0101;
+  background-color: #130000;
+}
+
+/* Wishlist Pulse Animation */
+@keyframes wishlistPulse {
+  0% {
+    transform: scale(1);
+    color: var(--lighter);
+  }
+  50% {
+    transform: scale(1.2);
+    color: #ff3e3e;
+  }
+  100% {
+    transform: scale(1);
+    color: var(--lighter);
+  }
+}
+
+.wishlist-pulse {
+  animation: wishlistPulse 0.7s ease-in-out;
+}
+
+/* Enhance wishlist buttons */
+.gaming-button-wishlist {
+  background: linear-gradient(135deg, #382537 0%, #1e1520 100%);
+  border-color: #ff3e3e;
+}
+
+.gaming-button-wishlist:hover {
+  background: linear-gradient(135deg, #4a2c47 0%, #2a1c2d 100%);
+  border-color: #ff5252;
+}
+
+.bordered {
+  border: 1px solid var(--lighterer);
+}

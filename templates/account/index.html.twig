@@ -1,0 +1,188 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Account - GearX{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="bg-dark-gray p-5 shadow-lg surround">
+                <div class="text-center mb-4">
+                    <h1 class="chakra-petch-bold text-8xl font-bold">MY ACCOUNT</h1>
+                    <div class="separator-line my-3"></div>
+                    <p class="chakra-petch-light text-lighter">Welcome to your account dashboard, <span class="text-primary">{{ app.user.username }}</span></p>
+                </div>
+                
+                {% for message in app.flashes('notice') %}
+                    <div class="alert alert-success border border-primary bg-darker mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill me-3 text-primary fs-4"></i>
+                            <p class="mb-0 chakra-petch-medium">{{ message }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <!-- User Stats Section -->
+                <div class="user-stats bg-darker p-4 border border-zinc-700 rounded-lg mb-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-2 text-center mb-3 mb-md-0">
+                            <div class="avatar-container bg-dark rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                <i class="bi bi-person-fill text-primary" style="font-size: 2.5rem;"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h3 class="chakra-petch-medium text-xl mb-1">{{ app.user.username }}</h3>
+                            <p class="text-lighter mb-0">{{ app.user.email }}</p>
+                            <p class="text-primary mt-2 mb-0 small">
+                                <i class="bi bi-shield-check me-1"></i> Member since {{ app.user.id < 10 ? 'Launch Day' : 'May 2025' }}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <div class="mb-2">
+                                <span class="badge bg-primary p-2 text-blacker">
+                                    <i class="bi bi-box-seam me-1"></i> {{ app.user.orders|length }} Orders
+                                </span>
+                            </div>
+                            <div>
+                                <span class="badge bg-dark text-primary border border-primary p-2">
+                                    <i class="bi bi-lightning-charge-fill me-1"></i> GAMER
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="chakra-petch-medium text-2xl mb-4">ACCOUNT MANAGEMENT</h2>
+                
+                <div class="row g-4 mt-3">
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <div class="col-md-4">
+                        <a href="{{ path('admin') }}" class="text-decoration-none">
+                            <div class="account-card bg-darker hover:bg-dark h-100 p-4 border border-zinc-700 rounded-lg transition-all duration-300 text-center">
+                                <div class="icon-container mb-3">
+                                    <i class="bi bi-gear-fill text-primary fs-1"></i>
+                                </div>
+                                <h3 class="chakra-petch-medium text-xl mb-2">ADMIN PANEL</h3>
+                                <p class="text-lighter mb-0 small">Manage your store settings and products</p>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="col-md-4">
+                        <a href="{{ path('account_orders') }}" class="text-decoration-none">
+                            <div class="account-card bg-darker hover:bg-dark h-100 p-4 border border-zinc-700 rounded-lg transition-all duration-300 text-center">
+                                <div class="icon-container mb-3">
+                                    <i class="bi bi-box-seam-fill text-primary fs-1"></i>
+                                </div>
+                                <h3 class="chakra-petch-medium text-xl mb-2">MY ORDERS</h3>
+                                <p class="text-lighter mb-0 small">View your order history and track packages</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <a href="{{ path('account_password') }}" class="text-decoration-none">
+                            <div class="account-card bg-darker hover:bg-dark h-100 p-4 border border-zinc-700 rounded-lg transition-all duration-300 text-center">
+                                <div class="icon-container mb-3">
+                                    <i class="bi bi-shield-lock-fill text-primary fs-1"></i>
+                                </div>
+                                <h3 class="chakra-petch-medium text-xl mb-2">PASSWORD</h3>
+                                <p class="text-lighter mb-0 small">Update your password and security settings</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <a href="{{ path('wishlist') }}" class="text-decoration-none">
+                            <div class="account-card bg-darker hover:bg-dark h-100 p-4 border border-zinc-700 rounded-lg transition-all duration-300 text-center">
+                                <div class="icon-container mb-3">
+                                    <i class="bi bi-heart-fill text-primary fs-1"></i>
+                                </div>
+                                <h3 class="chakra-petch-medium text-xl mb-2">WISHLIST</h3>
+                                <p class="text-lighter mb-0 small">Save your favorite gaming gear for later</p>
+                                {% if app.session.get('wishlist')|default([])|length > 0 %}
+                                    <span class="badge bg-primary text-blacker mt-2">
+                                        {{ app.session.get('wishlist')|default([])|length }} items
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="account-card bg-darker hover:bg-dark h-100 p-4 border border-zinc-700 rounded-lg transition-all duration-300 text-center">
+                            <div class="icon-container mb-3">
+                                <i class="bi bi-geo-alt-fill text-primary fs-1"></i>
+                            </div>
+                            <h3 class="chakra-petch-medium text-xl mb-2">ADDRESSES</h3>
+                            <p class="text-lighter mb-0 small">Coming soon! Manage your shipping addresses</p>
+                            <span class="badge bg-warning text-dark mt-2">Coming Soon</span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="account-card bg-darker hover:bg-dark h-100 p-4 border border-zinc-700 rounded-lg transition-all duration-300 text-center">
+                            <div class="icon-container mb-3">
+                                <i class="bi bi-credit-card-fill text-primary fs-1"></i>
+                            </div>
+                            <h3 class="chakra-petch-medium text-xl mb-2">PAYMENT METHODS</h3>
+                            <p class="text-lighter mb-0 small">Coming soon! Manage your payment options</p>
+                            <span class="badge bg-warning text-dark mt-2">Coming Soon</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="chakra-petch-medium text-2xl mb-4 mt-5">RECOMMENDED FOR YOU</h2>
+                
+                <div class="row g-4">
+                    <div class="col-md-12">
+                        <div class="bg-darker p-4 border border-zinc-700 rounded-lg">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-lightning-charge-fill text-primary me-3 fs-1"></i>
+                                <div>
+                                    <h3 class="chakra-petch-medium text-xl mb-1">UNLOCK PREMIUM FEATURES</h3>
+                                    <p class="text-lighter mb-2">Become a GearX PRO member to get exclusive deals, early access to new products, and free shipping.</p>
+                                    <button class="gaming-button gaming-button-sm">
+                                        <i class="bi bi-star-fill me-2"></i> LEARN MORE
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .account-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        border-color: var(--bs-primary);
+    }
+    
+    .account-card .icon-container {
+        transition: transform 0.3s ease;
+    }
+    
+    .account-card:hover .icon-container {
+        transform: scale(1.1);
+    }
+    
+    .user-stats {
+        background-image: linear-gradient(to right, rgba(var(--bs-primary-rgb), 0.1), transparent);
+    }
+    
+    .avatar-container {
+        box-shadow: 0 0 15px rgba(var(--bs-primary-rgb), 0.3);
+        border: 2px solid var(--bs-primary);
+    }
+    
+    .gaming-button-sm {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}

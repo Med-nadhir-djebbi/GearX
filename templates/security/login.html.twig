@@ -3,7 +3,7 @@
 {% block title %}Login - GearX{% endblock %}
 
 {% block body %}
-<div class="container py-5">
+<div class="container pb-64 pt-32 bby">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="bg-dark-gray p-5 shadow-lg surround">
@@ -12,9 +12,20 @@
                 </div>
                 
                 {% if error %}
-                    <div class="alert alert-danger border border-danger">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    <div class="oops bg-b mb-4 p-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+                            <div class="flex-grow-1">
+                                <h5 class="chakra-petch-bold mb-1 text-center font-bold">LOGIN FAILED</h5>
+                                <p class="mb-0 text-center">
+                                    {% if error.messageKey is same as 'Invalid credentials.' %}
+                                        Invalid email or password.
+                                    {% else %}
+                                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 {% endif %}
 
@@ -63,10 +74,6 @@
                     </p>
                 </div>
                 
-                <div class="tech-decorations">
-                    <div class="tech-line" style="width: 80px; left: 10%; bottom: 20%;"></div>
-                    <div class="tech-line" style="width: 60px; right: 10%; top: 20%;"></div>
-                </div>
             </div>
         </div>
     </div>

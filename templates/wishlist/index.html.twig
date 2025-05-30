@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Wishlist - GearX{% endblock %}
+
+{% block body %}
+<div class="container pb-64 pt-32 bby">
+    <div class="row justify-content-center">
+        <div class="col-md-10 surround">
+            <!-- Wishlist Header Section -->
+            <div class="bg-dark-gray p-5 mb-4">
+                <div class="text-center mb-4">
+                    <h1 class="chakra-petch-bold text-8xl font-bold">MY WISHLIST</h1>
+                    <div class="separator-line my-3"></div>
+                    <p class="chakra-petch-light text-lighter">Save your favorite gaming gear for later</p>
+                </div>
+                
+                
+            </div>
+
+            <!-- Wishlist Items Table Section -->
+            <div class="bg-dark-gray rounded-lg p-4">
+                {% if totalQuantity > 0 %}
+                    <table class="table table-dark table-hover border-separate mt-3">
+                        <thead class="chakra-petch-medium text-primary border-b border-primary">
+                            <tr>
+                                <th scope="col">PRODUCT</th>
+                                <th scope="col">PRICE</th>
+                                <th scope="col">AVAILABILITY</th>
+                                <th scope="col">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in wishlist %}
+                            <tr class="border-b border-zinc-700">
+                                <td class="align-middle py-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="product-image mr-3 bg-darker rounded p-2" style="width: 80px; height: 80px;">
+                                            <img class="w-100 h-100 object-contain" src="{{ asset('assets/img/products/' ~ (item.product.image ?? 'placeholder.jpg')) }}" 
+                                                alt="{{ item.product.name }}"
+                                                onerror="this.src='{{ asset('assets/img/placeholder.webp') }}'">
+                                        </div>
+                                        <div>
+                                            <h5 class="chakra-petch-medium text-lighter mb-1">{{ item.product.name }}</h5>
+                                            <span class="badge bg-primary text-blacker">{{ item.product.category.name }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle text-lighter">$ {{ (item.product.price)}}</td>
+                                <td class="align-middle ">
+                                    {% if item.product.stock > 12 %}
+                                        <span class="badge bg-success mx-6">In Stock</span>
+                                    {% elseif item.product.stock > 0 %}
+                                        <span class="badge bg-warning mx-6">Low Stock</span>
+                                    {% else %}
+                                        <span class="badge bg-danger mx-6">Out of Stock</span>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    <div class="d-flex px-6">
+                                        <a href="{{ path('wishlist_to_cart', {id: item.product.id}) }}" 
+                                        class="btn btn-sm btn-primary me-2" title="Add to Cart">
+                                            <i class="bi bi-cart-plus"></i> Add to Cart
+                                        </a>
+                                        <a href="{{ path('remove_wishlist_item', {id: item.product.id}) }}" 
+                                        class="btn btn-sm btn-dark text-danger" title="Remove from Wishlist">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="alert alert-dark border border-primary bg-blacker text-lighter mt-2">
+                        <div class="text-center p-5">
+                            <i class="bi bi-heart text-primary" style="font-size: 3rem;"></i>
+                            <h4 class="chakra-petch-medium mt-3">Your wishlist is empty</h4>
+                            <p class="chakra-petch-light">Browse our products to find some awesome gaming gear!</p>
+
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Wishlist Actions Section -->
+                <div class="flex justify-between items-center ">
+                <div class="text-center">
+                    <a href="{{ path('product') }}" class="gaming-button d-inline-block">
+                        <i class="bi bi-controller me-2"></i> EXPLORE PRODUCTS
+                    </a>
+                </div>
+                {% if totalQuantity > 0 %}
+                    <div class="text-end">
+                        <a href="{{ path('clear_wishlist') }}" title="Clear Wishlist" class="gaming-button gaming-button-danger">
+                            <i class="bi bi-x"></i> 
+                            CLEAR WISHLIST
+                        </a>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products - GearX{% endblock %}
+{% block full_width_hero %}
+<div class="unhero-section bby h-[50vh] relative overflow-hidden">
+        <img src="{{ asset('assets/img/collections.jpg') }}" alt="coll" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="container h-100 position-relative px-[6vw]" style="z-index: 3;">
+            <div class="h-100 flex items-center justify-content-center">
+                <div class="col-lg-6 h-100 w-100">
+                    <div class="text-white flex flex-col items-center justify-center h-100 pt-16">
+                        <h1 class="display-3 fw-bold mb-4 chakra-petch-bold text-white text-center">ARE YOU READY?</h1>
+                        <p class="lead fs-4 mb-5 chakra-petch-light text-center">Explore our collection of high-end gaming gear</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-wrap -mx-4">
+        <!-- Filters Sidebar -->
+        <div class="w-full md:w-1/4 px-4 mb-8">
+            <div class="bordered bg-zinc-800/20 p-6 ">
+                <h2 class="text-xl font-bold mb-4 chakra-petch-medium">Filters</h2>
+                {{ form_start(filter_form, {'attr': {'class': 'space-y-4'}}) }}
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Categories</label>
+                        <div class="space-y-2 max-h-[300px] overflow-y-auto pr-2 category-tree">
+                            {% for category in categories %}
+                                {% if category.parent is null %}
+                                    <div class="category-item">
+                                        <label class="flex items-center space-x-2 font-bold text-sm mb-2">
+                                            <input type="checkbox" name="categories[]" value="{{ category.id }}" 
+                                                   class="form-checkbox rounded bg-zinc-700 border-zinc-600 text-lime-500 focus:ring-lime-500"
+                                                   {% if category.id in app.request.get('categories', []) %}checked{% endif %}>
+                                            <span>{{ category.name }}</span>
+                                        </label>
+                                        {% if category.subcategories|length > 0 %}
+                                            <div class="ml-4 space-y-1">
+                                                {% for subcategory in category.subcategories %}
+                                                    <div class="category-item">
+                                                        <label class="flex items-center space-x-2 text-sm mb-1">
+                                                            <input type="checkbox" name="categories[]" value="{{ subcategory.id }}"
+                                                                   class="form-checkbox rounded bg-zinc-700 border-zinc-600 text-lime-500 focus:ring-lime-500"
+                                                                   {% if subcategory.id in app.request.get('categories', []) %}checked{% endif %}>
+                                                            <span>{{ subcategory.name }}</span>
+                                                        </label>
+                                                        {% if subcategory.subcategories|length > 0 %}
+                                                            <div class="ml-4 space-y-1">
+                                                                {% for subsubcategory in subcategory.subcategories %}
+                                                                    <label class="flex items-center space-x-2 text-sm text-zinc-300 mb-1">
+                                                                        <input type="checkbox" name="categories[]" value="{{ subsubcategory.id }}"
+                                                                               class="form-checkbox rounded bg-zinc-700 border-zinc-600 text-lime-500 focus:ring-lime-500"
+                                                                               {% if subsubcategory.id in app.request.get('categories', []) %}checked{% endif %}>
+                                                                        <span>{{ subsubcategory.name }}</span>
+                                                                    </label>
+                                                                {% endfor %}
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Price Range</label>
+                        <div class="flex space-x-2">
+                            {{ form_widget(filter_form.minPrice, {'attr': {'class': 'w-1/2 bg-zinc-700 border border-zinc-600 rounded-md px-3 py-2'}}) }}
+                            {{ form_widget(filter_form.maxPrice, {'attr': {'class': 'w-1/2 bg-zinc-700 border border-zinc-600 rounded-md px-3 py-2'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Availability</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="availability" value="" 
+                                       class="form-radio bg-zinc-700 border-zinc-600 text-lime-500 focus:ring-lime-500"
+                                       {% if app.request.get('availability') is null %}checked{% endif %}>
+                                <span class="text-sm">All</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="availability" value="in_stock" 
+                                       class="form-radio bg-zinc-700 border-zinc-600 text-lime-500 focus:ring-lime-500"
+                                       {% if app.request.get('availability') == 'in_stock' %}checked{% endif %}>
+                                <span class="text-sm">In Stock</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="availability" value="out_of_stock" 
+                                       class="form-radio bg-zinc-700 border-zinc-600 text-lime-500 focus:ring-lime-500"
+                                       {% if app.request.get('availability') == 'out_of_stock' %}checked{% endif %}>
+                                <span class="text-sm">Out of Stock</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-lime-500 hover:bg-lime-600 text-black font-bold py-2 px-4 rounded">
+                        Apply Filters
+                    </button>
+                {{ form_end(filter_form) }}
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="w-full md:w-3/4 px-4">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold chakra-petch-medium">Products</h1>
+                <p class="text-zinc-400">Showing {{ products|length }} of {{ totalProducts }} products</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for product in products %}
+                    {{ include('product/card.html.twig', {'product': product}) }}
+                {% else %}
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-xl text-zinc-400">No products found matching your criteria.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if maxPages > 1 %}
+                <div class="mt-8 flex justify-center space-x-2">
+                    {% if currentPage > 1 %}
+                        <a href="{{ path('app_collections', app.request.query.all|merge({'page': currentPage - 1})) }}"
+                           class="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 rounded-md">
+                            Previous
+                        </a>
+                    {% endif %}
+
+                    {% for i in 1..maxPages %}
+                        <a href="{{ path('app_collections', app.request.query.all|merge({'page': i})) }}"
+                           class="px-4 py-2 rounded-md {% if currentPage == i %}bg-lime-500 text-black{% else %}bg-zinc-700 hover:bg-zinc-600{% endif %}">
+                            {{ i }}
+                        </a>
+                    {% endfor %}
+
+                    {% if currentPage < maxPages %}
+                        <a href="{{ path('app_collections', app.request.query.all|merge({'page': currentPage + 1})) }}"
+                           class="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 rounded-md">
+                            Next
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

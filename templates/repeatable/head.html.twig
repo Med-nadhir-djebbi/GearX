@@ -27,11 +27,11 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/bootstrap-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/bootstrap-theme.css') }}?v={{ 'now'|date('U') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('assets/css/style.css') }}?v={{ 'now'|date('U') }}" rel="stylesheet">
-
+    <link href="{{ asset('assets/css/category-tree.css') }}?v={{ 'now'|date('U') }}" rel="stylesheet">
 
 
 </head>

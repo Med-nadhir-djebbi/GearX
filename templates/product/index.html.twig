@@ -14,7 +14,7 @@
 
         <div class="row g-4">
             {% for product in products %}
-                {% include 'repeatable/product.html.twig' with {'product': product} %}
+                {% include 'product/card.html.twig' with {'product': product} %}
             {% else %}
                 <div class="col-12">
                     <div class="alert alert-info">No products available at the moment.</div>

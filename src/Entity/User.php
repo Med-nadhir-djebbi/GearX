@@ -73,7 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->getUsername;
+        return (string) $this->username;
     }
 
     /**
@@ -127,7 +127,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    public function getUsernameField(): ?string
+    {
+        return $this->username;
+    }
 
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
 
     /**
      * @return Collection|Order[]
@@ -157,5 +167,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 }

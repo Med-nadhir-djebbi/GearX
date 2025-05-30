@@ -26,23 +26,41 @@ class RegisterController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($userPasswordHasher->hashPassword($user,$form->get('password')->getData()));
+            // Hash the password
+            $hashedPassword = $userPasswordHasher->hashPassword($user, $form->get('password')->getData());
+            $user->setPassword($hashedPassword);
+            
+            // Set default role
+            $user->setRoles(['ROLE_USER']);
 
+            // Save the user
             $em->persist($user);
             $em->flush();
 
-            $content = "Bonjour {$user->getFirstname()} nous vous remercions de votre inscription";
-            (new Mail)->send($user->getEmail(), $user->getFirstname(), "Bienvenue sur la Boot'ique", $content);
+            // Send welcome email
+            $content = "Hello {$user->getUsername()}, thank you for joining GearX! Your gaming gear journey starts now.";
+            (new Mail)->send($user->getEmail(), $user->getUsername(), "Welcome to GearX - Your Gaming Gear Destination", $content);
 
-            return $userAuthenticator->authenticateUser(
+            // Add a flash message
+            $this->addFlash('success', 'Registration successful! Welcome to GearX.');
+
+            // Authenticate and redirect
+            $response = $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
             );
+
+            if ($response) {
+                return $response;
+            }
+
+            // Fallback redirect if authentication response is null
+            return $this->redirectToRoute('account');
         }
 
-        return $this->renderForm('register/index.html.twig', [
-            'form' => $form,
+        return $this->render('security/register.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

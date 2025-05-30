@@ -33,16 +33,7 @@ class Order
     private $stripeSession;
 
     #[ORM\Column(type: 'integer')]
-    private $state = 0;  // Default state
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $carrierName;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $carrierPrice;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $delivery;
+    private $state;
 
     public function __construct()
     {
@@ -78,41 +69,7 @@ class Order
         return $this;
     }
 
-    public function getCarrierName(): ?string
-    {
-        return $this->carrierName;
-    }
 
-    public function setCarrierName(string $carrierName): self
-    {
-        $this->carrierName = $carrierName;
-
-        return $this;
-    }
-
-    public function getCarrierPrice(): ?string
-    {
-        return $this->carrierPrice;
-    }
-
-    public function setCarrierPrice(string $carrierPrice): self
-    {
-        $this->carrierPrice = $carrierPrice;
-
-        return $this;
-    }
-
-    public function getDelivery(): ?string
-    {
-        return $this->delivery;
-    }
-
-    public function setDelivery(string $delivery): self
-    {
-        $this->delivery = $delivery;
-
-        return $this;
-    }
 
     /**
      * @return Collection|OrderDetails[]
@@ -122,22 +79,22 @@ class Order
         return $this->orderDetails;
     }
 
-    public function addOrderDetail(OrderDetails $orderDetail): self
+    public function addOderDetail(OrderDetails $oderDetail): self
     {
-        if (!$this->orderDetails->contains($orderDetail)) {
-            $this->orderDetails[] = $orderDetail;
-            $orderDetail->setBindedOrder($this);
+        if (!$this->orderDetails->contains($oderDetail)) {
+            $this->orderDetails[] = $oderDetail;
+            $oderDetail->setBindedOrder($this);
         }
 
         return $this;
     }
 
-    public function removeOrderDetail(OrderDetails $orderDetail): self
+    public function removeOderDetail(OrderDetails $oderDetail): self
     {
-        if ($this->orderDetails->removeElement($orderDetail)) {
+        if ($this->orderDetails->removeElement($oderDetail)) {
             // set the owning side to null (unless already changed)
-            if ($orderDetail->getBindedOrder() === $this) {
-                $orderDetail->setBindedOrder(null);
+            if ($oderDetail->getBindedOrder() === $this) {
+                $oderDetail->setBindedOrder(null);
             }
         }
 

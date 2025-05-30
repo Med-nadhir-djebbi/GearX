@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\Cart;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,10 +32,10 @@ class CartController extends AbstractController
      * @param int $id
      * @return Repsonse
      */
-    #[Route('/cart/add/{id}', name: 'add_to_cart')]
-    public function add(Cart $cart, int $id): Response
+    #[Route('/cart/add/{id}/{quantity?1}', name: 'add_to_cart')]
+    public function add(Cart $cart, int $id, int $quantity = 1): Response
     {
-        $cart->add($id);
+        $cart->add($id, $quantity);
         return $this->redirectToRoute('cart');
     }
 

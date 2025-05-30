@@ -42,7 +42,7 @@ final class Version20250529190155 extends AbstractMigration
             ALTER TABLE "user" ALTER email TYPE VARCHAR(180)
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE "user" ALTER roles TYPE JSON USING roles::json
+            ALTER TABLE "user" ALTER roles TYPE JSON
         SQL);
     }
 
