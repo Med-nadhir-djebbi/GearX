@@ -35,6 +35,9 @@ class Order
     #[ORM\Column(type: 'integer')]
     private $state;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private $shippingAddress;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -69,7 +72,17 @@ class Order
         return $this;
     }
 
+    public function getShippingAddress(): ?string
+    {
+        return $this->shippingAddress;
+    }
 
+    public function setShippingAddress(?string $shippingAddress): self
+    {
+        $this->shippingAddress = $shippingAddress;
+
+        return $this;
+    }
 
     /**
      * @return Collection|OrderDetails[]

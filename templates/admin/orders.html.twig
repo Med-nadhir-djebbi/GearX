@@ -68,7 +68,13 @@
                                 {% for order in orders %}
                                 <tr class="text-lighter">
                                     <td class="border-primary">{{ order.reference }}</td>
-                                    <td class="border-primary">{{ order.user.firstName }} {{ order.user.lastName }}</td>
+                                    <td class="border-primary">
+                                        {% if order.user.firstName or order.user.lastName %}
+                                            {{ order.user.firstName }} {{ order.user.lastName }}
+                                        {% else %}
+                                            {{ order.user.username }}
+                                        {% endif %}
+                                    </td>
                                     <td class="border-primary">{{ order.createdAt|date('Y-m-d H:i') }}</td>
                                     <td class="border-primary text-highlight">{{ order.total|number_format(2, '.', ',') }} €</td>
                                     <td class="border-primary">
@@ -120,7 +126,13 @@
                                                 <div class="row mb-4">
                                                     <div class="col-md-6">
                                                         <h6 class="mb-3 text-primary">Customer Information</h6>
-                                                        <p class="text-lighter">Name: {{ order.user.firstName }} {{ order.user.lastName }}</p>
+                                                        <p class="text-lighter">Name: 
+                                                            {% if order.user.firstName or order.user.lastName %}
+                                                                {{ order.user.firstName }} {{ order.user.lastName }}
+                                                            {% else %}
+                                                                {{ order.user.username }}
+                                                            {% endif %}
+                                                        </p>
                                                         <p class="text-lighter">Email: {{ order.user.email }}</p>
                                                     </div>
                                                     <div class="col-md-6">
@@ -150,7 +162,7 @@
                                                         <tbody>
                                                             {% for item in order.orderDetails %}
                                                             <tr class="text-lighter">
-                                                                <td class="border-primary">{{ item.product.name }}</td>
+                                                                <td class="border-primary">{{ item.product }}</td>
                                                                 <td class="border-primary">{{ item.price|number_format(2, '.', ',') }} €</td>
                                                                 <td class="border-primary">{{ item.quantity }}</td>
                                                                 <td class="border-primary text-highlight">{{ (item.price * item.quantity)|number_format(2, '.', ',') }} €</td>
