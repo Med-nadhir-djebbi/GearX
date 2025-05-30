@@ -13,8 +13,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
     </button>
-
-    <div class="absolute top-full left-0 mt-2 w-64 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible dropdown-menu transition-opacity duration-200 z-50">
+    
+    <div class="absolute top-full left-0 mt-2 w-64 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible dropdown-menu transition-opacity duration-200" style="z-index: 100;">
         <div class="dropdown-header py-2 px-4 border-b border-lighterer">
             <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider">Explorez nos catégories</span>
         </div>
@@ -31,15 +31,15 @@
                                 <span>{{ category.name }}</span>
                             </div>
                         </a>
-
+                        
                         {% if category.subcategories|length > 0 %}
                             <button class="absolute right-0 top-0 h-full px-2 dropdown-toggle">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </button>
-
-                            <div class="absolute top-0 left-full w-56 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible group-hover/category:opacity-100 group-hover/category:visible transition-opacity duration-200 z-50">
+                            
+                            <div class="absolute top-0 left-full w-56 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible group-hover/category:opacity-100 group-hover/category:visible transition-opacity duration-200" style="z-index: 101;">
                                 <div class="dropdown-header py-2 px-4 border-b border-lighterer">
                                     <span class="text-primary font-semibold chakra-semibold text-xs uppercase tracking-wider">{{ category.name }}</span>
                                 </div>
@@ -53,15 +53,15 @@
                                                     {{ subcategory.name }}
                                                 </span>
                                             </a>
-
+                                            
                                             {% if subcategory.subcategories|length > 0 %}
                                                 <button class="absolute right-0 top-0 h-full px-2 dropdown-toggle">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                                     </svg>
                                                 </button>
-
-                                                <div class="absolute top-0 left-full ml-1 w-56 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50">
+                                                
+                                                <div class="absolute top-0 left-full ml-1 w-56 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200" style="z-index: 102;">
                                                     <div class="dropdown-header py-2 px-4 border-b border-lighterer">
                                                         <span class="text-primary font-semibold chakra-semibold text-xs uppercase tracking-wider">{{ subcategory.name }}</span>
                                                     </div>

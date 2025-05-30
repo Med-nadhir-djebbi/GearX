@@ -18,6 +18,9 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subcategories')]
     private ?self $parent = null;
 
@@ -43,6 +46,17 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
         return $this;
     }
 
@@ -74,12 +88,16 @@ class Category
     public function removeSubcategory(Category $subcategory): static
     {
         if ($this->subcategories->removeElement($subcategory)) {
-            // set the owning side to null (unless already changed)
             if ($subcategory->getParent() === $this) {
                 $subcategory->setParent(null);
             }
         }
 
         return $this;
+    }
+
+    public function getImagePath(): ?string
+    {
+        return $this->image ? '/uploads/categories/' . $this->image : null;
     }
 }

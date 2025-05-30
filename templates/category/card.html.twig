@@ -1,0 +1,23 @@
+<div class="w-full cursor-pointer" onclick="window.location='{{ target_path }}'">
+    <div class="cardy h-[500px] bg-dark w-full flex flex-col">
+        {# Image section #}
+        <div class="flex-1 p-4 flex items-center justify-center">
+            <img src="{{ asset('assets/img/categories/' ~ (category.image ?? 'placeholder.jpg')) }}"
+                 class="w-full h-full object-contain"
+                 alt="{{ category.name }}"
+                 onerror="this.src='{{ asset('assets/img/placeholder.webp') }}'">
+        </div>
+        
+        {# Name section - now shows different text based on target #}
+        <div class="p-4 border-t border-gray-700">
+            <h3 class="chakra-petch font-bold text-xl text-center text-light">
+                {% if target_path == path('app_category_subcategories', {'id': category.id}) %}
+                    Browse Subcategories
+                    <span class="text-sm text-gray-400">({{ category.subcategories|length }})</span>
+                {% else %}
+                    View Products
+                {% endif %}
+            </h3>
+        </div>
+    </div>
+</div>
