@@ -40,4 +40,21 @@ class CategoryRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    // src/Repository/CategoryRepository.php
+    // src/Repository/CategoryRepository.php
+    // src/Repository/CategoryRepository.php
+    public function findByParentName(?string $parentName): array
+    {
+        $qb = $this->createQueryBuilder('c');
+        
+        if ($parentName === null) {
+            $qb->where('c.parent IS NULL');
+        } else {
+            $qb->leftJoin('c.parent', 'p')
+            ->andWhere('p.name = :parentName')
+            ->setParameter('parentName', $parentName);
+        }
+        
+        return $qb->getQuery()->getResult();
+    }
 }
