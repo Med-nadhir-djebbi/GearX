@@ -1,0 +1,221 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ ea.crud.pageName }} Management - GearX Admin{% endblock %}
+
+{% block body %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1 class="text-gradient">{{ ea.crud.pageName }} Management</h1>
+        <a href="{{ path('app_home') }}" class="btn btn-outline-primary">
+            <i class="fas fa-home"></i> Back to Site
+        </a>
+    </div>
+
+    <div class="admin-content">
+        <div class="admin-actions mb-4">
+            {% if ea.crud.pageName == 'Product' %}
+                <a href="{{ ea_url().setController('App\\\\Controller\\\\Admin\\\\ProductCrudController').setAction('new') }}" 
+                   class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Product
+                </a>
+            {% endif %}
+            {% if ea.crud.pageName == 'Category' %}
+                <a href="{{ ea_url().setController('App\\\\Controller\\\\Admin\\\\CategoryCrudController').setAction('new') }}" 
+                   class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Category
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="admin-grid">
+            {% block main %}
+                {{ parent() }}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .admin-container {
+        padding: 2rem;
+        min-height: 100vh;
+        background: #121212;
+    }
+
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: rgba(31, 31, 31, 0.9);
+        border: 1px solid #404040;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .text-gradient {
+        background: linear-gradient(45deg, #00ff9d, #00cc7d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin: 0;
+    }
+
+    .admin-content {
+        background: rgba(31, 31, 31, 0.9);
+        border: 1px solid #404040;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .admin-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #00ff9d, #00cc7d);
+        border: none;
+        color: #121212;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+        background: linear-gradient(45deg, #00cc7d, #00ff9d);
+    }
+
+    .btn-outline-primary {
+        border: 2px solid #00ff9d;
+        color: #00ff9d;
+        background: transparent;
+    }
+
+    .btn-outline-primary:hover {
+        background: #00ff9d;
+        color: #121212;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+    }
+
+    .admin-grid {
+        background: #1f1f1f;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    /* Table Styles */
+    .table {
+        width: 100%;
+        margin-bottom: 0;
+        color: #ffffff;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .table thead th {
+        background: linear-gradient(180deg, #1f1f1f, #121212);
+        color: #00ff9d;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.85rem;
+        padding: 1rem;
+        border-bottom: 2px solid #00ff9d;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #404040;
+        vertical-align: middle;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        background: rgba(0, 255, 157, 0.05);
+        transform: translateY(-2px);
+    }
+
+    /* Form Styles */
+    .form-control {
+        background: #2d2d2d;
+        border: 1px solid #404040;
+        border-radius: 5px;
+        color: #ffffff;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #00ff9d;
+        box-shadow: 0 0 0 0.2rem rgba(0, 255, 157, 0.25);
+        transform: translateY(-1px);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #121212;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #00ff9d;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #00cc7d;
+    }
+
+    /* Pagination */
+    .pagination {
+        margin-top: 1rem;
+        justify-content: center;
+    }
+
+    .pagination .page-link {
+        background: #2d2d2d;
+        border: 1px solid #404040;
+        color: #ffffff;
+        padding: 0.5rem 1rem;
+        margin: 0 0.25rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .pagination .page-link:hover {
+        background: #00ff9d;
+        color: #121212;
+        border-color: #00ff9d;
+        transform: translateY(-2px);
+    }
+
+    .pagination .active .page-link {
+        background: #00ff9d;
+        color: #121212;
+        border-color: #00ff9d;
+    }
+</style>
+{% endblock %} 

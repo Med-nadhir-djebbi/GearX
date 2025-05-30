@@ -165,9 +165,9 @@
                                     <span>Changer le mot de passe</span>
                                 </a>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('admin') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
+                                    <a href="{{ path('admin_dashboard') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
                                         <i class="fas fa-cog mr-3 text-primary"></i>
-                                        <span>Panneau d'administration</span>
+                                        <span>Admin Panel</span>
                                     </a>
                                 {% endif %}
                                 <a href="{{ path('app_logout') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">

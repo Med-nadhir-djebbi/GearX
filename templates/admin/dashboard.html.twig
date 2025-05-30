@@ -1,0 +1,198 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard - GearX{% endblock %}
+
+{% block body %}
+<div class="container-fluid bg-darker min-h-screen">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark-gray border-r border-primary sidebar">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('admin_dashboard') }}">
+                            <i class="fas fa-home me-2 text-primary"></i>
+                            <span class="text-lighter">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('admin_products') }}">
+                            <i class="fas fa-box me-2 text-primary"></i>
+                            <span class="text-lighter">Products</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('admin_orders') }}">
+                            <i class="fas fa-shopping-cart me-2 text-primary"></i>
+                            <span class="text-lighter">Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('admin_users') }}">
+                            <i class="fas fa-users me-2 text-primary"></i>
+                            <span class="text-lighter">Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('admin_dropships') }}">
+                            <i class="fas fa-truck me-2 text-primary"></i>
+                            <span class="text-lighter">Dropships</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-darker">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-primary">
+                <h1 class="h2 text-lighter">Dashboard</h1>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card bg-dark-gray border border-primary shadow h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Orders</div>
+                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_orders }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-shopping-cart fa-2x text-primary opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card bg-dark-gray border border-primary shadow h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Products</div>
+                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_products }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-box fa-2x text-primary opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card bg-dark-gray border border-primary shadow h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Users</div>
+                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_users }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-users fa-2x text-primary opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="card bg-dark-gray border border-primary shadow mb-4">
+                <div class="card-header py-3 border-bottom border-primary">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-primary" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class="text-lighter">
+                                    <th class="border-primary">Order ID</th>
+                                    <th class="border-primary">Customer</th>
+                                    <th class="border-primary">Date</th>
+                                    <th class="border-primary">Total</th>
+                                    <th class="border-primary">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in recent_orders %}
+                                <tr class="text-lighter">
+                                    <td class="border-primary">{{ order.reference }}</td>
+                                    <td class="border-primary">{{ order.user.username }}</td>
+                                    <td class="border-primary">{{ order.createdAt|date('Y-m-d H:i') }}</td>
+                                    <td class="border-primary">{{ order.total|number_format(2, '.', ',') }} €</td>
+                                    <td class="border-primary">
+                                        {% if order.state == 0 %}
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        {% elseif order.state == 1 %}
+                                            <span class="badge bg-success">Paid</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Cancelled</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+}
+
+.sidebar .nav-link.active {
+    background-color: rgba(99, 102, 241, 0.2);
+}
+
+.sidebar .nav-link.active span {
+    color: #6366f1;
+}
+
+main {
+    margin-top: 48px;
+}
+
+.table {
+    color: #e5e7eb;
+}
+
+.table td, .table th {
+    background-color: #1f2937;
+}
+
+.card {
+    background-color: #1f2937;
+}
+
+.badge {
+    padding: 0.5em 0.75em;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,215 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            /* Gaming theme colors */
+            --sidebar-bg: #1f1f1f;
+            --sidebar-menu-color: #ffffff;
+            --sidebar-menu-icon-color: #00ff9d;
+            --sidebar-menu-active-bg: #2d2d2d;
+            --sidebar-menu-active-color: #00ff9d;
+            --sidebar-menu-hover-bg: #2d2d2d;
+            --sidebar-menu-hover-color: #00ff9d;
+            --sidebar-menu-header-color: #00ff9d;
+            
+            --body-bg: #121212;
+            --text-color: #ffffff;
+            --text-color-dark: #ffffff;
+            --text-color-light: #b3b3b3;
+            
+            --color-primary: #00ff9d;
+            --button-primary-bg: #00ff9d;
+            --button-primary-color: #121212;
+            --button-primary-hover-bg: #00cc7d;
+            --button-primary-hover-color: #121212;
+            
+            --form-bg: #1f1f1f;
+            --form-control-bg: #2d2d2d;
+            --form-control-border-color: #404040;
+            --form-control-hover-border-color: #00ff9d;
+            
+            --table-thead-color: #ffffff;
+            --table-cell-color: #ffffff;
+            --table-hover-cell-bg: #2d2d2d;
+            
+            --content-panel-bg: #1f1f1f;
+            --content-search-input-bg: #2d2d2d;
+            
+            --link-color: #00ff9d;
+            --link-hover-color: #00cc7d;
+            
+            --pagination-color: #ffffff;
+            --pagination-active-bg: #00ff9d;
+        }
+
+        /* Custom header with home button */
+        .ea-sidebar {
+            background: linear-gradient(180deg, var(--sidebar-bg) 0%, #121212 100%);
+            border-right: 1px solid #404040;
+        }
+
+        .ea-sidebar .ea-sidebar-logo {
+            background: #121212;
+            border-bottom: 1px solid #404040;
+            height: 70px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ea-sidebar .ea-sidebar-logo a {
+            color: var(--color-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
+        /* Home button */
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            background: var(--button-primary-bg);
+            color: var(--button-primary-color) !important;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            border: 2px solid transparent;
+        }
+
+        .home-button:hover {
+            background: transparent;
+            color: var(--button-primary-bg) !important;
+            border-color: var(--button-primary-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+        }
+
+        /* Menu items */
+        .sidebar-menu .menu-item-label {
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-menu .menu-header {
+            color: var(--sidebar-menu-header-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding-left: 15px;
+        }
+
+        /* Content styling */
+        .content-header {
+            background: var(--content-panel-bg);
+            border-bottom: 1px solid #404040;
+            padding: 15px 20px;
+        }
+
+        .content-panel {
+            background: var(--content-panel-bg);
+            border: 1px solid #404040;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .content-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Table styling */
+        .datagrid {
+            border: none;
+        }
+
+        .datagrid thead th {
+            background: linear-gradient(180deg, #1f1f1f 0%, #121212 100%);
+            border-bottom: 2px solid var(--color-primary);
+            color: var(--color-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .datagrid tbody td {
+            border-bottom: 1px solid #404040;
+        }
+
+        .datagrid tbody tr:hover {
+            background: rgba(0, 255, 157, 0.05);
+        }
+
+        /* Form controls */
+        .form-control, .form-select {
+            background: var(--form-control-bg);
+            border: 1px solid var(--form-control-border-color);
+            border-radius: 5px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 0.2rem rgba(0, 255, 157, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* Buttons */
+        .button-action {
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+        }
+
+        .button-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--body-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--button-primary-hover-bg);
+        }
+    </style>
+{% endblock %}
+
+{% block header_custom_menu %}
+    <div class="d-flex align-items-center">
+        <a href="{{ path('app_home') }}" class="home-button me-3">
+            <i class="fas fa-home me-2"></i> Back to Site
+        </a>
+        {{ parent() }}
+    </div>
+{% endblock %} 
