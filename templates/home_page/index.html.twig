@@ -65,7 +65,7 @@
                             <div class="card-body text-center">
                                 <i class="fas fa-{{ category.name|lower == 'gaming' ? 'gamepad' : (category.name|lower == 'smartphones' ? 'mobile-alt' : (category.name|lower == 'audio' ? 'headphones' : 'laptop')) }} fa-4x text-primary mb-3"></i>
                                 <h4 class="card-title">{{ category.name }}</h4>
-                                <a href="{{ path('tempp', {'id': category.id}) }}" class="btn btn-outline-primary">View Products</a>
+                                <a href="{{ path('home', {'id': category.id}) }}" class="btn btn-outline-primary">View Products</a>
                             </div>
                         </div>
                     </div>

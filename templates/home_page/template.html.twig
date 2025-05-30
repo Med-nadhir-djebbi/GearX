@@ -1,10 +1,16 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'repeatable/head.html.twig' %}
+    <body>
+        {# Render Navbar with Categories Passed from Controller #}
+        {% include 'repeatable/navbar.html.twig' with {'categories': categories|default([])} %}
 
-{% block body %}
+        <div class="container mt-5">
+            <h1>Navbar Testing</h1>
 
-{% endblock %}
+            <p>This is a test page for the navbar with dynamic categories.</p>
+        </div>
 
-{% block title %}
-
-{% endblock %}
-
+        {% include 'repeatable/scripts.html.twig' %}
+    </body>
+</html>

@@ -27,63 +27,19 @@ final class HomePageController extends AbstractController
             'featuredProducts' => $featuredProducts,
         ]);
     }
-    #[Route('/template', name: 'tempp')]
-    public function about(EntityManagerInterface $entityManager): Response
+    #[Route('/template', name: 'template')]
+    public function template(EntityManagerInterface $entityManager): Response
     {
+        // Get all categories including their children
+        $categories = $entityManager->getRepository(Category::class)
+            ->createQueryBuilder('c')
+            ->leftJoin('c.children', 'children')
+            ->where('c.parent IS NULL')
+            ->getQuery()
+            ->getResult();
 
-        $categories = [
-            'Informatique' => [
-                'Ordinateurs portables',
-                'PC de bureau',
-                'Composants PC',
-                'Périphériques'
-            ],
-            'Smartphones' => [
-                'Apple',
-                'Samsung',
-                'Xiaomi',
-                'OnePlus'
-            ],
-            'Gaming' => [
-                'Consoles',
-                'Jeux vidéo',
-                'Accessoires gaming',
-                'PC Gaming'
-            ],
-            'Audio' => [
-                'Casques',
-                'Écouteurs',
-                'Enceintes',
-                'Microphones'
-            ]
-        ];
-
-        // Check if categories already exist
-        $existingCategories = $entityManager->getRepository(Category::class)->findAll();
-
-        if (empty($existingCategories)) {
-            // Create categories and subcategories
-            foreach ($categories as $categoryName => $subcategories) {
-                $category = new Category();
-                $category->setName($categoryName);
-                $entityManager->persist($category);
-
-                foreach ($subcategories as $subcategoryName) {
-                    $subcategory = new Category();
-                    $subcategory->setName($subcategoryName);
-                    $subcategory->setParent($category);
-                    $entityManager->persist($subcategory);
-                }
-            }
-
-            $entityManager->flush();
-        }
-
-        // Get all main categories with their subcategories
-        $mainCategories = $entityManager->getRepository(Category::class)->findBy(['parent' => null]);
-
-        return $this->render('base.html.twig', [
-            'categories' => $mainCategories
+        return $this->render('home_page/template.html.twig', [
+            'categories' => $categories
         ]);
     }
 

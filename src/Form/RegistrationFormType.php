@@ -20,7 +20,13 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'attr' => ['class' => 'form-control'],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Enter your email'
+                ],
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter an email',
@@ -28,7 +34,13 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('firstName', TextType::class, [
-                'attr' => ['class' => 'form-control'],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Enter your first name'
+                ],
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter your first name',
@@ -36,7 +48,13 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('lastName', TextType::class, [
-                'attr' => ['class' => 'form-control'],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Enter your last name'
+                ],
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter your last name',
@@ -45,7 +63,14 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
-                'attr' => ['class' => 'form-control', 'autocomplete' => 'new-password'],
+                'attr' => [
+                    'class' => 'form-control',
+                    'autocomplete' => 'new-password',
+                    'placeholder' => 'Choose a secure password'
+                ],
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
@@ -59,7 +84,12 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
-                'attr' => ['class' => 'form-check-input'],
+                'attr' => [
+                    'class' => 'form-check-input'
+                ],
+                'label_attr' => [
+                    'class' => 'form-check-label'
+                ],
                 'constraints' => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',

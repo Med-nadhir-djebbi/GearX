@@ -1,58 +1,90 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
+{# templates/repeatable/navbar.html.twig #}
+<link rel="stylesheet" href="{{ asset('assets/styles/navbar.css') }}">
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top py-3">
+    <div class="container-fluid px-4">
+        <!-- Categories Dropdown -->
+        <div class="dropdown d-none d-lg-block">
+            <button class="navbar-category-btn dropdown-toggle" type="button" id="categoriesDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                <i class="fas fa-bars me-2"></i>
+                TOUS NOS PRODUITS
+            </button>
+            <ul class="navbar-dropdown dropdown-menu" aria-labelledby="categoriesDropdown">
+                {% if categories is defined and categories|length > 0 %}
+                    {% for category in categories %}
+                        {% if category.parent is null %}
+                            <li class="navbar-dropdown-submenu">
+                                <a class="navbar-dropdown-item" href="#" data-bs-toggle="dropdown">
+                                    <span>
+                                        {% if category.name == 'Informatique' %}
+                                            <i class="fas fa-desktop category-icon"></i>
+                                        {% elseif category.name == 'Gaming' %}
+                                            <i class="fas fa-gamepad category-icon"></i>
+                                        {% elseif category.name == 'Audio' %}
+                                            <i class="fas fa-headphones category-icon"></i>
+                                        {% elseif category.name == 'Smartphones' %}
+                                            <i class="fas fa-mobile-alt category-icon"></i>
+                                        {% else %}
+                                            <i class="fas fa-folder category-icon"></i>
+                                        {% endif %}
+                                        {{ category.name }}
+                                    </span>
+                                    <i class="fas fa-chevron-right navbar-dropdown-chevron"></i>
+                                </a>
+                                {% if category.children|length > 0 %}
+                                    <ul class="navbar-dropdown dropdown-menu">
+                                        {% for subcategory in category.children %}
+                                            <li>
+                                                <a class="navbar-dropdown-item" href="#">
+                                                    <span>{{ subcategory.name }}</span>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                            {% if not loop.last %}
+                                <li><hr class="navbar-dropdown-divider"></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <li>
+                        <span class="navbar-dropdown-item text-muted">No categories available</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
         <!-- Brand -->
-        <a href="{{ path('home') }}" class="navbar-brand d-flex align-items-center">
-            <i class="fas fa-bolt text-primary me-2"></i>
-            <h1 class="h4 mb-0 fw-bold">GearX</h1>
+        <a href="{{ path('home') }}" class="navbar-brand ms-4">
+            <span class="fw-bold fs-4">GearX</span>
         </a>
 
-        <!-- Navbar Toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Navbar Content -->
         <div class="collapse navbar-collapse" id="navbarContent">
-            <!-- Categories Dropdown -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-list me-2"></i>Categories
-                    </a>
-                    <ul class="dropdown-menu border-0 shadow">
-                        {% for category in categories %}
-                            <li>
-                                <a class="dropdown-item" href="#">{{ category.name }}</a>
-                                {% if category.children|length > 0 %}
-                                    <ul class="submenu dropdown-menu border-0 shadow">
-                                        {% for subcategory in category.children %}
-                                            <li><a class="dropdown-item" href="#">{{ subcategory.name }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
-
-            <!-- Search Form -->
-            <form class="d-flex mx-auto" style="width: 40%;">
+            <!-- Search Form (Center) -->
+            <form class="d-flex mx-auto" style="width: 45%; max-width: 500px;">
                 <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Search products..." aria-label="Search">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fas fa-search"></i>
+                    <input class="form-control rounded-start-pill py-3 px-4 border-end-0" type="search" placeholder="Search products..." aria-label="Search">
+                    <button class="btn btn-light rounded-end-pill px-4 border-start-0" type="submit">
+                        <i class="fas fa-search" style="color: #6f42c1;"></i>
                     </button>
                 </div>
             </form>
 
             <!-- Right Navigation -->
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-center">
                 <!-- Cart -->
                 <li class="nav-item me-3">
                     <a href="{{ path('app_cart_index') }}" class="nav-link position-relative">
-                        <i class="fas fa-shopping-cart fa-lg"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <i class="fas fa-shopping-cart fs-5" style="color: #6f42c1;"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #6f42c1;">
                             0
                         </span>
                     </a>
@@ -61,28 +93,33 @@
                 <!-- Authentication -->
                 {% if app.user %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i>
-                            {{ app.user.firstName }}
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            <i class="fas fa-user-circle fs-5 me-2"></i>
+                            <span>{{ app.user.firstName }}</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-box me-2"></i>Orders</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item py-2 px-3" href="#">
+                                    <i class="fas fa-user me-2"></i>Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 px-3" href="#">
+                                    <i class="fas fa-box me-2"></i>Orders
+                                </a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
-                                <i class="fas fa-sign-out-alt me-2"></i>Logout
-                            </a></li>
+                            <li>
+                                <a class="dropdown-item py-2 px-3 text-danger" href="{{ path('app_logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a href="{{ path('app_login') }}" class="nav-link">
-                            <i class="fas fa-sign-in-alt me-1"></i>Login
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ path('app_register') }}" class="btn btn-primary ms-2">
-                            <i class="fas fa-user-plus me-1"></i>Register
+                        <a href="{{ path('app_login') }}" class="btn text-white border-0" style="background-color: #6f42c1;">
+                            Connexion
                         </a>
                     </li>
                 {% endif %}
@@ -91,29 +128,139 @@
     </div>
 </nav>
 
-<style>
-/* Dropdown submenu */
-.dropdown-menu li {
-    position: relative;
-}
-.dropdown-menu .submenu { 
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: -7px;
-}
-.dropdown-menu > li:hover > .submenu {
-    display: block;
-}
-</style>
-
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Prevent closing dropdown on click inside
-    document.querySelectorAll('.dropdown-menu').forEach(function(element) {
-        element.addEventListener('click', function(e) {
-            e.stopPropagation();
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdownElementList = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+    const submenuItems = document.querySelectorAll('.navbar-dropdown-submenu');
+    let activeSubmenu = null;
+    let submenuTimeout;
+
+    // Initialize Bootstrap dropdowns
+    dropdownElementList.forEach(dropdownToggle => {
+        new bootstrap.Dropdown(dropdownToggle, {
+            autoClose: false
         });
+    });
+
+    // Handle submenu interactions
+    submenuItems.forEach(submenu => {
+        const dropdownMenu = submenu.querySelector('.dropdown-menu');
+        const parentItem = submenu.querySelector('.navbar-dropdown-item');
+        let isHovered = false;
+
+        // Show submenu on hover
+        submenu.addEventListener('mouseenter', () => {
+            isHovered = true;
+            clearTimeout(submenuTimeout);
+
+            // Hide previous submenu if different
+            if (activeSubmenu && activeSubmenu !== dropdownMenu) {
+                hideSubmenu(activeSubmenu);
+            }
+
+            showSubmenu(dropdownMenu);
+        });
+
+        // Handle mouse leave with delay
+        submenu.addEventListener('mouseleave', (event) => {
+            isHovered = false;
+            const toElement = event.relatedTarget;
+
+            // Check if moving to related elements
+            const isMovingToRelated = toElement && (
+                toElement.closest('.navbar-dropdown-submenu') ||
+                toElement.closest('.dropdown-menu') ||
+                toElement.closest('.dropdown-hover-bridge')
+            );
+
+            if (!isMovingToRelated) {
+                submenuTimeout = setTimeout(() => {
+                    if (!isHovered) {
+                        hideSubmenu(dropdownMenu);
+                    }
+                }, 300);
+            }
+        });
+
+        // Prevent main dropdown from closing when clicking submenu items
+        if (parentItem) {
+            parentItem.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+            });
+        }
+    });
+
+    function showSubmenu(menu) {
+        if (menu && !menu.classList.contains('show')) {
+            requestAnimationFrame(() => {
+                menu.classList.add('show');
+                activeSubmenu = menu;
+            });
+        }
+    }
+
+    function hideSubmenu(menu) {
+        if (menu && menu.classList.contains('show')) {
+            requestAnimationFrame(() => {
+                menu.classList.remove('show');
+                if (activeSubmenu === menu) {
+                    activeSubmenu = null;
+                }
+            });
+        }
+    }
+
+    // Handle main dropdown
+    const mainDropdown = document.querySelector('.dropdown');
+    const mainDropdownMenu = mainDropdown.querySelector('.dropdown-menu');
+    let mainDropdownTimeout;
+    let isMainDropdownHovered = false;
+
+    mainDropdown.addEventListener('mouseenter', () => {
+        isMainDropdownHovered = true;
+        clearTimeout(mainDropdownTimeout);
+        requestAnimationFrame(() => {
+            mainDropdownMenu.classList.add('show');
+        });
+    });
+
+    mainDropdown.addEventListener('mouseleave', (event) => {
+        isMainDropdownHovered = false;
+        const toElement = event.relatedTarget;
+
+        const isMovingToRelated = toElement && (
+            toElement.closest('.navbar-dropdown-submenu') ||
+            toElement.closest('.dropdown-menu') ||
+            toElement.closest('.dropdown-hover-bridge')
+        );
+
+        if (!isMovingToRelated) {
+            mainDropdownTimeout = setTimeout(() => {
+                if (!isMainDropdownHovered) {
+                    requestAnimationFrame(() => {
+                        mainDropdownMenu.classList.remove('show');
+                        if (activeSubmenu) {
+                            hideSubmenu(activeSubmenu);
+                        }
+                    });
+                }
+            }, 300);
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+        const isClickInside = event.target.closest('.dropdown') ||
+                            event.target.closest('.navbar-dropdown-submenu') ||
+                            event.target.closest('.dropdown-hover-bridge');
+                            
+        if (!isClickInside) {
+            mainDropdownMenu.classList.remove('show');
+            if (activeSubmenu) {
+                hideSubmenu(activeSubmenu);
+            }
+        }
     });
 });
 </script>
