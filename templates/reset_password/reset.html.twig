@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reset your password</title>
+        
+        {# Include Tailwind CSS #}
+        <script src="https://cdn.tailwindcss.com"></script>
+        
+        {# Custom styles #}
+        <style>
+            body {
+                background-color: rgb(249, 250, 251);
+            }
+            .form-control {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #D1D5DB;
+                border-radius: 0.375rem;
+                margin-top: 0.5rem;
+            }
+            .form-control:focus {
+                outline: none;
+                border-color: #7C3AED;
+                box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+            }
+        </style>
+        <link rel="stylesheet" href="{{ asset('assets/styles/reset-password.css') }}">
+    </head>
+    <body>
+        <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-md w-full space-y-8">
+                <div>
+                    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                        Reset your password
+                    </h2>
+                </div>
+
+                {{ form_start(resetForm, {'attr': {'class': 'mt-8 space-y-6'}}) }}
+                    <div class="rounded-md shadow-sm -space-y-px">
+                        <div>
+                            {{ form_widget(resetForm.plainPassword.first, {'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Enter new password'
+                            }}) }}
+                            {{ form_errors(resetForm.plainPassword.first) }}
+                        </div>
+                        <div class="mt-4">
+                            {{ form_widget(resetForm.plainPassword.second, {'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Repeat new password'
+                            }}) }}
+                            {{ form_errors(resetForm.plainPassword.second) }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Reset password
+                        </button>
+                    </div>
+                {{ form_end(resetForm) }}
+
+                <div class="text-center">
+                    <a href="{{ path('app_login') }}" class="font-medium text-purple-600 hover:text-purple-500">
+                        Back to login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html> 

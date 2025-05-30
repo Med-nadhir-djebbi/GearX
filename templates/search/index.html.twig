@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search Results - GearX{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold mb-2 chakra-petch-medium text-lime-500">Search Results</h1>
+        {% if query %}
+            <p class="text-zinc-400">Found {{ total }} results for "{{ query }}"</p>
+        {% endif %}
+    </div>
+
+    {% if products|length > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for product in products %}
+                {{ include('product/card.html.twig', {'product': product}) }}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-12">
+            <div class="mb-4">
+                <i class="fas fa-search text-4xl text-zinc-600"></i>
+            </div>
+            {% if query %}
+                <h2 class="text-xl font-medium mb-2 text-zinc-400">No products found matching "{{ query }}"</h2>
+                <p class="text-zinc-500">Try different keywords or check your spelling</p>
+            {% else %}
+                <h2 class="text-xl font-medium mb-2 text-zinc-400">Enter a search term</h2>
+                <p class="text-zinc-500">Use the search bar above to find products</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

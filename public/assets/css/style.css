@@ -765,16 +765,19 @@ body {
 .cyberpunk-search {
   position: relative;
   z-index: 200;
+  margin-left: 1rem;
 }
 
 .cyberpunk-input {
   background: rgba(34, 34, 34, 0.95) !important;
-  border: 2px solid var(--primary) !important;
+  border: 1px solid var(--primary) !important;
   color: var(--lighter) !important;
   font-family: "Chakra Petch", sans-serif !important;
   transition: all 0.3s ease !important;
-  width: 320px !important;
-  padding: 0.5rem 1rem !important;
+  width: 200px !important;
+  padding: 0.35rem 0.75rem !important;
+  font-size: 0.875rem !important;
+  height: 36px !important;
 }
 
 .cyberpunk-input:focus {
@@ -796,6 +799,12 @@ body {
   overflow: hidden !important;
   transition: all 0.3s ease !important;
   z-index: 1 !important;
+  height: 36px !important;
+  width: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
 }
 
 .cyberpunk-button::before {
@@ -1029,4 +1038,23 @@ body {
 
 .bordered {
   border: 1px solid var(--lighterer);
+}
+
+.price-range-input {
+  background-color: rgba(24, 24, 27, 0.9) !important; /* Darker background */
+  border: 1px solid rgba(132, 204, 22, 0.5) !important; /* Lime border */
+  color: rgb(226, 232, 240) !important; /* Lighter text */
+  font-family: 'Chakra Petch', sans-serif !important;
+  transition: all 0.3s ease;
+}
+
+.price-range-input:focus {
+  background-color: rgba(24, 24, 27, 0.95) !important;
+  border-color: rgb(132, 204, 22) !important;
+  box-shadow: 0 0 0 2px rgba(132, 204, 22, 0.2) !important;
+  outline: none !important;
+}
+
+.price-range-input::placeholder {
+  color: rgba(226, 232, 240, 0.5) !important;
 }

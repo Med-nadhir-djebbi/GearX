@@ -6,6 +6,8 @@ use App\Entity\Category;
 use App\Model\Search;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,19 +35,65 @@ class SearchType extends AbstractType
     {
         $builder
             ->add('string', TextType::class, [
-                'label' => 'Mots-clés:',
+                'label' => 'Search',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Votre recherche'
+                    'placeholder' => 'Search products...',
+                    'class' => 'form-control'
                 ]
             ])
             ->add('categories', EntityType::class, [
-                'label' => false,
+                'label' => 'Categories',
                 'required' => false,
-                'class' => Category::class, 
+                'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => true
+            ])
+            ->add('minPrice', NumberType::class, [
+                'label' => 'Min Price',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Min price',
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('maxPrice', NumberType::class, [
+                'label' => 'Max Price',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Max price',
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('availability', ChoiceType::class, [
+                'label' => 'Availability',
+                'required' => false,
+                'choices' => [
+                    'All' => null,
+                    'In Stock' => 'in_stock',
+                    'Out of Stock' => 'out_of_stock'
+                ],
+                'attr' => ['class' => 'form-control']
+            ])
+            ->add('sortBy', ChoiceType::class, [
+                'label' => 'Sort By',
+                'required' => false,
+                'choices' => [
+                    'Name' => 'name',
+                    'Price' => 'price',
+                    'Rating' => 'rating'
+                ],
+                'attr' => ['class' => 'form-control']
+            ])
+            ->add('sortOrder', ChoiceType::class, [
+                'label' => 'Sort Order',
+                'required' => false,
+                'choices' => [
+                    'Ascending' => 'asc',
+                    'Descending' => 'desc'
+                ],
+                'attr' => ['class' => 'form-control']
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Valider',

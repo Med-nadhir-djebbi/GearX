@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Email Confirmation</title>
+    </head>
+    <body>
+        <h1>Welcome to GearX!</h1>
+
+        <p>
+            Please confirm your email address by clicking the following link: <br><br>
+            <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
+            This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+        </p>
+
+        <p>
+            Cheers!<br>
+            The GearX Team
+        </p>
+    </body>
+</html> 

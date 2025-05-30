@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reset your password</title>
+        <link rel="stylesheet" href="{{ asset('assets/styles/reset-password.css') }}">
+    </head>
+    <body>
+        <div class="reset-container">
+            <div class="reset-card">
+                <h2 class="reset-title">Reset your password</h2>
+                <p class="reset-subtitle">
+                    Enter your email address and we will send you a link to reset your password.
+                </p>
+
+                {{ form_start(requestForm) }}
+                    <div class="form-group">
+                        {{ form_widget(requestForm.email, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Enter your email'
+                            }
+                        }) }}
+                        {% if form_errors(requestForm.email) %}
+                            <div class="form-error">
+                                {{ form_errors(requestForm.email) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn-reset">
+                        Send password reset email
+                    </button>
+                {{ form_end(requestForm) }}
+
+                <a href="{{ path('app_login') }}" class="back-link">
+                    Back to login
+                </a>
+            </div>
+        </div>
+    </body>
+</html> 

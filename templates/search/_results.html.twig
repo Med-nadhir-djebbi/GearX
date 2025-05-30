@@ -1,0 +1,23 @@
+{% if results|length > 0 %}
+    {% for product in results %}
+        <div class="search-result-item">
+            <div class="result-image">
+                <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}">
+            </div>
+            <div class="result-info flex-1">
+                <h4 class="text-sm font-medium">{{ product.name }}</h4>
+                <span class="price">{{ product.price|number_format(2, '.', ',') }} €</span>
+            </div>
+        </div>
+    {% endfor %}
+    
+    {% if count > 5 %}
+        <a href="{{ path('app_search', {'q': query}) }}" class="view-all-results">
+            View all {{ count }} results
+        </a>
+    {% endif %}
+{% else %}
+    <div class="p-4 text-center text-zinc-400">
+        No products found matching "{{ query }}"
+    </div>
+{% endif %}

@@ -3,6 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\Category;
+use App\Model\Search;
+use App\Model\ProductFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -50,50 +53,126 @@ class ProductRepository extends ServiceEntityRepository
         return $ids;
     }
 
-    public function findByFilter($filter, int $page = 1, int $limit = 10): array
+    public function findWithSearch(Search $search): array
     {
-        $qb = $this->createQueryBuilder('p');
+        $query = $this->createQueryBuilder('p')
+            ->select('p', 'c')
+            ->leftJoin('p.category', 'c');
 
-        if (!empty($filter->getCategories())) {
+        if ($search->getString()) {
+            $query = $query
+                ->andWhere('p.name LIKE :string OR p.description LIKE :string')
+                ->setParameter('string', "%{$search->getString()}%");
+        }
+
+        if (!empty($search->getCategories())) {
             $allCategoryIds = [];
-            foreach ($filter->getCategories() as $category) {
+            foreach ($search->getCategories() as $category) {
                 $allCategoryIds = array_merge($allCategoryIds, $this->getAllSubcategoryIds($category));
             }
             if (!empty($allCategoryIds)) {
-                $qb->andWhere('p.category IN (:categories)')
-                   ->setParameter('categories', array_unique($allCategoryIds));
+                $query->andWhere('p.category IN (:categories)')
+                    ->setParameter('categories', array_unique($allCategoryIds));
             }
         }
 
+        if ($search->getMinPrice()) {
+            $query->andWhere('p.price >= :minPrice')
+                ->setParameter('minPrice', $search->getMinPrice());
+        }
+
+        if ($search->getMaxPrice()) {
+            $query->andWhere('p.price <= :maxPrice')
+                ->setParameter('maxPrice', $search->getMaxPrice());
+        }
+
+        if ($search->getAvailability()) {
+            if ($search->getAvailability() === 'in_stock') {
+                $query->andWhere('p.stock > 0');
+            } elseif ($search->getAvailability() === 'out_of_stock') {
+                $query->andWhere('p.stock = 0');
+            }
+        }
+
+        // Handle sorting
+        $sortBy = $search->getSortBy() ?: 'name';
+        $sortOrder = $search->getSortOrder() ?: 'asc';
+        
+        // Validate sort options
+        $allowedSortFields = ['name', 'price', 'rating'];
+        $sortBy = in_array($sortBy, $allowedSortFields) ? $sortBy : 'name';
+        $sortOrder = in_array(strtolower($sortOrder), ['asc', 'desc']) ? $sortOrder : 'asc';
+        
+        $query->orderBy('p.' . $sortBy, $sortOrder);
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findByFilter(ProductFilter $filter, int $page = 1, int $limit = 10): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p', 'c')
+            ->leftJoin('p.category', 'c');
+
+        // Apply category filter
+        if (!$filter->getCategories()->isEmpty()) {
+            $categoryIds = [];
+            foreach ($filter->getCategories() as $category) {
+                // Add the selected category
+                $categoryIds[] = $category->getId();
+                
+                // Add all subcategories recursively
+                $this->addSubcategoryIds($category, $categoryIds);
+            }
+            
+            if (!empty($categoryIds)) {
+                $query->andWhere('p.category IN (:categories)')
+                    ->setParameter('categories', array_unique($categoryIds));
+            }
+        }
+
+        // Apply price filters
         if ($filter->getMinPrice()) {
-            $qb->andWhere('p.price >= :minPrice')
-               ->setParameter('minPrice', $filter->getMinPrice());
+            $query->andWhere('p.price >= :minPrice')
+                ->setParameter('minPrice', $filter->getMinPrice());
         }
 
         if ($filter->getMaxPrice()) {
-            $qb->andWhere('p.price <= :maxPrice')
-               ->setParameter('maxPrice', $filter->getMaxPrice());
+            $query->andWhere('p.price <= :maxPrice')
+                ->setParameter('maxPrice', $filter->getMaxPrice());
         }
 
+        // Apply availability filter
         if ($filter->getAvailability()) {
             if ($filter->getAvailability() === 'in_stock') {
-                $qb->andWhere('p.stock > 0');
+                $query->andWhere('p.stock > 0');
             } elseif ($filter->getAvailability() === 'out_of_stock') {
-                $qb->andWhere('p.stock = 0');
+                $query->andWhere('p.stock = 0');
             }
         }
-
-        $qb->orderBy('p.name', 'ASC');
 
         // Calculate offset for pagination
         $offset = ($page - 1) * $limit;
 
+        // Get total count before applying limit
+        $totalQuery = clone $query;
+        $totalProducts = count($totalQuery->getQuery()->getResult());
+
+        // Apply pagination
+        $query->setMaxResults($limit)
+            ->setFirstResult($offset);
+
         return [
-            'products' => $qb->setMaxResults($limit)
-                          ->setFirstResult($offset)
-                          ->getQuery()
-                          ->getResult(),
-            'totalProducts' => count($qb->getQuery()->getResult()),
+            'products' => $query->getQuery()->getResult(),
+            'totalProducts' => $totalProducts
         ];
+    }
+
+    private function addSubcategoryIds(Category $category, array &$ids): void
+    {
+        foreach ($category->getSubcategories() as $subcategory) {
+            $ids[] = $subcategory->getId();
+            $this->addSubcategoryIds($subcategory, $ids);
+        }
     }
 }

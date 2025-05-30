@@ -19,7 +19,7 @@
                             <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider" data-text="Explorez nos catégories">Explorez nos catégories</span>
                         </div>
                         <div class="py-2">
-                            {% for category in categories %}
+                            {% for category in global_categories %}
                                 {% if category.parent is null %}
                                     <div class="relative group/category hover:bg-backer">
                                         <a href="{{ path('home', {'id': category.id}) }}" class="flex items-center justify-between px-4 py-2 text-lighter hover:text-primary transition-colors{% if category.subcategories|length > 0 %} has-submenu{% endif %}">
@@ -57,7 +57,9 @@
                                                                         </svg>
                                                                     {% endif %}
                                                                 </span>
-                                                            </a>                                            {% if subcategory.subcategories|length > 0 %}                                                                <div class="absolute top-0 left-full ml-1 w-56 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200" style="z-index: 102;">
+                                                            </a>
+                                                            {% if subcategory.subcategories|length > 0 %}
+                                                                <div class="absolute top-0 left-full ml-1 w-56 bg-dark-gray border border-primary rounded-lg shadow-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200" style="z-index: 102;">
                                                                     <div class="dropdown-header py-2 px-4 border-b border-lighterer">
                                                                         <span class="text-primary font-semibold chakra-semibold text-xs uppercase tracking-wider" data-text="{{ subcategory.name }}">{{ subcategory.name }}</span>
                                                                     </div>
@@ -86,33 +88,31 @@
                 </div>
 
                 {# Search Bar #}
-                <div class="flex">
-                    <div class="relative group cyberpunk-search">
-                        <form action="{{ path('app_search') }}" method="GET" class="flex relative" id="searchForm">
-                            <input type="text" 
-                                   name="q"
-                                   class="cyberpunk-input" 
-                                   placeholder="Rechercher un produit, une marque..."
-                                   autocomplete="off"
-                                   id="searchInput">
-                            <button type="submit" class="cyberpunk-button">
-                                <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </button>
-                        </form>
-                        
-                        {# Search Results Dropdown #}
-                        <div id="searchResults" class="cyberpunk-results">
-                            <div class="dropdown-header py-2 px-4 border-b border-lighterer">
-                                <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider">Résultats</span>
-                            </div>
-                            <div id="searchLoading" class="p-4 text-center hidden">
-                                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-highlight"></div>
-                            </div>
-                            <div id="searchResultsContent" class="max-h-96 overflow-y-auto custom-scrollbar">
-                                {# Results will be loaded here via AJAX #}
-                            </div>
+                <div class="relative group cyberpunk-search">
+                    <form action="{{ path('app_search') }}" method="GET" class="flex items-center" id="searchForm">
+                        <input type="text" 
+                               name="q"
+                               class="cyberpunk-input" 
+                               placeholder="Search..."
+                               autocomplete="off"
+                               id="searchInput">
+                        <button type="submit" class="cyberpunk-button ml-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </form>
+                    
+                    {# Search Results Dropdown #}
+                    <div id="searchResults" class="cyberpunk-results">
+                        <div class="dropdown-header py-2 px-4 border-b border-lighterer">
+                            <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider">Results</span>
+                        </div>
+                        <div id="searchLoading" class="p-4 text-center hidden">
+                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-highlight"></div>
+                        </div>
+                        <div id="searchResultsContent" class="max-h-96 overflow-y-auto custom-scrollbar">
+                            {# Results will be loaded here via AJAX #}
                         </div>
                     </div>
                 </div>
@@ -232,7 +232,7 @@
             </button>
             
             <div class="mobile-dropdown hidden pl-4">
-                {% for category in categories %}
+                {% for category in global_categories %}
                     {% if category.parent is null %}
                         <div class="py-1">
                             <a href="{{ path('home', {'id': category.id}) }}" class="block py-2 text-lighter hover:text-primary">

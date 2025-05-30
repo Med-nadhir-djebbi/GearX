@@ -25,16 +25,18 @@
         <div class="w-full md:w-1/4 px-4 mb-8">
             <div class="bordered bg-zinc-800/20 p-6 backdrop-blur-md rounded-lg border border-lime-500/20">
                 <h2 class="text-xl font-bold mb-4 chakra-petch-medium text-lime-500">Filters</h2>
-                {{ form_start(filter_form, {'attr': {'class': 'space-y-6'}}) }}
+                {{ form_start(filter_form, {'attr': {'class': 'space-y-6', 'id': 'filter-form'}}) }}
                     <div class="mb-6">
                         <label class="block text-sm font-medium mb-3 chakra-petch-medium text-lime-400">Categories</label>
                         <div class="space-y-2 max-h-[300px] overflow-y-auto pr-2 category-tree">
                             {% for category in categories %}
                                 <div class="category-item">
                                     <label class="flex items-center space-x-2 text-sm font-bold mb-1">
-                                        <input type="checkbox" name="categories[]" value="{{ category.id }}"
+                                        <input type="checkbox" 
+                                               name="categories[]" 
+                                               value="{{ category.id }}"
                                                class="gaming-checkbox"
-                                               {% if category.id in app.request.get('categories', []) %}checked{% endif %}>
+                                               {% if category.id in filter_form.vars.value.categories|map(c => c.id) %}checked{% endif %}>
                                         <span>{{ category.name }}</span>
                                     </label>
                                     {% if category.subcategories|length > 0 %}
@@ -42,18 +44,22 @@
                                             {% for subcategory in category.subcategories %}
                                                 <div class="category-item">
                                                     <label class="flex items-center space-x-2 text-sm mb-1">
-                                                        <input type="checkbox" name="categories[]" value="{{ subcategory.id }}"
+                                                        <input type="checkbox" 
+                                                               name="categories[]" 
+                                                               value="{{ subcategory.id }}"
                                                                class="gaming-checkbox"
-                                                               {% if subcategory.id in app.request.get('categories', []) %}checked{% endif %}>
+                                                               {% if subcategory.id in filter_form.vars.value.categories|map(c => c.id) %}checked{% endif %}>
                                                         <span>{{ subcategory.name }}</span>
                                                     </label>
                                                     {% if subcategory.subcategories|length > 0 %}
                                                         <div class="ml-4 space-y-1">
                                                             {% for subsubcategory in subcategory.subcategories %}
                                                                 <label class="flex items-center space-x-2 text-sm text-zinc-300 mb-1">
-                                                                    <input type="checkbox" name="categories[]" value="{{ subsubcategory.id }}"
+                                                                    <input type="checkbox" 
+                                                                           name="categories[]" 
+                                                                           value="{{ subsubcategory.id }}"
                                                                            class="gaming-checkbox"
-                                                                           {% if subsubcategory.id in app.request.get('categories', []) %}checked{% endif %}>
+                                                                           {% if subsubcategory.id in filter_form.vars.value.categories|map(c => c.id) %}checked{% endif %}>
                                                                     <span>{{ subsubcategory.name }}</span>
                                                                 </label>
                                                             {% endfor %}
@@ -71,8 +77,8 @@
                     <div class="mb-6">
                         <label class="block text-sm font-medium mb-3 chakra-petch-medium text-lime-400">Price Range</label>
                         <div class="flex space-x-2">
-                            {{ form_widget(filter_form.minPrice, {'attr': {'class': 'w-1/2 gaming-input rounded-md px-3 py-2', 'placeholder': 'Min'}}) }}
-                            {{ form_widget(filter_form.maxPrice, {'attr': {'class': 'w-1/2 gaming-input rounded-md px-3 py-2', 'placeholder': 'Max'}}) }}
+                            {{ form_widget(filter_form.minPrice, {'attr': {'class': 'w-1/2 price-range-input rounded-md px-3 py-2', 'placeholder': 'Min'}}) }}
+                            {{ form_widget(filter_form.maxPrice, {'attr': {'class': 'w-1/2 price-range-input rounded-md px-3 py-2', 'placeholder': 'Max'}}) }}
                         </div>
                     </div>
 

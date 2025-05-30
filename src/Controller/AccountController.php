@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Order;
+use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,6 +33,9 @@ class AccountController extends AbstractController
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
 
@@ -44,7 +48,7 @@ class AccountController extends AbstractController
                 $user->setPassword($password);
                 $em->flush();
                 $this->addFlash(
-                    'notice', 
+                    'notice',
                     'Password updated successfully! Please log in again with your new password.'
                 );
                 return $this->redirectToRoute('account');

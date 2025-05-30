@@ -2,12 +2,21 @@
 
 namespace App\Model;
 
+use App\Entity\Category;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 class ProductFilter
 {
     private ?float $minPrice = null;
     private ?float $maxPrice = null;
-    private array $categories = [];
+    private Collection $categories;
     private ?string $availability = null;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     public function getMinPrice(): ?float
     {
@@ -31,22 +40,28 @@ class ProductFilter
         return $this;
     }
 
-    public function getCategories(): array
+    public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    public function setCategories(array $categories): self
+    public function setCategories(Collection $categories): self
     {
         $this->categories = $categories;
         return $this;
     }
 
-    public function addCategory($categoryId): self
+    public function addCategory(Category $category): self
     {
-        if (!in_array($categoryId, $this->categories)) {
-            $this->categories[] = $categoryId;
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
         }
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->categories->removeElement($category);
         return $this;
     }
 
