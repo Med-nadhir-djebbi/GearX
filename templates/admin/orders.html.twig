@@ -92,12 +92,18 @@
                                             <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal{{ order.id }}">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-success">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-times"></i>
-                                            </button>
+                                            <form action="{{ path('admin_orders_update_status', {id: order.id}) }}" method="POST" class="d-inline">
+                                                <input type="hidden" name="status" value="1">
+                                                <button type="submit" class="btn btn-sm btn-outline-success" {% if order.state == 1 %}disabled{% endif %}>
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                            <form action="{{ path('admin_orders_update_status', {id: order.id}) }}" method="POST" class="d-inline">
+                                                <input type="hidden" name="status" value="2">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" {% if order.state == 2 %}disabled{% endif %}>
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>

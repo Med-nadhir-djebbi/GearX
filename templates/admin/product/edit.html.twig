@@ -1,6 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Edit Dropship - GearX Admin{% endblock %}
+{% block title %}Edit Product - GearX Admin{% endblock %}
 
 {% block body %}
 <div class="container-fluid bg-darker min-h-screen">
@@ -16,7 +16,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_products') }}">
+                        <a class="nav-link active" href="{{ path('admin_products') }}">
                             <i class="fas fa-box me-2 text-primary"></i>
                             <span class="text-lighter">Products</span>
                         </a>
@@ -34,7 +34,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('admin_dropships') }}">
+                        <a class="nav-link" href="{{ path('admin_dropships') }}">
                             <i class="fas fa-truck me-2 text-primary"></i>
                             <span class="text-lighter">Dropships</span>
                         </a>
@@ -46,9 +46,9 @@
         <!-- Main content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-darker">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-primary">
-                <h1 class="h2 text-lighter">Edit Dropship</h1>
+                <h1 class="h2 text-lighter">Edit Product</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <a href="{{ path('admin_dropships_index') }}" class="btn btn-outline-primary">
+                    <a href="{{ path('admin_products_index') }}" class="btn btn-outline-primary">
                         <i class="fas fa-arrow-left"></i> Back to List
                     </a>
                 </div>
@@ -56,44 +56,51 @@
 
             <div class="card bg-dark-gray border border-primary shadow mb-4">
                 <div class="card-body">
-                    <form method="POST" class="admin-form">
+                    <form method="POST" enctype="multipart/form-data" class="admin-form">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="name" class="form-label text-lighter">Name</label>
-                                <input type="text" id="name" name="name" class="form-control bg-darker text-lighter border-primary" value="{{ dropship.name }}" required>
+                                <input type="text" id="name" name="name" class="form-control bg-darker text-lighter border-primary" value="{{ product.name }}" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="company" class="form-label text-lighter">Company</label>
-                                <input type="text" id="company" name="company" class="form-control bg-darker text-lighter border-primary" value="{{ dropship.company }}" required>
+                                <label for="price" class="form-label text-lighter">Price</label>
+                                <input type="number" id="price" name="price" step="0.01" class="form-control bg-darker text-lighter border-primary" value="{{ product.price }}" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label text-lighter">Email</label>
-                                <input type="email" id="email" name="email" class="form-control bg-darker text-lighter border-primary" value="{{ dropship.email }}" required>
+                                <label for="stock" class="form-label text-lighter">Stock</label>
+                                <input type="number" id="stock" name="stock" class="form-control bg-darker text-lighter border-primary" value="{{ product.stock }}" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="phone" class="form-label text-lighter">Phone</label>
-                                <input type="tel" id="phone" name="phone" class="form-control bg-darker text-lighter border-primary" value="{{ dropship.phone }}" required>
+                                <label for="category" class="form-label text-lighter">Category</label>
+                                <select id="category" name="category" class="form-select bg-darker text-lighter border-primary" required>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}" {% if category.id == product.category.id %}selected{% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label for="address" class="form-label text-lighter">Address</label>
-                                <textarea id="address" name="address" class="form-control bg-darker text-lighter border-primary" rows="3" required>{{ dropship.address }}</textarea>
+                                <label for="description" class="form-label text-lighter">Description</label>
+                                <textarea id="description" name="description" class="form-control bg-darker text-lighter border-primary" rows="3" required>{{ product.description }}</textarea>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label for="status" class="form-label text-lighter">Status</label>
-                                <select id="status" name="status" class="form-select bg-darker text-lighter border-primary" required>
-                                    <option value="active" {% if dropship.status == 'active' %}selected{% endif %}>Active</option>
-                                    <option value="inactive" {% if dropship.status == 'inactive' %}selected{% endif %}>Inactive</option>
-                                </select>
+                            <div class="col-12 mb-3">
+                                <label for="image" class="form-label text-lighter">Image</label>
+                                {% if product.image %}
+                                    <div class="mb-2">
+                                        <img src="{{ asset(product.image) }}" alt="{{ product.name }}" class="img-thumbnail" style="max-width: 200px;">
+                                    </div>
+                                {% endif %}
+                                <input type="file" id="image" name="image" class="form-control bg-darker text-lighter border-primary" accept="image/*">
+                                <small class="text-muted">Leave empty to keep the current image</small>
                             </div>
 
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Update Dropship
+                                    <i class="fas fa-save"></i> Update Product
                                 </button>
                             </div>
                         </div>
@@ -171,12 +178,9 @@ textarea.form-control {
     min-height: 100px;
 }
 
-.form-select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2300ff9d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    padding-right: 2.5rem;
+.img-thumbnail {
+    background-color: #374151;
+    border-color: #4b5563;
 }
 </style>
 {% endblock %} 

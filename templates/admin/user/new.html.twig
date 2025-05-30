@@ -1,6 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Edit Dropship - GearX Admin{% endblock %}
+{% block title %}New User - GearX Admin{% endblock %}
 
 {% block body %}
 <div class="container-fluid bg-darker min-h-screen">
@@ -28,13 +28,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_users') }}">
+                        <a class="nav-link active" href="{{ path('admin_users') }}">
                             <i class="fas fa-users me-2 text-primary"></i>
                             <span class="text-lighter">Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('admin_dropships') }}">
+                        <a class="nav-link" href="{{ path('admin_dropships') }}">
                             <i class="fas fa-truck me-2 text-primary"></i>
                             <span class="text-lighter">Dropships</span>
                         </a>
@@ -46,9 +46,9 @@
         <!-- Main content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-darker">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-primary">
-                <h1 class="h2 text-lighter">Edit Dropship</h1>
+                <h1 class="h2 text-lighter">New User</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <a href="{{ path('admin_dropships_index') }}" class="btn btn-outline-primary">
+                    <a href="{{ path('admin_users_index') }}" class="btn btn-outline-primary">
                         <i class="fas fa-arrow-left"></i> Back to List
                     </a>
                 </div>
@@ -59,41 +59,31 @@
                     <form method="POST" class="admin-form">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label text-lighter">Name</label>
-                                <input type="text" id="name" name="name" class="form-control bg-darker text-lighter border-primary" value="{{ dropship.name }}" required>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="company" class="form-label text-lighter">Company</label>
-                                <input type="text" id="company" name="company" class="form-control bg-darker text-lighter border-primary" value="{{ dropship.company }}" required>
+                                <label for="username" class="form-label text-lighter">Username</label>
+                                <input type="text" id="username" name="username" class="form-control bg-darker text-lighter border-primary" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label text-lighter">Email</label>
-                                <input type="email" id="email" name="email" class="form-control bg-darker text-lighter border-primary" value="{{ dropship.email }}" required>
+                                <input type="email" id="email" name="email" class="form-control bg-darker text-lighter border-primary" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="phone" class="form-label text-lighter">Phone</label>
-                                <input type="tel" id="phone" name="phone" class="form-control bg-darker text-lighter border-primary" value="{{ dropship.phone }}" required>
-                            </div>
-
-                            <div class="col-12 mb-3">
-                                <label for="address" class="form-label text-lighter">Address</label>
-                                <textarea id="address" name="address" class="form-control bg-darker text-lighter border-primary" rows="3" required>{{ dropship.address }}</textarea>
+                                <label for="password" class="form-label text-lighter">Password</label>
+                                <input type="password" id="password" name="password" class="form-control bg-darker text-lighter border-primary" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="status" class="form-label text-lighter">Status</label>
-                                <select id="status" name="status" class="form-select bg-darker text-lighter border-primary" required>
-                                    <option value="active" {% if dropship.status == 'active' %}selected{% endif %}>Active</option>
-                                    <option value="inactive" {% if dropship.status == 'inactive' %}selected{% endif %}>Inactive</option>
-                                </select>
+                                <label class="form-label text-lighter">Roles</label>
+                                <div class="form-check">
+                                    <input type="checkbox" id="role_admin" name="roles[]" value="ROLE_ADMIN" class="form-check-input">
+                                    <label class="form-check-label text-lighter" for="role_admin">Admin</label>
+                                </div>
                             </div>
 
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Update Dropship
+                                    <i class="fas fa-save"></i> Create User
                                 </button>
                             </div>
                         </div>
@@ -139,11 +129,11 @@ main {
     margin-top: 48px;
 }
 
-.form-control, .form-select {
+.form-control {
     border: 1px solid #6366f1;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus {
     border-color: #818cf8;
     box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
 }
@@ -166,17 +156,14 @@ main {
     margin-bottom: 0.5rem;
 }
 
-textarea.form-control {
-    resize: vertical;
-    min-height: 100px;
+.form-check-input {
+    background-color: #374151;
+    border-color: #6366f1;
 }
 
-.form-select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2300ff9d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    padding-right: 2.5rem;
+.form-check-input:checked {
+    background-color: #6366f1;
+    border-color: #6366f1;
 }
 </style>
 {% endblock %} 
