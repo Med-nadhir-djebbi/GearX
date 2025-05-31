@@ -36,7 +36,7 @@ class CollectionsController extends AbstractController
         }
 
         $page = $request->query->getInt('page', 1);
-        $limit = 10;
+        $limit = 12;
 
         $result = $productRepository->findByFilter($filter, $page, $limit);
         

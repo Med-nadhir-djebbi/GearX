@@ -2,7 +2,8 @@
     <div class="cardy h-[500px] bg-dark w-full">
         <a href="{{ path('product_show', {'slug': product.id}) }}" class="text-decoration-none flex flex-col h-full">
             <div class="position-relative flex-3">
-                <img src="{{ asset(product.image ?? 'assets/img/placeholder.webp') }}" 
+                <img src="{{ asset('assets/img/products/' ~ (product.image ?? 'playstation.jpg')) }}"
+
                     class="card-img-top p-3 w-full h-full object-contain" 
                     alt="{{ product.name }}"
                     onerror="this.src='{{ asset('assets/img/placeholder.webp') }}'">
