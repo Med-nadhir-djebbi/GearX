@@ -19,6 +19,14 @@
             <span class="text-primary font-semibold chakra-semibold uppercase text-sm tracking-wider">Explorez nos catégories</span>
         </div>
         <div class="py-2">
+             <div class="relative group/category hover:bg-backer">
+                        <a href="{{ path('app_category_index')}}" 
+                           class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors bg-primary text-white">
+                            <div class="flex items-center flex-grow">
+                                <span style="color:black"><strong>All Categories</strong></span>
+                            </div>
+                        </a>
+            </div>
             {% for category in global_categories %}
                 {% if category.parent is null %}
                     <div class="relative group/category hover:bg-backer">
