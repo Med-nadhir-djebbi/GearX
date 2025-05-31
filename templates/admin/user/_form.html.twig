@@ -1,0 +1,55 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.username) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(form.firstName) }}
+                {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.firstName) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(form.lastName) }}
+                {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.lastName) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.plainPassword) }}
+        {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.plainPassword) }}
+        {% if form.plainPassword.vars.help is defined %}
+            <small class="form-text text-muted">{{ form.plainPassword.vars.help }}</small>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.roles) }}
+        {{ form_widget(form.roles, {'attr': {'class': 'form-check-input'}}) }}
+        {{ form_errors(form.roles) }}
+    </div>
+
+    <div class="mb-3">
+        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        <a href="{{ path('admin_user_index') }}" class="btn btn-secondary">Back to list</a>
+    </div>
+{{ form_end(form) }} 

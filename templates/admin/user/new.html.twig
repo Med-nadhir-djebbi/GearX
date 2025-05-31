@@ -1,169 +1,17 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}New User - GearX Admin{% endblock %}
+{% block title %}Create New User{% endblock %}
 
 {% block body %}
-<div class="container-fluid bg-darker min-h-screen">
-    <div class="row">
-        <!-- Sidebar -->
-        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark-gray border-r border-primary sidebar">
-            <div class="position-sticky pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dashboard') }}">
-                            <i class="fas fa-home me-2 text-primary"></i>
-                            <span class="text-lighter">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_products') }}">
-                            <i class="fas fa-box me-2 text-primary"></i>
-                            <span class="text-lighter">Products</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_orders') }}">
-                            <i class="fas fa-shopping-cart me-2 text-primary"></i>
-                            <span class="text-lighter">Orders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('admin_users') }}">
-                            <i class="fas fa-users me-2 text-primary"></i>
-                            <span class="text-lighter">Users</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dropships') }}">
-                            <i class="fas fa-truck me-2 text-primary"></i>
-                            <span class="text-lighter">Dropships</span>
-                        </a>
-                    </li>
-                </ul>
+    <div class="container mt-4">
+        <h1>Create New User</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
             </div>
-        </nav>
+        {% endfor %}
 
-        <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-darker">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-primary">
-                <h1 class="h2 text-lighter">New User</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <a href="{{ path('admin_users_index') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-arrow-left"></i> Back to List
-                    </a>
-                </div>
-            </div>
-
-            <div class="card bg-dark-gray border border-primary shadow mb-4">
-                <div class="card-body">
-                    <form method="POST" class="admin-form">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="username" class="form-label text-lighter">Username</label>
-                                <input type="text" id="username" name="username" class="form-control bg-darker text-lighter border-primary" required>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label text-lighter">Email</label>
-                                <input type="email" id="email" name="email" class="form-control bg-darker text-lighter border-primary" required>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="password" class="form-label text-lighter">Password</label>
-                                <input type="password" id="password" name="password" class="form-control bg-darker text-lighter border-primary" required>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label text-lighter">Roles</label>
-                                <div class="form-check">
-                                    <input type="checkbox" id="role_admin" name="roles[]" value="ROLE_ADMIN" class="form-check-input">
-                                    <label class="form-check-label text-lighter" for="role_admin">Admin</label>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Create User
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </main>
+        {{ include('admin/user/_form.html.twig', {'button_label': 'Create'}) }}
     </div>
-</div>
-{% endblock %}
-
-{% block stylesheets %}
-{{ parent() }}
-<style>
-.sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    padding: 48px 0 0;
-}
-
-.sidebar .nav-link {
-    font-weight: 500;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.3s;
-}
-
-.sidebar .nav-link:hover {
-    background-color: rgba(99, 102, 241, 0.1);
-}
-
-.sidebar .nav-link.active {
-    background-color: rgba(99, 102, 241, 0.2);
-}
-
-.sidebar .nav-link.active span {
-    color: #6366f1;
-}
-
-main {
-    margin-top: 48px;
-}
-
-.form-control {
-    border: 1px solid #6366f1;
-}
-
-.form-control:focus {
-    border-color: #818cf8;
-    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
-}
-
-.btn-outline-primary {
-    color: #6366f1;
-    border-color: #6366f1;
-}
-
-.btn-outline-primary:hover {
-    background-color: #6366f1;
-    color: #fff;
-}
-
-.card {
-    background-color: #1f2937;
-}
-
-.form-label {
-    margin-bottom: 0.5rem;
-}
-
-.form-check-input {
-    background-color: #374151;
-    border-color: #6366f1;
-}
-
-.form-check-input:checked {
-    background-color: #6366f1;
-    border-color: #6366f1;
-}
-</style>
 {% endblock %} 
