@@ -26,7 +26,8 @@
         "symfony/security-csrf": "7.2.*",
         "symfony/twig-bundle": "7.2.*",
         "symfony/validator": "7.2.*",
-        "symfony/yaml": "7.2.*"
+        "symfony/yaml": "7.2.*",
+        "twig/intl-extra": "*"
     },
     "config": {
         "allow-plugins": {
