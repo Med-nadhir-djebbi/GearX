@@ -69,8 +69,8 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user): Response
     {
         // Prevent editing of super admin by other admins
-        if ($user->getRoles() !== $this->getUser()->getRoles() && in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-            throw new AccessDeniedException('You cannot edit a super admin account.');
+        if ($user->getRoles() !== $this->getUser()->getRoles() && in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw new AccessDeniedException('You cannot edit an admin account.');
         }
 
         $form = $this->createForm(UserType::class, $user, ['is_edit' => true]);

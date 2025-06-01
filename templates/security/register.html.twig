@@ -81,6 +81,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3 form-check">
+                        {{ form_widget(form.agreeTerms) }}
+                        {{ form_label(form.agreeTerms) }}
+                        {{ form_errors(form.agreeTerms) }}
+                    </div>
+
 
                     <div class="d-grid gap-2 mt-4">
                         {{ form_widget(form.submit, {'attr': {
