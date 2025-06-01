@@ -18,7 +18,7 @@ security:
       custom_authenticator: App\Security\LoginAuthenticator
       logout:
         path: app_logout
-        target: app_login
+        target: /
       access_denied_url: /not-found
       remember_me:
         secret: "%kernel.secret%"

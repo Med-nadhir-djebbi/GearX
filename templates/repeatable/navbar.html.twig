@@ -162,18 +162,18 @@
                         <a href="{{ path('account')}}" 
                            class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors bg-primary text-white">
                             <div class="flex items-center flex-grow">
-                                <span style="color:black"><strong>Mon Compte</strong></span>
+                                <span style="color:black"><strong>My Account</strong></span>
                             </div>
                         </a>
                         <div class="py-2">
                             {% if app.user %}
                                 <a href="{{ path('account_orders') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
                                     <i class="fas fa-box mr-3 text-primary"></i>
-                                    <span>Mes commandes</span>
+                                    <span>My Orders</span>
                                 </a>
                                 <a href="{{ path('account_password') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
                                     <i class="fas fa-lock mr-3 text-primary"></i>
-                                    <span>Changer le mot de passe</span>
+                                    <span>Change Password</span>
                                 </a>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a href="{{ path('admin_dashboard') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
@@ -183,16 +183,16 @@
                                 {% endif %}
                                 <a href="{{ path('app_logout') }}" class="flex items-center px-4 py-2 text-lighter hover:text-primary transition-colors">
                                     <i class="fas fa-sign-out-alt mr-3 text-primary"></i>
-                                    <span>Déconnexion</span>
+                                    <span>Log Out</span>
                                 </a>
                             {% else %}
                             <a href="{{ path('app_login') }}" class="flex items-center px-4 py-2 text-lighter transition-colors">
                                 <i class="fas fa-sign-in-alt mr-3 text-primary"></i>
-                                <span>Connexion</span>
+                                <span>Login</span>
                             </a>
                             <a href="{{ path('register') }}" class="flex items-center px-4 py-2 text-lighter transition-colors">
                                 <i class="fas fa-user-plus mr-3 text-primary"></i>
-                                <span>Inscription</span>
+                                <span>Register</span>
                             </a>
                             {% endif %}
                         </div>
