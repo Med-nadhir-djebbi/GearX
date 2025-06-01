@@ -3,58 +3,56 @@
 {% block title %}Orders Management - GearX Admin{% endblock %}
 
 {% block body %}
-<div class="container-fluid bg-darker min-h-screen">
+<div class="container-fluid bg-backer min-h-screen">
     <div class="row">
-        <!-- Sidebar -->
-        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark-gray border-r border-primary sidebar">
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark-gray border-end border-primary sidebar">
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dashboard') }}">
-                            <i class="fas fa-home me-2 text-primary"></i>
-                            <span class="text-lighter">Dashboard</span>
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_dashboard') }}">
+                            <i class="fas fa-home me-2"></i>
+                            <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_products') }}">
-                            <i class="fas fa-box me-2 text-primary"></i>
-                            <span class="text-lighter">Products</span>
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_products') }}">
+                            <i class="fas fa-box me-2"></i>
+                            <span>Products</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('admin_orders') }}">
-                            <i class="fas fa-shopping-cart me-2 text-primary"></i>
-                            <span class="text-lighter">Orders</span>
+                        <a class="nav-link admin-nav-link active" href="{{ path('admin_orders') }}">
+                            <i class="fas fa-shopping-cart me-2"></i>
+                            <span>Orders</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_users') }}">
-                            <i class="fas fa-users me-2 text-primary"></i>
-                            <span class="text-lighter">Users</span>
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_users') }}">
+                            <i class="fas fa-users me-2"></i>
+                            <span>Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dropships') }}">
-                            <i class="fas fa-truck me-2 text-primary"></i>
-                            <span class="text-lighter">Dropships</span>
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_dropships') }}">
+                            <i class="fas fa-truck me-2"></i>
+                            <span>Dropships</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </nav>
 
-        <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-darker">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-backer">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-primary">
-                <h1 class="h2 text-lighter">Orders Management</h1>
+                <h1 class="h2">Orders Management</h1>
             </div>
 
-            <div class="card bg-dark-gray border border-primary shadow mb-4">
+            <div class="card cardy shadow mb-4">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered border-primary" width="100%" cellspacing="0">
+                        <table class="table admin-table" width="100%" cellspacing="0">
                             <thead>
-                                <tr class="text-lighter">
+                                <tr>
                                     <th class="border-primary">Order ID</th>
                                     <th class="border-primary">Customer</th>
                                     <th class="border-primary">Date</th>
@@ -65,126 +63,131 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for order in orders %}
-                                <tr class="text-lighter">
-                                    <td class="border-primary">{{ order.reference }}</td>
-                                    <td class="border-primary">
-                                        {% if order.user.firstName or order.user.lastName %}
-                                            {{ order.user.firstName }} {{ order.user.lastName }}
-                                        {% else %}
-                                            {{ order.user.username }}
-                                        {% endif %}
-                                    </td>
-                                    <td class="border-primary">{{ order.createdAt|date('Y-m-d H:i') }}</td>
-                                    <td class="border-primary text-highlight">{{ order.total|number_format(2, '.', ',') }} €</td>
-                                    <td class="border-primary">
-                                        {% if order.state == 0 %}
-                                            <span class="badge bg-yellow-600 text-yellow-100">Pending</span>
-                                        {% elseif order.state == 1 %}
-                                            <span class="badge bg-green-600 text-green-100">Paid</span>
-                                        {% else %}
-                                            <span class="badge bg-gray-600 text-gray-100">Cancelled</span>
-                                        {% endif %}
-                                    </td>
-                                    <td class="border-primary">
-                                        {% if order.shippingAddress %}
-                                            {{ order.shippingAddress }}
-                                        {% else %}
-                                            <span class="text-muted">No shipping address</span>
-                                        {% endif %}
-                                    </td>
-                                    <td class="border-primary">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal{{ order.id }}">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <form action="{{ path('admin_orders_update_status', {id: order.id}) }}" method="POST" class="d-inline">
-                                                <input type="hidden" name="status" value="1">
-                                                <button type="submit" class="btn btn-sm btn-outline-success" {% if order.state == 1 %}disabled{% endif %}>
-                                                    <i class="fas fa-check"></i>
+                                {% if orders is not empty %}
+                                    {% for order in orders %}
+                                    <tr class="text-lighter">
+                                        <td class="border-primary">{{ order.reference }}</td>
+                                        <td class="border-primary">
+                                            {% if order.user.firstName or order.user.lastName %}
+                                                {{ order.user.firstName }} {{ order.user.lastName }}
+                                            {% else %}
+                                                {{ order.user.username }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="border-primary">{{ order.createdAt|date('Y-m-d H:i') }}</td>
+                                        <td class="border-primary text-highlight">{{ order.total|number_format(2, '.', ',') }} €</td>
+                                        <td class="border-primary">
+                                            {% if order.state == 0 %}
+                                                <span class="cyberpunk-badge status-pending">Pending</span>
+                                            {% elseif order.state == 1 %}
+                                                <span class="cyberpunk-badge status-paid">Paid</span>
+                                            {% else %}
+                                                <span class="cyberpunk-badge status-cancelled">Cancelled</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="border-primary">
+                                            {% if order.shippingAddress %}
+                                                {{ order.shippingAddress }}
+                                            {% else %}
+                                                <span class="text-muted">No shipping address</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="border-primary">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn gaming-action-btn-view" data-bs-toggle="modal" data-bs-target="#orderModal{{ order.id }}">
+                                                    <i class="fas fa-eye"></i>
                                                 </button>
-                                            </form>
-                                            <form action="{{ path('admin_orders_update_status', {id: order.id}) }}" method="POST" class="d-inline">
-                                                <input type="hidden" name="status" value="2">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" {% if order.state == 2 %}disabled{% endif %}>
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
+                                                <form action="{{ path('admin_orders_update_status', {id: order.id}) }}" method="POST" class="d-inline">
+                                                    <input type="hidden" name="status" value="1">
+                                                    <button type="submit" class="btn gaming-action-btn-success" {% if order.state == 1 %}disabled{% endif %}>
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{ path('admin_orders_update_status', {id: order.id}) }}" method="POST" class="d-inline">
+                                                    <input type="hidden" name="status" value="2">
+                                                    <button type="submit" class="btn gaming-action-btn-danger" {% if order.state == 2 %}disabled{% endif %}>
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                <!-- Order Details Modal -->
-                                <div class="modal fade" id="orderModal{{ order.id }}" tabindex="-1" aria-labelledby="orderModalLabel{{ order.id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content bg-dark-gray">
-                                            <div class="modal-header border-bottom border-primary">
-                                                <h5 class="modal-title text-lighter" id="orderModalLabel{{ order.id }}">Order Details #{{ order.reference }}</h5>
-                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row mb-4">
-                                                    <div class="col-md-6">
-                                                        <h6 class="mb-3 text-primary">Customer Information</h6>
-                                                        <p class="text-lighter">Name: 
-                                                            {% if order.user.firstName or order.user.lastName %}
-                                                                {{ order.user.firstName }} {{ order.user.lastName }}
-                                                            {% else %}
-                                                                {{ order.user.username }}
-                                                            {% endif %}
-                                                        </p>
-                                                        <p class="text-lighter">Email: {{ order.user.email }}</p>
+                                    <div class="modal fade" id="orderModal{{ order.id }}" tabindex="-1" aria-labelledby="orderModalLabel{{ order.id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content bg-dark-gray border-primary">
+                                                <div class="modal-header border-bottom border-primary">
+                                                    <h5 class="modal-title text-lighter" id="orderModalLabel{{ order.id }}">Order Details #{{ order.reference }}</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row mb-4">
+                                                        <div class="col-md-6">
+                                                            <h6 class="mb-3 text-primary">Customer Information</h6>
+                                                            <p class="text-lighter">Name:
+                                                                {% if order.user.firstName or order.user.lastName %}
+                                                                    {{ order.user.firstName }} {{ order.user.lastName }}
+                                                                {% else %}
+                                                                    {{ order.user.username }}
+                                                                {% endif %}
+                                                            </p>
+                                                            <p class="text-lighter">Email: {{ order.user.email }}</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h6 class="mb-3 text-primary">Order Information</h6>
+                                                            <p class="text-lighter">Date: {{ order.createdAt|date('Y-m-d H:i') }}</p>
+                                                            <p class="text-lighter">Status:
+                                                                {% if order.state == 0 %}
+                                                                    <span class="cyberpunk-badge status-pending">Pending</span>
+                                                                {% elseif order.state == 1 %}
+                                                                    <span class="cyberpunk-badge status-paid">Paid</span>
+                                                                {% else %}
+                                                                    <span class="cyberpunk-badge status-cancelled">Cancelled</span>
+                                                                {% endif %}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <h6 class="mb-3 text-primary">Order Information</h6>
-                                                        <p class="text-lighter">Date: {{ order.createdAt|date('Y-m-d H:i') }}</p>
-                                                        <p class="text-lighter">Status: 
-                                                            {% if order.state == 0 %}
-                                                                <span class="badge bg-yellow-600 text-yellow-100">Pending</span>
-                                                            {% elseif order.state == 1 %}
-                                                                <span class="badge bg-green-600 text-green-100">Paid</span>
-                                                            {% else %}
-                                                                <span class="badge bg-gray-600 text-gray-100">Cancelled</span>
-                                                            {% endif %}
-                                                        </p>
+                                                    <div class="table-responsive">
+                                                        <table class="table admin-table border-primary">
+                                                            <thead>
+                                                                <tr class="text-lighter">
+                                                                    <th class="border-primary">Product</th>
+                                                                    <th class="border-primary">Price</th>
+                                                                    <th class="border-primary">Quantity</th>
+                                                                    <th class="border-primary">Total</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for item in order.orderDetails %}
+                                                                <tr class="text-lighter">
+                                                                    <td class="border-primary">{{ item.product }}</td>
+                                                                    <td class="border-primary">{{ item.price|number_format(2, '.', ',') }} €</td>
+                                                                    <td class="border-primary">{{ item.quantity }}</td>
+                                                                    <td class="border-primary text-highlight">{{ (item.price * item.quantity)|number_format(2, '.', ',') }} €</td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                            <tfoot>
+                                                                <tr class="text-lighter">
+                                                                    <th colspan="3" class="text-end border-primary">Total:</th>
+                                                                    <th class="border-primary text-highlight">{{ order.total|number_format(2, '.', ',') }} €</th>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
                                                     </div>
                                                 </div>
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered border-primary">
-                                                        <thead>
-                                                            <tr class="text-lighter">
-                                                                <th class="border-primary">Product</th>
-                                                                <th class="border-primary">Price</th>
-                                                                <th class="border-primary">Quantity</th>
-                                                                <th class="border-primary">Total</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {% for item in order.orderDetails %}
-                                                            <tr class="text-lighter">
-                                                                <td class="border-primary">{{ item.product }}</td>
-                                                                <td class="border-primary">{{ item.price|number_format(2, '.', ',') }} €</td>
-                                                                <td class="border-primary">{{ item.quantity }}</td>
-                                                                <td class="border-primary text-highlight">{{ (item.price * item.quantity)|number_format(2, '.', ',') }} €</td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                        </tbody>
-                                                        <tfoot>
-                                                            <tr class="text-lighter">
-                                                                <th colspan="3" class="text-end border-primary">Total:</th>
-                                                                <th class="border-primary text-highlight">{{ order.total|number_format(2, '.', ',') }} €</th>
-                                                            </tr>
-                                                        </tfoot>
-                                                    </table>
+                                                <div class="modal-footer border-top border-primary">
+                                                    <button type="button" class="btn gaming-button-admin" data-bs-dismiss="modal">Close</button>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer border-top border-primary">
-                                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="7" class="text-center text-lighter py-4 border-primary">No orders found.</td>
+                                    </tr>
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>
@@ -197,115 +200,4 @@
 
 {% block stylesheets %}
 {{ parent() }}
-<style>
-.sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    padding: 48px 0 0;
-}
-
-.sidebar .nav-link {
-    font-weight: 500;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.3s;
-}
-
-.sidebar .nav-link:hover {
-    background-color: rgba(99, 102, 241, 0.1);
-}
-
-.sidebar .nav-link.active {
-    background-color: rgba(99, 102, 241, 0.2);
-}
-
-.sidebar .nav-link.active span {
-    color: #6366f1;
-}
-
-main {
-    margin-top: 48px;
-}
-
-.table {
-    color: #e5e7eb;
-}
-
-.table td, .table th {
-    background-color: #1f2937;
-}
-
-.card {
-    background-color: #1f2937;
-}
-
-.btn-outline-primary {
-    color: #6366f1;
-    border-color: #6366f1;
-}
-
-.btn-outline-primary:hover {
-    background-color: #6366f1;
-    color: #fff;
-}
-
-.btn-outline-success {
-    color: #059669;
-    border-color: #059669;
-}
-
-.btn-outline-success:hover {
-    background-color: #059669;
-    color: #fff;
-}
-
-.btn-outline-danger {
-    color: #ef4444;
-    border-color: #ef4444;
-}
-
-.btn-outline-danger:hover {
-    background-color: #ef4444;
-    color: #fff;
-}
-
-.badge {
-    font-weight: 500;
-    padding: 0.5em 0.75em;
-}
-
-.bg-yellow-600 {
-    background-color: #d97706;
-}
-
-.text-yellow-100 {
-    color: #fef3c7;
-}
-
-.bg-green-600 {
-    background-color: #059669;
-}
-
-.text-green-100 {
-    color: #d1fae5;
-}
-
-.bg-gray-600 {
-    background-color: #4b5563;
-}
-
-.text-gray-100 {
-    color: #f3f4f6;
-}
-
-.modal-content {
-    border: 1px solid #6366f1;
-}
-
-.btn-close-white {
-    filter: invert(1) grayscale(100%) brightness(200%);
-}
-</style>
 {% endblock %}

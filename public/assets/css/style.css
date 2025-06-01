@@ -1,72 +1,59 @@
 /********** Template CSS **********/
 
-/* Fonts */
+/* ==========================================================================
+   1. Fonts
+   ========================================================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Sora:wght@100..800&display=swap");
 
 .sora-light {
   font-family: "Sora", sans-serif;
-  font-optical-sizing: auto;
   font-weight: 300;
-  font-style: normal;
 }
 
 .sora-regular {
   font-family: "Sora", sans-serif;
-  font-optical-sizing: auto;
   font-weight: 400;
-  font-style: normal;
 }
 
 .sora-medium {
   font-family: "Sora", sans-serif;
-  font-optical-sizing: auto;
   font-weight: 500;
-  font-style: normal;
 }
 
 .sora-semibold {
   font-family: "Sora", sans-serif;
-  font-optical-sizing: auto;
   font-weight: 600;
-  font-style: normal;
 }
 
 .sora-bold {
   font-family: "Sora", sans-serif;
-  font-optical-sizing: auto;
   font-weight: 700;
-  font-style: normal;
 }
 
 .chakra-light {
   font-family: "Chakra Petch", sans-serif;
   font-weight: 300;
-  font-style: normal;
 }
 
 .chakra-regular {
   font-family: "Chakra Petch", sans-serif;
   font-weight: 400;
-  font-style: normal;
 }
 
 .chakra-medium {
   font-family: "Chakra Petch", sans-serif;
   font-weight: 500;
-  font-style: normal;
 }
 
 .chakra-semibold {
   font-family: "Chakra Petch", sans-serif;
   font-weight: 600;
-  font-style: normal;
 }
 
 .chakra-bold {
   font-family: "Chakra Petch", sans-serif;
   font-weight: 700;
-  font-style: normal;
 }
 
 .chakra-light-italic {
@@ -99,35 +86,210 @@
   font-style: italic;
 }
 
-/* Utility Classes */
+/* ==========================================================================
+   2. Global Variables
+   ========================================================================== */
 
-/* General Styles */
-
-hr {
-  display: block;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  margin-left: auto;
-  margin-right: auto;
-  border-style: inset;
-  border-width: 1px;
+:root {
+  --primary: #c2ff00; /* Neon Green */
+  --highlight: #d4ff33; /* Brighter Green for highlight/hover */
+  --backer: #111410; /* Very dark almost black for main background */
+  --dark-gray: #222222; /* Dark gray for cards/sidebar/some backgrounds */
+  --lighter: #f0f0f0ba; /* Light gray/off-white for general text (with transparency) */
+  --lighterer: #f0f0f04f; /* Even lighter gray for subtle lines (with transparency) */
+  --danger-color: #dc3545; /* Standard red for danger actions */
+  --info-color: #007bff; /* Standard blue for info/edit actions */
 }
 
-html {
-  min-height: 100vh;
+/* ==========================================================================
+   3. Base & Utility Styles
+   ========================================================================== */
+
+html,
+body {
+  overflow-x: hidden; /* Prevents horizontal scroll */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ensures padding/border are included in element's total width/height */
+  font-family: "Sora", sans-serif; /* Default body font */
+  background-color: var(--backer); /* Global background color */
+  color: var(--lighter); /* Default text color */
+  min-height: 100vh; /* Ensures body takes full viewport height */
 }
 
-a:hover {
-  text-decoration: none;
+a {
+  text-decoration: none; /* Remove default underline from links */
   cursor: pointer;
 }
 
-/* Hero Section Styles */
-.hero-section {
+a:hover {
+  text-decoration: none; /* Ensure no underline on hover */
+}
+
+hr {
+  border-color: var(--lighterer); /* Themed color for HR */
+  border-width: 1px;
+  border-style: inset;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* Background Colors */
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+
+.bg-highlight {
+  background-color: var(--highlight) !important;
+}
+
+.bg-lighter {
+  background-color: var(--lighter) !important;
+}
+
+.bg-blacker {
+  background-color: var(--backer) !important;
+}
+
+.bg-dark-gray {
+  background-color: var(--dark-gray) !important;
+}
+
+/* Text Colors */
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-highlight {
+  color: var(--highlight) !important;
+}
+
+.text-lighter {
+  color: var(--lighter) !important;
+}
+
+.text-blacker {
+  color: var(--backer) !important;
+}
+
+/* Border Colors */
+.border-primary {
+  border-color: var(--primary) !important;
+}
+
+.bordered {
+  border: 1px solid var(--lighterer);
+}
+
+.object-contain {
+  object-fit: contain;
+}
+
+.img-fluid {
+  border: 1px solid var(--lighterer) !important;
+}
+
+/* Flex Utilities */
+.flex-1 {
+  flex: 1;
+}
+
+.flex-2 {
+  flex: 2;
+}
+
+.flex-3 {
+  flex: 3;
+}
+
+.flex-4 {
+  flex: 4;
+}
+
+.flex-5 {
+  flex: 5;
+}
+
+/* ==========================================================================
+   4. Layout Lines & Grids
+   ========================================================================== */
+
+/* Vertical lines on the sides of the page */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--lighterer);
+  z-index: 40;
+  pointer-events: none;
+}
+
+body::before {
+  left: 5vw; /* Left sidebar line */
+}
+
+body::after {
+  right: 5vw; /* Right sidebar line */
+}
+
+/* Horizontal line at the bottom of sections with .bby */
+.bby {
   position: relative;
-  height: 100vh;
+}
+
+.bby::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--lighterer);
+  width: 100vw;
+  margin-left: calc(-50vw + 50%); /* Extends line across full viewport width */
+  margin-right: calc(-50vw + 50%);
+  z-index: 5;
+}
+
+.content-wrapper {
+  padding-right: 5vw;
+  padding-left: 5vw;
+}
+
+/* Separator Line */
+.separator-line {
+  height: 1px;
   width: 100%;
+  background-color: var(--lighterer);
+  position: relative;
   overflow: hidden;
+}
+
+/* ==========================================================================
+   5. Hero Section Styles
+   ========================================================================== */
+
+.hero-section {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  box-sizing: border-box !important;
+  height: 100vh;
+  position: relative;
+  background-color: var(--backer);
+  padding-top: 80px !important; /* Space for fixed navbar */
 }
 
 .hero-section .bg-image {
@@ -147,6 +309,17 @@ a:hover {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
+.hero-section img {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  object-fit: cover;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 @media (max-width: 767px) {
   .hero-section {
     height: 80vh;
@@ -161,137 +334,6 @@ a:hover {
   }
 }
 
-:root {
-  --backer: #111410;
-  --primary: #c2ff00;
-  --highlight: #d4ff33;
-  --lighter: #f0f0f0ba;
-  --dark-gray: #222222;
-  --lighterer: #f0f0f04f;
-}
-
-/* Ensure color overrides have higher specificity */
-body .bg-primary,
-.bg-primary {
-  background-color: var(--primary) !important;
-}
-
-body .text-primary,
-.text-primary {
-  color: var(--primary) !important;
-}
-
-.bg-blacker {
-  background-color: var(--backer) !important;
-}
-
-.bg-highlight {
-  background-color: var(--highlight) !important;
-}
-
-.bg-lighter {
-  background-color: var(--lighter) !important;
-}
-
-.text-blacker {
-  color: var(--backer) !important;
-}
-
-.text-highlight {
-  color: var(--highlight) !important;
-}
-
-.text-lighter {
-  color: var(--lighter) !important;
-}
-
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background-color: var(--lighterer);
-  z-index: 40;
-  pointer-events: none;
-}
-body {
-  background-color: var(--backer);
-}
-
-.bby {
-  position: relative;
-}
-
-.bby::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background-color: var(--lighterer);
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  z-index: 5;
-}
-
-.content-wrapper {
-  padding-right: 5vw;
-  padding-left: 5vw;
-}
-/* Left sidebar line */
-body::before {
-  left: 5vw;
-}
-
-/* Right sidebar line */
-body::after {
-  right: 5vw;
-}
-
-/* Fix for hero section horizontal scrolling */
-html,
-body {
-  overflow-x: hidden;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Chakra Petch", sans-serif;
-}
-
-.hero-section {
-  width: 100vw !important;
-  max-width: 100vw !important;
-  overflow-x: hidden !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  box-sizing: border-box !important;
-  height: 100vh;
-  position: relative;
-  background-color: var(--backer);
-  margin-left: calc(-50vw + 50%) !important;
-  margin-right: calc(-50vw + 50%) !important;
-  padding-top: 80px !important; /* Add space for navbar */
-}
-
-.hero-section img {
-  width: 100vw !important;
-  max-width: 100vw !important;
-  object-fit: cover;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-/* Gaming UI Elements */
 .hero-border-top,
 .hero-border-bottom {
   position: absolute;
@@ -418,19 +460,24 @@ body {
   }
 }
 
-/* Product Card Styles */
+/* ==========================================================================
+   6. Product Card Styles
+   ========================================================================== */
+
 .cardy {
-  background-color: var(--backer) !important;
-  border: 1px solid var(--lighterer);
-  border-radius: 0 !important; /* Sharp edges */
+  background-color: var(--dark-gray) !important;
+  border: 1px solid var(--primary) !important;
+  border-radius: 0.5rem !important; /* Slightly rounded for modern cyberpunk */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
+  color: var(--lighter) !important;
+  box-shadow: 0 4px 15px rgba(0, 255, 194, 0.1);
 }
 
 .cardy:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 10px rgba(194, 255, 0, 0.2);
-  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(194, 255, 0, 0.5);
+  border-color: var(--highlight) !important;
 }
 
 .cardy .card-img-top {
@@ -535,40 +582,9 @@ body {
   font-size: 0.9rem;
 }
 
-/* Flex Utilities */
-.flex-1 {
-  flex: 1;
-}
-
-.flex-2 {
-  flex: 2;
-}
-
-.flex-3 {
-  flex: 3;
-}
-
-.flex-4 {
-  flex: 4;
-}
-
-.flex-5 {
-  flex: 5;
-}
-
-/* Object Fit Utilities */
-.object-contain {
-  object-fit: contain;
-}
-
-/* Separator Line */
-.separator-line {
-  height: 1px;
-  width: 100%;
-  background-color: var(--lighterer);
-  position: relative;
-  overflow: hidden;
-}
+/* ==========================================================================
+   7. Dropdown Styles (Navbar & Category)
+   ========================================================================== */
 
 /* Fix dropdown visibility */
 .dropdown-menu:not(.invisible),
@@ -577,34 +593,19 @@ body {
   visibility: visible !important;
   display: block !important;
   z-index: 100;
-  pointer-events: auto !important; /* Ensure hover events work */
+  pointer-events: auto !important;
 }
 
 /* Prevent hover from showing dropdown initially, but allow interaction once visible */
 .dropdown-menu,
 .submenu {
   transition: opacity 0.2s, visibility 0.2s;
-}
-
-/* Remove Bootstrap's default dropdown arrow since we're using SVGs */
-.dropdown-toggle::after {
-  display: none !important;
-}
-
-/* Enhanced Cyberpunk Dropdown Styling */
-.dropdown-menu,
-.submenu {
-  background-color: rgba(
-    17,
-    20,
-    16,
-    0.95
-  ) !important; /* Darker background with transparency */
-  backdrop-filter: blur(10px); /* Blur effect for modern look */
-  border: 1px solid var(--primary) !important; /* Neon border */
-  border-radius: 0 !important; /* Sharp edges */
+  background-color: rgba(17, 20, 16, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--primary) !important;
+  border-radius: 0 !important;
   box-shadow: 0 0 15px rgba(194, 255, 0, 0.15),
-    inset 0 0 5px rgba(194, 255, 0, 0.05) !important; /* Neon glow */
+    inset 0 0 5px rgba(194, 255, 0, 0.05) !important;
   overflow: hidden;
   padding: 0;
   transform-origin: top center;
@@ -647,6 +648,11 @@ body {
   }
 }
 
+/* Remove Bootstrap's default dropdown arrow */
+.dropdown-toggle::after {
+  display: none !important;
+}
+
 /* Dropdown Header */
 .dropdown-header {
   border-bottom: 1px solid rgba(194, 255, 0, 0.2);
@@ -684,14 +690,14 @@ body {
 .dropdown-header .text-primary::before {
   left: 2px;
   text-shadow: -1px 0 var(--primary);
-  clip: rect(44px, 450px, 56px, 0);
+  clip: rect(44px, 450px, 56px, 0); /* Adjust clip values based on text size */
   animation: glitch-anim-1 5s linear infinite alternate-reverse;
 }
 
 .dropdown-header .text-primary::after {
   left: -2px;
   text-shadow: -1px 0 var(--highlight);
-  clip: rect(44px, 450px, 56px, 0);
+  clip: rect(44px, 450px, 56px, 0); /* Adjust clip values based on text size */
   animation: glitch-anim-2 5s linear infinite alternate-reverse;
 }
 
@@ -761,23 +767,27 @@ body {
   text-align: center;
 }
 
-/* Cyberpunk Search Styles */
+/* ==========================================================================
+   8. Search Bar Styles
+   ========================================================================== */
+
 .cyberpunk-search {
   position: relative;
   z-index: 200;
   margin-left: 1rem;
 }
 
-.cyberpunk-input {
+.cyberpunk-input { /* This is for the search bar input */
   background: rgba(34, 34, 34, 0.95) !important;
   border: 1px solid var(--primary) !important;
   color: var(--lighter) !important;
   font-family: "Chakra Petch", sans-serif !important;
   transition: all 0.3s ease !important;
-  width: 200px !important;
-  padding: 0.35rem 0.75rem !important;
-  font-size: 0.875rem !important;
-  height: 36px !important;
+  width: 200px !important; /* Reverted to original search width */
+  padding: 0.35rem 0.75rem !important; /* Reverted to original search padding */
+  font-size: 0.875rem !important; /* Reverted to original search font size */
+  height: 36px !important; /* Reverted to original search height */
+  box-sizing: border-box;
 }
 
 .cyberpunk-input:focus {
@@ -905,10 +915,6 @@ body {
   font-weight: 600 !important;
 }
 
-.img-fluid {
-  border: 1px solid var(--lighterer) !important;
-}
-
 .view-all-results {
   display: block !important;
   text-align: center !important;
@@ -924,7 +930,10 @@ body {
   color: var(--highlight) !important;
 }
 
-/* Cyberpunk Quantity Selector */
+/* ==========================================================================
+   9. Quantity Selector
+   ========================================================================== */
+
 .cyberpunk-quantity-input {
   background: rgba(34, 34, 34, 0.95) !important;
   border: 2px solid var(--primary) !important;
@@ -934,9 +943,9 @@ body {
   padding: 0.5rem !important;
   text-align: center !important;
   transition: all 0.3s ease !important;
-  appearance: textfield !important;
-  -moz-appearance: textfield !important;
-  -webkit-appearance: textfield !important;
+  appearance: textfield !important; /* Standard property for number input */
+  -moz-appearance: textfield !important; /* Firefox specific */
+  -webkit-appearance: none !important; /* Webkit specific for removing spin buttons */
 }
 
 .cyberpunk-quantity-input::-webkit-outer-spin-button,
@@ -989,6 +998,7 @@ body {
 
 .cyberpunk-quantity-btn:disabled:hover {
   background: var(--primary) !important;
+  transform: none !important;
 }
 
 .cyberpunk-quantity-btn:disabled:hover::before {
@@ -996,13 +1006,13 @@ body {
   border-color: var(--primary) !important;
 }
 
-.surround {
-  border: 1px solid var(--lighterer);
-}
+/* ==========================================================================
+   10. Other Misc Utilities
+   ========================================================================== */
 
 .oops {
-  border: 1px solid #3b0101;
-  background-color: #130000;
+  border: 1px solid #3b0101; /* Specific error color */
+  background-color: #130000; /* Specific error background */
 }
 
 /* Wishlist Pulse Animation */
@@ -1013,7 +1023,7 @@ body {
   }
   50% {
     transform: scale(1.2);
-    color: #ff3e3e;
+    color: #ff3e3e; /* Bright red for pulse */
   }
   100% {
     transform: scale(1);
@@ -1036,25 +1046,281 @@ body {
   border-color: #ff5252;
 }
 
-.bordered {
-  border: 1px solid var(--lighterer);
-}
-
 .price-range-input {
-  background-color: rgba(24, 24, 27, 0.9) !important; /* Darker background */
-  border: 1px solid rgba(132, 204, 22, 0.5) !important; /* Lime border */
-  color: rgb(226, 232, 240) !important; /* Lighter text */
+  background-color: rgba(24, 24, 27, 0.9) !important;
+  border: 1px solid var(--primary) !important;
+  color: var(--lighter) !important;
   font-family: 'Chakra Petch', sans-serif !important;
   transition: all 0.3s ease;
 }
 
 .price-range-input:focus {
   background-color: rgba(24, 24, 27, 0.95) !important;
-  border-color: rgb(132, 204, 22) !important;
-  box-shadow: 0 0 0 2px rgba(132, 204, 22, 0.2) !important;
+  border-color: var(--highlight) !important;
+  box-shadow: 0 0 0 2px rgba(194, 255, 0, 0.2) !important;
   outline: none !important;
 }
 
 .price-range-input::placeholder {
-  color: rgba(226, 232, 240, 0.5) !important;
+  color: rgba(240, 240, 240, 0.5) !important;
+}
+
+/* ==========================================================================
+   11. Admin Panel Specific Styles
+   ========================================================================== */
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  padding: 48px 0 0; /* Pad for fixed navbar if present */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.admin-nav-link {
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  color: var(--lighter) !important;
+  border-left: 3px solid transparent; /* Highlight border */
+}
+
+.admin-nav-link i {
+  color: var(--primary);
+  transition: color 0.3s ease;
+}
+
+.admin-nav-link:hover {
+  background-color: rgba(194, 255, 0, 0.08) !important;
+  border-left-color: var(--highlight);
+  color: var(--highlight) !important;
+}
+
+.admin-nav-link:hover i {
+  color: var(--highlight);
+}
+
+.admin-nav-link.active {
+  background-color: rgba(194, 255, 0, 0.15) !important;
+  border-left-color: var(--primary) !important;
+  color: var(--primary) !important;
+  font-weight: 700;
+}
+
+.admin-nav-link.active i {
+  color: var(--primary) !important;
+}
+
+/* Main Content Area */
+main {
+  margin-top: 48px; /* Offset for sidebar padding-top */
+  color: var(--lighter); /* Default text color in main content */
+}
+
+main h1,
+main h2,
+main h3,
+main h4,
+main h5,
+main h6 {
+  color: var(--primary) !important;
+  font-family: 'Chakra Petch', sans-serif !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Admin Buttons (e.g., 'Add New User') */
+.gaming-button-admin {
+  background-color: rgba(17, 20, 16, 0.8) !important;
+  color: var(--primary) !important;
+  border: 1px solid var(--primary) !important;
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px 25px !important; /* Consistent larger padding */
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-radius: 0;
+}
+
+.gaming-button-admin:hover {
+  background-color: var(--primary) !important;
+  color: var(--backer) !important;
+  box-shadow: 0 0 10px rgba(194, 255, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Admin Action Buttons (Edit/Delete) */
+.gaming-action-btn-edit,
+.gaming-action-btn-delete {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  margin: 0 2px;
+}
+
+.gaming-action-btn-edit {
+  background-color: rgba(0, 123, 255, 0.1) !important;
+  color: var(--info-color) !important;
+  border: 1px solid var(--info-color) !important;
+}
+
+.gaming-action-btn-edit:hover {
+  background-color: var(--info-color) !important;
+  color: var(--backer) !important;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4) !important;
+}
+
+.gaming-action-btn-delete {
+  background-color: rgba(220, 53, 69, 0.1) !important;
+  color: var(--danger-color) !important;
+  border: 1px solid var(--danger-color) !important;
+}
+
+.gaming-action-btn-delete:hover {
+  background-color: var(--danger-color) !important;
+  color: var(--backer) !important;
+  box-shadow: 0 0 8px rgba(220, 53, 69, 0.4) !important;
+}
+
+/* Admin Table */
+.admin-table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 10px; /* Space between rows */
+  color: var(--lighter);
+  font-family: "Sora", sans-serif;
+}
+
+.admin-table thead th {
+  color: var(--primary) !important;
+  background-color: var(--dark-gray) !important;
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--primary) !important;
+  border-top: none !important;
+  border-left: 1px solid var(--primary) !important;
+  border-right: 1px solid var(--primary) !important;
+  padding: 1rem 0.75rem;
+}
+
+/* Ensure consistent borders for first/last header cells */
+.admin-table thead th:first-child {
+  border-left: 1px solid var(--primary) !important;
+}
+.admin-table thead th:last-child {
+  border-right: 1px solid var(--primary) !important;
+}
+
+.admin-table tbody tr {
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-table tbody tr:hover td {
+  background-color: rgba(194, 255, 0, 0.05) !important;
+}
+
+.admin-table td {
+  color: var(--lighter) !important;
+  background-color: rgba(17, 20, 16, 0.8) !important;
+  border: 1px solid rgba(0, 255, 194, 0.2) !important;
+  padding: 0.8rem 0.75rem;
+  border-top: none !important; /* Remove top border if row spacing is used */
+}
+
+/* Adjust top border for first row of table cells */
+.admin-table tbody tr:first-child td {
+  border-top: 1px solid rgba(0, 255, 194, 0.2) !important;
+}
+
+/* Badge styling for roles */
+.cyberpunk-badge {
+  background-color: var(--primary) !important;
+  color: var(--backer) !important;
+  font-family: 'Chakra Petch', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  padding: 0.4em 0.8em;
+  border-radius: 2px;
+  margin-right: 5px;
+}
+
+.admin-thumbnail {
+  background-color: var(--dark-gray) !important;
+  border: 1px solid var(--primary) !important;
+  padding: 3px !important;
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+}
+
+/* ==========================================================================
+   12. Form Specific Inputs (for wider fields like in admin forms)
+   ========================================================================== */
+
+.cyberpunk-form-input { /* NEW CLASS for wider form inputs */
+  background: rgba(34, 34, 34, 0.95) !important;
+  border: 1px solid var(--primary) !important;
+  color: var(--lighter) !important;
+  font-family: "Chakra Petch", sans-serif !important;
+  transition: all 0.3s ease !important;
+  width: 100% !important; /* This makes them wider */
+  box-sizing: border-box !important;
+  max-width: none !important; /* Ensure it fills the column */
+  padding: 0.75rem 1rem !important; /* Bigger padding */
+  font-size: 1rem !important; /* Bigger font */
+  height: auto !important; /* Auto height based on padding */
+}
+
+.cyberpunk-form-input:focus {
+  border-color: var(--highlight) !important;
+  box-shadow: 0 0 15px rgba(194, 255, 0, 0.15) !important;
+  outline: none !important;
+}
+
+.cyberpunk-form-input::placeholder {
+  color: rgba(240, 240, 240, 0.5) !important;
+  font-family: "Chakra Petch", sans-serif !important;
+}
+
+/* Specific adjustments for textarea when used as a form input */
+textarea.cyberpunk-form-input {
+  min-height: 120px !important;
+}
+
+/* Adjust margin for form groups to bring them closer vertically */
+.col-md-6.mb-3,
+.col-12.mb-3 {
+  margin-bottom: 0.75rem !important; /* Reduce bottom margin from Bootstrap's default */
+}
+
+/* Adjust spacing for labels to be closer to their inputs */
+.cyberpunk-label {
+  color: var(--primary) !important;
+  font-family: "Chakra Petch", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.25rem !important; /* Reduced space below label */
+  display: block; /* Ensures label takes its own line */
+}
+
+/* Style for select options within a form input */
+.cyberpunk-form-input option {
+  background-color: var(--dark-gray); /* Dark background for select options */
+  color: var(--lighter); /* Lighter text for select options */
 }

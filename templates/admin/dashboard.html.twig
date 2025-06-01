@@ -1,98 +1,95 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin Dashboard - GearX{% endblock %}
+{% block title %}Admin Dashboard - GearX Admin{% endblock %} {# Added "Admin" for consistency #}
 
 {% block body %}
-<div class="container-fluid bg-darker min-h-screen">
+<div class="container-fluid bg-backer min-h-screen"> {# Changed bg-darker to bg-backer #}
     <div class="row">
-        <!-- Sidebar -->
-        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark-gray border-r border-primary sidebar">
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark-gray border-end border-primary sidebar"> {# Changed border-r to border-end #}
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('admin_dashboard') }}">
-                            <i class="fas fa-home me-2 text-primary"></i>
-                            <span class="text-lighter">Dashboard</span>
+                        <a class="nav-link admin-nav-link active" href="{{ path('admin_dashboard') }}"> {# Applied admin-nav-link active #}
+                            <i class="fas fa-home me-2"></i> {# Removed text-primary, handled by admin-nav-link #}
+                            <span>Dashboard</span> {# Removed text-lighter, handled by admin-nav-link #}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_products') }}">
-                            <i class="fas fa-box me-2 text-primary"></i>
-                            <span class="text-lighter">Products</span>
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_products') }}"> {# Applied admin-nav-link #}
+                            <i class="fas fa-box me-2"></i> {# Removed text-primary #}
+                            <span>Products</span> {# Removed text-lighter #}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_orders') }}">
-                            <i class="fas fa-shopping-cart me-2 text-primary"></i>
-                            <span class="text-lighter">Orders</span>
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_orders') }}"> {# Applied admin-nav-link #}
+                            <i class="fas fa-shopping-cart me-2"></i> {# Removed text-primary #}
+                            <span>Orders</span> {# Removed text-lighter #}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_users') }}">
-                            <i class="fas fa-users me-2 text-primary"></i>
-                            <span class="text-lighter">Users</span>
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_users') }}"> {# Applied admin-nav-link #}
+                            <i class="fas fa-users me-2"></i> {# Removed text-primary #}
+                            <span>Users</span> {# Removed text-lighter #}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dropships') }}">
-                            <i class="fas fa-truck me-2 text-primary"></i>
-                            <span class="text-lighter">Dropships</span>
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_dropships') }}"> {# Applied admin-nav-link #}
+                            <i class="fas fa-truck me-2"></i> {# Removed text-primary #}
+                            <span>Dropships</span> {# Removed text-lighter #}
                         </a>
                     </li>
                 </ul>
             </div>
         </nav>
 
-        <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-darker">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-backer"> {# Changed bg-darker to bg-backer #}
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-primary">
-                <h1 class="h2 text-lighter">Dashboard</h1>
+                <h1 class="h2">Dashboard</h1> {# Removed text-lighter, handled by main h1 styling #}
             </div>
 
-            <!-- Stats Cards -->
             <div class="row">
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card bg-dark-gray border border-primary shadow h-100">
+                <div class="col-xl-4 col-md-6 mb-4"> {# Changed col-xl-3 to col-xl-4 for better spacing with 3 cards #}
+                    <div class="card cardy shadow h-100"> {# Applied cardy, removed bg-dark-gray, border #}
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Orders</div>
-                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_orders }}</div>
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Orders</div> {# Kept text-primary text-uppercase #}
+                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_orders }}</div> {# Kept text-lighter #}
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-shopping-cart fa-2x text-primary opacity-50"></i>
+                                    <i class="fas fa-shopping-cart fa-2x text-primary opacity-50"></i> {# Kept text-primary opacity-50 #}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card bg-dark-gray border border-primary shadow h-100">
+                <div class="col-xl-4 col-md-6 mb-4"> {# Changed col-xl-3 to col-xl-4 #}
+                    <div class="card cardy shadow h-100"> {# Applied cardy, removed bg-dark-gray, border #}
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Products</div>
-                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_products }}</div>
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Products</div> {# Kept text-primary text-uppercase #}
+                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_products }}</div> {# Kept text-lighter #}
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-box fa-2x text-primary opacity-50"></i>
+                                    <i class="fas fa-box fa-2x text-primary opacity-50"></i> {# Kept text-primary opacity-50 #}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card bg-dark-gray border border-primary shadow h-100">
+                <div class="col-xl-4 col-md-6 mb-4"> {# Changed col-xl-3 to col-xl-4 #}
+                    <div class="card cardy shadow h-100"> {# Applied cardy, removed bg-dark-gray, border #}
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Users</div>
-                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_users }}</div>
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Users</div> {# Kept text-primary text-uppercase #}
+                                    <div class="h5 mb-0 font-weight-bold text-lighter">{{ total_users }}</div> {# Kept text-lighter #}
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-users fa-2x text-primary opacity-50"></i>
+                                    <i class="fas fa-users fa-2x text-primary opacity-50"></i> {# Kept text-primary opacity-50 #}
                                 </div>
                             </div>
                         </div>
@@ -100,16 +97,15 @@
                 </div>
             </div>
 
-            <!-- Recent Orders -->
-            <div class="card bg-dark-gray border border-primary shadow mb-4">
+            <div class="card cardy shadow mb-4"> {# Applied cardy, removed bg-dark-gray, border #}
                 <div class="card-header py-3 border-bottom border-primary">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6> {# Kept text-primary #}
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered border-primary" width="100%" cellspacing="0">
+                        <table class="table admin-table" width="100%" cellspacing="0"> {# Applied admin-table, removed table-bordered #}
                             <thead>
-                                <tr class="text-lighter">
+                                <tr> {# Removed text-lighter, handled by admin-table thead #}
                                     <th class="border-primary">Order ID</th>
                                     <th class="border-primary">Customer</th>
                                     <th class="border-primary">Date</th>
@@ -119,18 +115,18 @@
                             </thead>
                             <tbody>
                                 {% for order in recent_orders %}
-                                <tr class="text-lighter">
+                                <tr class="text-lighter"> {# Kept text-lighter for rows #}
                                     <td class="border-primary">{{ order.reference }}</td>
                                     <td class="border-primary">{{ order.user.username }}</td>
                                     <td class="border-primary">{{ order.createdAt|date('Y-m-d H:i') }}</td>
-                                    <td class="border-primary">{{ order.total|number_format(2, '.', ',') }} €</td>
+                                    <td class="border-primary text-highlight">{{ order.total|number_format(2, '.', ',') }} €</td> {# Added text-highlight #}
                                     <td class="border-primary">
                                         {% if order.state == 0 %}
-                                            <span class="badge bg-warning text-dark">Pending</span>
+                                            <span class="cyberpunk-badge status-pending">Pending</span> {# Applied cyberpunk-badge and status-pending #}
                                         {% elseif order.state == 1 %}
-                                            <span class="badge bg-success">Paid</span>
+                                            <span class="cyberpunk-badge status-paid">Paid</span> {# Applied cyberpunk-badge and status-paid #}
                                         {% else %}
-                                            <span class="badge bg-secondary">Cancelled</span>
+                                            <span class="cyberpunk-badge status-cancelled">Cancelled</span> {# Applied cyberpunk-badge and status-cancelled #}
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -147,52 +143,5 @@
 
 {% block stylesheets %}
 {{ parent() }}
-<style>
-.sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    padding: 48px 0 0;
-}
-
-.sidebar .nav-link {
-    font-weight: 500;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.3s;
-}
-
-.sidebar .nav-link:hover {
-    background-color: rgba(99, 102, 241, 0.1);
-}
-
-.sidebar .nav-link.active {
-    background-color: rgba(99, 102, 241, 0.2);
-}
-
-.sidebar .nav-link.active span {
-    color: #6366f1;
-}
-
-main {
-    margin-top: 48px;
-}
-
-.table {
-    color: #e5e7eb;
-}
-
-.table td, .table th {
-    background-color: #1f2937;
-}
-
-.card {
-    background-color: #1f2937;
-}
-
-.badge {
-    padding: 0.5em 0.75em;
-}
-</style>
+{# Removed inline styles, as they are now in your main CSS template #}
 {% endblock %}

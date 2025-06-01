@@ -3,38 +3,37 @@
 {% block title %}New Product - GearX Admin{% endblock %}
 
 {% block body %}
-<div class="container-fluid bg-darker min-h-screen">
+<div class="container-fluid bg-blacker min-h-screen sora-regular">
     <div class="row">
-        <!-- Sidebar -->
         <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark-gray border-r border-primary sidebar">
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dashboard') }}">
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_dashboard') }}">
                             <i class="fas fa-home me-2 text-primary"></i>
                             <span class="text-lighter">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('admin_products') }}">
+                        <a class="nav-link active admin-nav-link" href="{{ path('admin_products') }}">
                             <i class="fas fa-box me-2 text-primary"></i>
                             <span class="text-lighter">Products</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_orders') }}">
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_orders') }}">
                             <i class="fas fa-shopping-cart me-2 text-primary"></i>
                             <span class="text-lighter">Orders</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_users') }}">
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_users') }}">
                             <i class="fas fa-users me-2 text-primary"></i>
                             <span class="text-lighter">Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dropships') }}">
+                        <a class="nav-link admin-nav-link" href="{{ path('admin_dropships') }}">
                             <i class="fas fa-truck me-2 text-primary"></i>
                             <span class="text-lighter">Dropships</span>
                         </a>
@@ -43,39 +42,38 @@
             </div>
         </nav>
 
-        <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-darker">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-blacker">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-primary">
-                <h1 class="h2 text-lighter">New Product</h1>
+                <h1 class="h2 text-lighter chakra-bold">New Product</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <a href="{{ path('admin_products_index') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-arrow-left"></i> Back to List
+                    <a href="{{ path('admin_products_index') }}" class="btn gaming-button-admin">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Products List
                     </a>
                 </div>
             </div>
 
-            <div class="card bg-dark-gray border border-primary shadow mb-4">
+            <div class="card cardy shadow mb-4">
                 <div class="card-body">
-                    <form method="POST" enctype="multipart/form-data" class="admin-form">
+                    <form method="POST" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label text-lighter">Name</label>
-                                <input type="text" id="name" name="name" class="form-control bg-darker text-lighter border-primary" required>
+                                <label for="name" class="form-label cyberpunk-label">Name</label> {# Added cyberpunk-label #}
+                                <input type="text" id="name" name="name" class="form-control cyberpunk-input" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="price" class="form-label text-lighter">Price</label>
-                                <input type="number" id="price" name="price" step="0.01" class="form-control bg-darker text-lighter border-primary" required>
+                                <label for="price" class="form-label cyberpunk-label">Price</label> {# Added cyberpunk-label #}
+                                <input type="number" id="price" name="price" step="0.01" class="form-control cyberpunk-input" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="stock" class="form-label text-lighter">Stock</label>
-                                <input type="number" id="stock" name="stock" class="form-control bg-darker text-lighter border-primary" required>
+                                <label for="stock" class="form-label cyberpunk-label">Stock</label> {# Added cyberpunk-label #}
+                                <input type="number" id="stock" name="stock" class="form-control cyberpunk-input" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="category" class="form-label text-lighter">Category</label>
-                                <select id="category" name="category" class="form-select bg-darker text-lighter border-primary" required>
+                                <label for="category" class="form-label cyberpunk-label">Category</label> {# Added cyberpunk-label #}
+                                <select id="category" name="category" class="form-select cyberpunk-input" required>
                                     {% for category in categories %}
                                         <option value="{{ category.id }}">{{ category.name }}</option>
                                     {% endfor %}
@@ -83,18 +81,18 @@
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label for="description" class="form-label text-lighter">Description</label>
-                                <textarea id="description" name="description" class="form-control bg-darker text-lighter border-primary" rows="3" required></textarea>
+                                <label for="description" class="form-label cyberpunk-label">Description</label> {# Added cyberpunk-label #}
+                                <textarea id="description" name="description" class="form-control cyberpunk-input" rows="3" required></textarea>
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label for="image" class="form-label text-lighter">Image</label>
-                                <input type="file" id="image" name="image" class="form-control bg-darker text-lighter border-primary" accept="image/*" required>
+                                <label for="image" class="form-label cyberpunk-label">Image</label> {# Added cyberpunk-label #}
+                                <input type="file" id="image" name="image" class="form-control cyberpunk-input" accept="image/*" required>
                             </div>
 
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Create Product
+                                <button type="submit" class="btn gaming-button-admin">
+                                    <i class="fas fa-save me-1"></i> Create Product
                                 </button>
                             </div>
                         </div>
@@ -107,69 +105,5 @@
 {% endblock %}
 
 {% block stylesheets %}
-{{ parent() }}
-<style>
-.sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    padding: 48px 0 0;
-}
-
-.sidebar .nav-link {
-    font-weight: 500;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.3s;
-}
-
-.sidebar .nav-link:hover {
-    background-color: rgba(99, 102, 241, 0.1);
-}
-
-.sidebar .nav-link.active {
-    background-color: rgba(99, 102, 241, 0.2);
-}
-
-.sidebar .nav-link.active span {
-    color: #6366f1;
-}
-
-main {
-    margin-top: 48px;
-}
-
-.form-control, .form-select {
-    border: 1px solid #6366f1;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #818cf8;
-    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
-}
-
-.btn-outline-primary {
-    color: #6366f1;
-    border-color: #6366f1;
-}
-
-.btn-outline-primary:hover {
-    background-color: #6366f1;
-    color: #fff;
-}
-
-.card {
-    background-color: #1f2937;
-}
-
-.form-label {
-    margin-bottom: 0.5rem;
-}
-
-textarea.form-control {
-    resize: vertical;
-    min-height: 100px;
-}
-</style>
-{% endblock %} 
+    {{ parent() }}
+{% endblock %}
