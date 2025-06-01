@@ -1,30 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <nav class="mb-4">
-        <a href="{{ path('app_category_index') }}" class="text-light hover:text-accent">
+    {# Breadcrumb Navigation - Refined styling and spacing #}
+    <nav class="mb-6 px-4 py-2 bg-dark-secondary rounded-lg shadow-inner">
+        <a href="{{ path('app_category_index') }}" class="text-light hover:text-accent transition-colors duration-200">
             All Categories
         </a>
         {% if currentParent %}
-            / <span class="text-accent">{{ currentParent.name }}</span>
+            <span class="text-gray-500 mx-2">/</span>
+            <span class="text-accent font-semibold">{{ currentParent.name }}</span>
         {% endif %}
     </nav>
 
-    <div class="row g-4">
-        {% for category in categories %}
-            <div class="col-12">
-                <h3 class="chakra-petch font-bold text-xl text-light mb-2">{{ category.name }}</h3>
-                {% include 'category/card.html.twig' with {
-                    'category': category,
-                    'target_path': category.subcategories|length > 0 ? 
-                        path('app_category_subcategories', {'id': category.id}) : 
-                        path('app_collections', {'categories[]': category.id})
-                } %}
-            </div>
+    {# Page Title - More prominent and styled #}
+    <h1 class="chakra-petch font-bold text-4xl text-light text-center mb-8">
+        {% if currentParent %}
+            {{ currentParent.name }} Categories
         {% else %}
-            <div class="col-12">
-                <div class="alert alert-info">No categories found in this section.</div>
+            Browse All Categories
+        {% endif %}
+    </h1>
+
+    {# Grid Container for Category Cards #}
+    <div class="flex flex-wrap justify-center gap-6 p-4"> {# gap-6 for spacing between cards, p-4 for container padding #}
+        {% for category in categories %}
+            {# Include the refined category card template #}
+            {% include 'category/card.html.twig' with {
+                'category': category,
+                'target_path': category.subcategories|length > 0 ?
+                    path('app_category_subcategories', {'id': category.id}) :
+                    path('app_collections', {'categories[]': category.id})
+            } %}
+        {% else %}
+            {# No categories found message #}
+            <div class="w-full text-center">
+                <div class="bg-blue-800 text-blue-100 p-4 rounded-lg shadow-md inline-block">
+                    No categories found in this section.
+                </div>
             </div>
         {% endfor %}
     </div>
-{% endblock %}
+{% endblock %}  

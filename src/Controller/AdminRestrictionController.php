@@ -10,10 +10,11 @@ class AdminRestrictionController extends AbstractController
     #[Route('/not-found', name: 'custom_40')]
     public function notFound(Security $security): Response
     {
-        if(!$security->isGranted('ROLE_ADMIN') || !$security->getUser()){
-            return $this->render('errors/not-found.html.twig', ['message' => 'Page not found.']);
-        }
         return $this->redirectToRoute('home');
     }
-
+    #[Route('/forbidden', name: 'custom_403')]
+    public function forbidden(Security $security): Response
+    {
+        return $this->redirectToRoute('home');
+    }
 }

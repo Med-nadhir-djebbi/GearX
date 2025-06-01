@@ -1,0 +1,104 @@
+{# templates/pages/about_us.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}About Us - GearX{% endblock %}
+
+{% block body %}
+<div class="container py-10 bby min-h-screen">
+    <div class="text-center mb-8">
+        <h1 class="display-4 mb-3 chakra-petch-bold text-primary font-bold">About GearX</h1>
+        <p class="lead chakra-petch-regular text-light max-w-4xl mx-auto">
+            Welcome to GearX, your ultimate destination for cutting-edge electronics and gaming gear.
+            Founded by a passionate team of software engineers from INSAT, we share a common love for gaming
+            and technology. Our mission is to cultivate and deliver the best gaming hardware and electronics
+            directly to you, ensuring top-tier performance and unmatched value.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+        {# Our Mission Section #}
+        <div class="bg-dark-secondary p-8 rounded-lg shadow-xl flex flex-col justify-between">
+            <h2 class="text-3xl font-bold chakra-petch text-accent mb-4">Our Mission</h2>
+            <p class="text-lg sora-regular text-gray-200 leading-relaxed mb-auto">
+                At GearX, we believe that everyone deserves access to the best technology to enhance their
+                gaming and computing experiences. We meticulously select each product, focusing on innovation,
+                durability, and performance. Our goal is to empower our community with the tools they need
+                to succeed, whether they're professional gamers, content creators, or tech enthusiasts.
+                We're committed to providing exceptional customer service and a seamless shopping experience.
+            </p>
+            <div class="mt-6 flex items-center justify-center text-gray-400">
+                <i class="fas fa-cubes text-4xl mr-4 text-primary"></i>
+                <span class="text-xl chakra-petch">Innovation & Quality</span>
+            </div>
+        </div>
+
+        {# Our Vision Section #}
+        <div class="bg-dark-secondary p-8 rounded-lg shadow-xl flex flex-col justify-between">
+            <h2 class="text-3xl font-bold chakra-petch text-accent mb-4">Our Vision</h2>
+            <p class="text-lg sora-regular text-gray-200 leading-relaxed mb-auto">
+                We envision a future where advanced technology is accessible to all, breaking barriers and
+                fostering creativity. GearX aims to be the leading platform for gaming hardware and electronics
+                in the region, known for our commitment to excellence, customer satisfaction, and community
+                engagement. We constantly explore new trends and emerging technologies to keep our catalog
+                fresh and relevant, ensuring you always have access to the cutting edge.
+            </p>
+            <div class="mt-6 flex items-center justify-center text-gray-400">
+                <i class="fas fa-lightbulb text-4xl mr-4 text-primary"></i>
+                <span class="text-xl chakra-petch">Future-Forward Tech</span>
+            </div>
+        </div>
+    </div>
+
+    {# Locations Section #}
+    <div class="text-center mt-16 mb-8" id="locations-section"> {# <--- ID ADDED HERE #}
+        <h2 class="display-5 mb-4 chakra-petch-bold text-primary font-bold">Find Us Here</h2>
+        <p class="lead chakra-petch-regular text-light max-w-4xl mx-auto">
+            Visit our physical locations to experience our products firsthand. Our friendly staff are always ready to assist you!
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {# Location 1: Tunis #}
+        <div class="bg-dark-secondary p-6 rounded-lg shadow-xl">
+            <h3 class="text-2xl font-bold chakra-petch text-accent mb-3">GearX Tunis Branch</h3>
+            <p class="sora-regular text-gray-300 mb-4">
+                676 Centre Urbain Nord BP, Tunis 1080<br>
+                Phone: +216 71 123 456<br>
+                Email: tunis@gearx.com
+            </p>
+            <div class="map-container relative w-full pt-[56.25%] rounded-lg overflow-hidden">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3194.270603706497!2d10.190412315291244!3d36.845873979940195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a2818c3d9a9b6b%3A0x6a2c206a4e320f7!2sINSAT!5e0!3m2!1sen!2stn!4v1678901234567!5m2!1sen!2stn"
+                    width="100%"
+                    height="100%"
+                    style="border:0; position:absolute; top:0; left:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+
+        {# Location 2: Sfax #}
+        <div class="bg-dark-secondary p-6 rounded-lg shadow-xl">
+            <h3 class="text-2xl font-bold chakra-petch text-accent mb-3">GearX Sfax Branch</h3>
+            <p class="sora-regular text-gray-300 mb-4">
+                456 Tech Avenue, Sfax, Tunisia<br>
+                Phone: +216 74 987 654<br>
+                Email: sfax@gearx.com
+            </p>
+            <div class="map-container relative w-full pt-[56.25%] rounded-lg overflow-hidden">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.435790471167!2d10.749007415278783!3d34.73977388043644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1255e2d633391b1f%3A0x8f2d5e7a9e3e3b5e!2sSfax!5e0!3m2!1sen!2stn!4v1678901234567!5m2!1sen!2stn"
+                    width="100%"
+                    height="100%"
+                    style="border:0; position:absolute; top:0; left:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
