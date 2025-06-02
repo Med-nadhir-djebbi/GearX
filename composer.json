@@ -14,6 +14,7 @@
         "doctrine/orm": "^3.3",
         "easycorp/easyadmin-bundle": "^4.24",
         "mailjet/mailjet-apiv3-php": "^1.6",
+        "stripe/stripe-php": "^17.3",
         "symfony/asset": "7.2.*",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
@@ -27,6 +28,7 @@
         "symfony/twig-bundle": "7.2.*",
         "symfony/validator": "7.2.*",
         "symfony/yaml": "7.2.*",
+        "twig/extra-bundle": "^3.21",
         "twig/intl-extra": "*"
     },
     "config": {

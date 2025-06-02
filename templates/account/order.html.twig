@@ -29,7 +29,7 @@
                                 <p class="mb-0">
                                     <span class="badge {% if order.state == 1 %}bg-success{% elseif order.state == 2 %}bg-warning{% else %}bg-info{% endif %}">
                                         {{
-                                            order.state == 1 ? 'Payment Accepted' :
+                                            order.state == 1 ? 'Checkout Accepted' :
                                             order.state == 2 ? 'Processing' : 'Shipped'
                                         }}
                                     </span>

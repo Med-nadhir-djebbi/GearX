@@ -52,7 +52,7 @@
 
                     <form method="POST" action="{{ path('order_create') }}" class="mt-4">
                         <div class="d-grid gap-2">
-                            <button type="submit" class="gaming-button btn-block">
+                            <button type="submit" class="gaming-button btn-block" href="{{ path('checkout', { order_id: order.id }) }}">
                                 <i class="bi bi-credit-card me-2"></i> 
                                 PLACE ORDER
                             </button>
