@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderDetails;
+use App\Entity\Product;
 use App\Model\Cart;
 use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
