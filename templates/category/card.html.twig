@@ -12,6 +12,10 @@
 
         {# Name section #}
         <div class="p-3 border-t border-gray-700">
+            {# Added category name here #}
+            <h2 class="chakra-petch font-bold text-xl text-center text-primary mb-2">
+                {{ category.name }}
+            </h2>
             <h3 class="chakra-petch font-bold text-lg text-center text-light">
                 {% if target_path == path('app_category_subcategories', {'id': category.id}) %}
                     Browse Subcategories
@@ -22,4 +26,4 @@
             </h3>
         </div>
     </div>
-</a>    
+</a>

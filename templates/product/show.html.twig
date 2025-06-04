@@ -5,12 +5,16 @@
 {% block body %}
     <div class="container mt-5 px-5 py-16 bby">
         <div class="flex gap-4">
-            <div class="col-md-6 flex-1 gap-x-8">
-                <img src="{{ asset(product.image ?? 'assets/img/placeholder.webp') }}" 
-                     class="img-fluid" 
-                     alt="{{ product.name }}"
-                     onerror="this.src='{{ asset('assets/img/placeholder.webp') }}'">
+            <div class="col-md-6 d-flex justify-content-center align-items-center p-4" style="height: 600px;">
+                <img src="{{ asset('assets/img/products/' ~ (product.image ?? 'assets/img/placeholder.webp')) }}"
+                    style="height: 100%; width: auto; max-width: 100%; object-fit: contain;"
+                    class="img-fluid rounded shadow"
+                    alt="{{ product.name }}"
+                    onerror="this.src='{{ asset('assets/img/placeholder.webp') }}'">
             </div>
+
+
+
             <div class="col-md-6 text-light flex-1">
                 <h1 class="chakra-petch font-bold text-white mb-4 text-5xl">{{ product.name }}</h1>
                 
