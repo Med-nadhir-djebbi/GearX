@@ -18,7 +18,7 @@
 |--------------|------------------------|
 | **Backend**  | Symfony                |
 | **Frontend** | Twig + Tailwind CSS    |
-| **Database** | MySQL                  |
+| **Database** | MongoDB|
 | **DevOps**   | Docker                 |
 | **VCS**      | Git                    |
 
